@@ -1,5 +1,8 @@
-<script>
+<script lang="ts">
   import '../app.css';
+  export let data;
+
+  $: cartItemCount = data.cart?.items.length || 0;
 </script>
 
 <div class="min-h-screen flex flex-col bg-gray-50">
@@ -9,9 +12,17 @@
       <div class="flex justify-between items-center h-16">
         <a href="/" class="text-2xl font-bold text-purple-700">Pupicrochet</a>
         <ul class="hidden md:flex space-x-8">
-          <li><a href="#" class="text-gray-600 hover:text-purple-600">Productos</a></li>
-          <li><a href="#" class="text-gray-600 hover:text-purple-600">Acerca de</a></li>
-          <li><a href="#" class="text-gray-600 hover:text-purple-600">Contacto</a></li>
+          <li><a href="/" class="text-gray-600 hover:text-purple-600">Productos</a></li>
+          <li>
+            <a href="/carrito" class="text-gray-600 hover:text-purple-600 flex items-center">
+              Carrito
+              {#if cartItemCount > 0}
+                <span class="ml-2 bg-purple-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              {/if}
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
