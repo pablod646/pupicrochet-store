@@ -14,6 +14,7 @@ export const actions = {
   addToCart: async ({ request, cookies }) => {
     const data = await request.formData();
     const productId = data.get('productId') as string;
+    const quantity = Number(data.get('quantity')) || 1;
 
     let cartId = cookies.get('cartId');
 
@@ -38,7 +39,7 @@ export const actions = {
           id: cartItem.id,
         },
         data: {
-          quantity: cartItem.quantity + 1,
+          quantity: cartItem.quantity + quantity,
         },
       });
     } else {
@@ -46,7 +47,7 @@ export const actions = {
         data: {
           productId,
           cartId,
-          quantity: 1,
+          quantity: quantity,
         },
       });
     }

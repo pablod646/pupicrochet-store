@@ -19,9 +19,20 @@
     </div>
     <div class="mt-8">
       <p class="text-4xl font-bold text-gray-900">${product.price}</p>
-      <form method="POST" action="?/addToCart">
+      <form method="POST" action="?/addToCart" class="mt-6">
         <input type="hidden" name="productId" value={product.id} />
-        <button class="mt-4 w-full bg-purple-600 text-white font-bold py-3 px-6 rounded-md hover:bg-purple-700 transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+        <div class="flex items-center gap-4">
+          <label for="quantity" class="text-lg font-medium text-gray-700">Cantidad:</label>
+          <input 
+            type="number" 
+            id="quantity" 
+            name="quantity" 
+            value="1" 
+            min="1" 
+            class="w-20 rounded-md border border-gray-300 py-2 px-3 text-lg text-center focus:ring-purple-500 focus:border-purple-500"
+          />
+        </div>
+        <button class="mt-6 w-full bg-purple-600 text-white font-bold py-3 px-6 rounded-md hover:bg-purple-700 transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
           Agregar al Carrito
         </button>
       </form>
