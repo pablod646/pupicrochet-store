@@ -3,6 +3,7 @@
   export let data;
 
   $: cartItemCount = data.cart?.items.length || 0;
+  $: user = data.user;
 </script>
 
 <div class="min-h-screen flex flex-col bg-gray-50">
@@ -11,7 +12,7 @@
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <a href="/" class="text-2xl font-bold text-purple-700">Pupicrochet</a>
-        <ul class="hidden md:flex space-x-8">
+        <ul class="hidden md:flex space-x-8 items-center">
           <li><a href="/" class="text-gray-600 hover:text-purple-600">Productos</a></li>
           <li>
             <a href="/carrito" class="text-gray-600 hover:text-purple-600 flex items-center">
@@ -23,6 +24,17 @@
               {/if}
             </a>
           </li>
+          {#if user}
+            <li class="text-gray-600">Hello, {user.name || user.email}!</li>
+            <li>
+              <form action="/logout" method="POST">
+                <button type="submit" class="text-gray-600 hover:text-purple-600">Logout</button>
+              </form>
+            </li>
+          {:else}
+            <li><a href="/auth" class="text-gray-600 hover:text-purple-600">Login</a></li>
+            <li><a href="/register" class="text-gray-600 hover:text-purple-600">Register</a></li>
+          {/if}
         </ul>
       </div>
     </nav>

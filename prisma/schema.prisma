@@ -38,6 +38,8 @@ model ProductImage {
 
 model Cart {
   id        String     @id @default(cuid())
+  userId    String?    @unique
+  user      User?      @relation(fields: [userId], references: [id])
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   items     CartItem[]
@@ -54,4 +56,14 @@ model CartItem {
   updatedAt DateTime @updatedAt
 
   @@unique([productId, cartId])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cart      Cart? // Add this line
 }

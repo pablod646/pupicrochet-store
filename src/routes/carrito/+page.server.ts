@@ -2,23 +2,110 @@ import { prisma } from '../../lib/server/prisma';
 import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ cookies }) => {
-  const cartId = cookies.get('cartId');
+export const load: PageServerLoad = async ({ cookies, parent }) => {
+  const { user } = await parent();
+  let cartId = cookies.get('cartId');
+  let cart = null;
 
-  if (!cartId) {
-    return { cart: null, total: 0, products: [] };
-  }
-
-  const cart = await prisma.cart.findUnique({
-    where: { id: cartId },
-    include: {
-      items: {
-        include: {
-          product: true,
+  if (user) {
+    // Try to find a cart associated with the logged-in user
+    cart = await prisma.cart.findUnique({
+      where: { userId: user.id },
+      include: {
+        items: {
+          include: {
+            product: {
+            include: {
+              images: {
+                take: 1,
+              },
+            },
+          },
+          },
         },
       },
-    },
-  });
+    });
+
+    if (cart && cartId && cart.id !== cartId) {
+      // If user has a cart and there's an anonymous cart, merge them
+      const anonymousCart = await prisma.cart.findUnique({
+        where: { id: cartId },
+        include: { items: true },
+      });
+
+      if (anonymousCart) {
+        for (const item of anonymousCart.items) {
+          await prisma.cartItem.upsert({
+            where: { productId_cartId: { productId: item.productId, cartId: cart.id } },
+            update: { quantity: { increment: item.quantity } },
+            create: {
+              productId: item.productId,
+              cartId: cart.id,
+              quantity: item.quantity,
+            },
+          });
+        }
+        await prisma.cart.delete({ where: { id: anonymousCart.id } });
+      }
+      cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+    } else if (!cart && cartId) {
+      // If user has no cart but there's an anonymous cart, assign it to the user
+      cart = await prisma.cart.update({
+        where: { id: cartId },
+        data: { userId: user.id },
+        include: {
+          items: {
+            include: {
+              product: {
+            include: {
+              images: {
+                take: 1,
+              },
+            },
+          },
+            },
+          },
+        },
+      });
+    } else if (!cart && !cartId) {
+      // If user has no cart and no anonymous cart, create a new cart for the user
+      cart = await prisma.cart.create({
+        data: { userId: user.id },
+        include: {
+          items: {
+            include: {
+              product: {
+            include: {
+              images: {
+                take: 1,
+              },
+            },
+          },
+            },
+          },
+        },
+      });
+      cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+    }
+  } else if (cartId) {
+    // If no user, but there's an anonymous cart
+    cart = await prisma.cart.findUnique({
+      where: { id: cartId },
+      include: {
+        items: {
+          include: {
+            product: {
+            include: {
+              images: {
+                take: 1,
+              },
+            },
+          },
+          },
+        },
+      },
+    });
+  }
 
   if (!cart) {
     return { cart: null, total: 0, products: [] };
@@ -26,7 +113,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   const total = cart.items.reduce((acc: number, item: { quantity: number; product: { price: number; }; }) => acc + item.quantity * item.product.price, 0);
 
-  // Obtener todos los productos para el catálogo
   const products = await prisma.product.findMany();
 
   return { cart, total, products };

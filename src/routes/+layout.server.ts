@@ -1,21 +1,27 @@
-import { PrismaClient } from '@prisma/client';
 import type { LayoutServerLoad } from './$types';
-
-const prisma = new PrismaClient();
+import { prisma } from '$lib/server/prisma';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
   const cartId = cookies.get('cartId');
+  const sessionId = cookies.get('sessionid');
 
-  if (!cartId) {
-    return { cart: null };
+  let user = null;
+  if (sessionId) {
+    user = await prisma.user.findUnique({
+      where: { id: sessionId },
+      select: { id: true, email: true, name: true }, // Select only necessary fields
+    });
   }
 
-  const cart = await prisma.cart.findUnique({
-    where: { id: cartId },
-    include: {
-      items: true,
-    },
-  });
+  let cart = null;
+  if (cartId) {
+    cart = await prisma.cart.findUnique({
+      where: { id: cartId },
+      include: {
+        items: true,
+      },
+    });
+  }
 
-  return { cart };
+  return { cart, user };
 };

@@ -1,12 +1,27 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
   import { invalidateAll } from '$app/navigation';
+  import type { ActionResult } from '@sveltejs/kit';
+
   export let data;
+
+  interface Product {
+    id: string;
+    name: string;
+    price: number;
+    images: { url: string }[];
+  }
+
+  interface CartItem {
+    id: string;
+    quantity: number;
+    product: Product;
+  }
 
   // Esta función se ejecutará después de que el formulario se envíe
   // y nos permitirá actualizar los datos de la página.
   const enhanceForm = () => {
-    return async ({ result }) => {
+    return async ({ result }: { result: ActionResult }) => {
       if (result.type === 'success') {
         // Invalida todos los datos cargados, forzando a SvelteKit
         // a volver a ejecutar las funciones `load`.
@@ -24,7 +39,7 @@
       {#each data.cart.items as item}
         <div class="flex items-center justify-between border-b pb-4">
           <div class="flex items-center space-x-4">
-            <img src={item.product.imageUrl} alt={item.product.name} class="w-20 h-20 object-cover rounded">
+            <img src={item.product.images[0]?.url} alt={item.product.name} class="w-20 h-20 object-cover rounded">
             <div>
               <h2 class="font-semibold">{item.product.name}</h2>
               <div class="flex items-center space-x-2">
@@ -52,7 +67,7 @@
     </div>
 
     <div class="mt-8 text-right">
-      <h2 class="text-xl font-bold">Total: ${data.cart.items.reduce((total, item) => total + item.product.price * item.quantity, 0)}</h2>
+      <h2 class="text-xl font-bold">Total: ${data.cart.items.reduce((total: number, item: CartItem) => total + item.product.price * item.quantity, 0)}</h2>
       <button class="mt-4 bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700">
         Proceder al Pago
       </button>

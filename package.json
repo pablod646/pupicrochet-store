@@ -25,6 +25,8 @@
 	"dependencies": {
 		"@prisma/client": "^6.12.0",
 		"@tailwindcss/vite": "^4.1.11",
+		"@types/bcrypt": "^6.0.0",
+		"bcrypt": "^6.0.0",
 		"tailwindcss": "^4.1.11"
 	},
 	"prisma": {
