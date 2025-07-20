@@ -1,8 +1,41 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { goto } from '$app/navigation';
   import type { ActionData } from './$types';
 
-  let form: ActionData;
+  export let form: ActionData;
+
+  let message: string | null = null;
+  let messageType: 'success' | 'error' | null = null;
+
+  const handleSubmit = () => {
+    message = null; // Clear previous messages on submit
+    messageType = null;
+
+    return async ({ result }) => {
+      if (result.type === 'success') {
+        message = 'Registration successful! Redirecting...';
+        messageType = 'success';
+        // Manually redirect after a short delay to show the success message
+        setTimeout(() => {
+          goto('/auth');
+        }, 1500);
+      } else if (result.type === 'failure') {
+        // Server-side validation errors (e.g., email already exists, missing fields)
+        if (result.data && result.data.message) {
+          message = result.data.message;
+        } else {
+          message = 'Registration failed due to validation errors.';
+        }
+        messageType = 'error';
+      } else if (result.type === 'error') {
+        // Network errors or unhandled exceptions during form submission
+        message = 'An unexpected error occurred. Please try again.';
+        messageType = 'error';
+      }
+      // For 'redirect' type, SvelteKit handles it automatically, so no explicit message needed here
+    };
+  };
 </script>
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -13,7 +46,7 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" method="POST" use:enhance>
+    <form class="space-y-6" method="POST" action="?/register" use:enhance={handleSubmit}>
       <div>
         <label for="email" class="block text-sm font-medium leading-6 text-gray-900"
           >Email address</label
@@ -80,3 +113,11 @@
     </p>
   </div>
 </div>
+
+{#if message}
+  <p class="mt-4 text-center {messageType === 'success' ? 'text-green-500' : 'text-red-500'}">{message}</p>
+{/if}
+
+{#if form?.message}
+  <p class="mt-4 text-center text-red-500">{form.message}</p>
+{/if}
