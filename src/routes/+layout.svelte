@@ -4,7 +4,21 @@
 
   $: cartItemCount = data.cart?.items.length || 0;
   $: user = data.user;
+
+  let showUserDropdown = false;
+
+  function toggleUserDropdown() {
+    showUserDropdown = !showUserDropdown;
+  }
+
+  function closeUserDropdown(event: MouseEvent) {
+    if (event.target instanceof HTMLElement && !event.target.closest('.user-dropdown-container')) {
+      showUserDropdown = false;
+    }
+  }
 </script>
+
+<svelte:window on:click={closeUserDropdown} />
 
 <div class="min-h-screen flex flex-col bg-gray-50">
 
@@ -25,14 +39,20 @@
             </a>
           </li>
           {#if user}
-            <li class="text-gray-600">Hello, {user.name || user.email}!</li>
-            {#if user.role === 'ADMIN'}
-              <li><a href="/admin" class="text-gray-600 hover:text-purple-600">Admin</a></li>
-            {/if}
-            <li>
-              <form action="/logout" method="POST">
-                <button type="submit" class="text-gray-600 hover:text-purple-600">Logout</button>
-              </form>
+            <li class="relative user-dropdown-container">
+              <button on:click|stopPropagation={toggleUserDropdown} class="text-gray-600 hover:text-purple-600 focus:outline-none">
+                Hola, {user.name || user.email}!
+              </button>
+              {#if showUserDropdown}
+                <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                  {#if user.role === 'ADMIN'}
+                    <a href="/admin" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Panel de Administración</a>
+                  {/if}
+                  <form action="/logout" method="POST">
+                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar Sesión</button>
+                  </form>
+                </div>
+              {/if}
             </li>
           {:else}
             <li><a href="/auth" class="text-gray-600 hover:text-purple-600">Login</a></li>

@@ -28,9 +28,16 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Resolución de errores y advertencias de tipo en los componentes de SvelteKit.
     *   Implementación de feedback visual para el usuario durante el registro (éxito, errores de validación, errores inesperados).
     *   Mejora del diseño del formulario de registro para que coincida con el estilo de la aplicación.
+6.  **Panel de Administración:**
+    *   Implementación de autenticación y autorización basada en roles (`UserRole` enum en Prisma).
+    *   Configuración de rutas protegidas para el panel de administración (`/admin`).
+    *   Implementación de operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para productos en el panel de administración.
+    *   Añadida navegación básica al panel de administración.
+7.  **Traducción a Español:**
+    *   Traducción de todos los textos visibles en los formularios de inicio de sesión, registro y gestión de productos del panel de administración al español.
 
 ## Tareas Pendientes (Orden de Prioridad):
 
-1.  **Implementar Confirmación de Correo Electrónico:** Enviar un enlace de verificación al correo del usuario tras el registro.
-2.  **Proceso de Compra:** Crear un flujo de checkout completo.
-3.  **Panel de Administración:** Desarrollar una interfaz para gestionar productos, pedidos, etc.
+ 1.  **Implementar Confirmación de Correo Electrónico:** Enviar un enlace de verificación al correo del usuario tras el registro.
+ 2.  **Proceso de Compra:** Crear un flujo de checkout completo.
+ 3.  **Panel de Administración:** Desarrollar una interfaz para gestionar productos, pedidos, y usuarios.

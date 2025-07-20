@@ -1,12 +1,39 @@
 <script lang="ts">
   import type { PageData } from './$types';
+  import { enhance } from '$app/forms';
+  import { invalidateAll } from '$app/navigation';
 
   export let data: PageData;
+
+  let message: string | null = null;
+  let messageType: 'success' | 'error' | null = null;
+
+  const handleDelete = () => {
+    message = null;
+    messageType = null;
+    return async ({ result }) => {
+      if (result.type === 'success') {
+        message = result.data?.message || 'Producto eliminado exitosamente!';
+        messageType = 'success';
+        await invalidateAll(); // Refresh the product list
+      } else if (result.type === 'failure') {
+        message = result.data?.message || 'Fallo al eliminar el producto.';
+        messageType = 'error';
+      } else if (result.type === 'error') {
+        message = 'Ocurrió un error inesperado al eliminar el producto.';
+        messageType = 'error';
+      }
+    };
+  };
 </script>
 
 <h1 class="text-2xl font-bold mb-4">Gestión de Productos</h1>
 
 <a href="/admin/products/new" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Añadir Nuevo Producto</a>
+
+{#if message}
+  <p class="mt-4 {messageType === 'success' ? 'text-green-500' : 'text-red-500'}">{message}</p>
+{/if}
 
 <div class="overflow-x-auto">
   <table class="min-w-full bg-white border border-gray-200">
@@ -32,20 +59,10 @@
           <td class="py-2 px-4 border-b">${product.price}</td>
           <td class="py-2 px-4 border-b">
             <a href="/admin/products/{product.id}/edit" class="text-blue-600 hover:underline mr-2">Editar</a>
-            <button class="text-red-600 hover:underline" on:click={() => {
-              if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '?/deleteProduct';
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'productId';
-                input.value = product.id;
-                form.appendChild(input);
-                document.body.appendChild(form);
-                form.submit();
-              }
-            }}>Eliminar</button>
+            <form method="POST" action="?/deleteProduct" use:enhance={handleDelete}>
+              <input type="hidden" name="productId" value={product.id}>
+              <button type="submit" class="text-red-600 hover:underline" on:click={() => confirm('¿Estás seguro de que quieres eliminar este producto?')}>Eliminar</button>
+            </form>
           </td>
         </tr>
       {/each}

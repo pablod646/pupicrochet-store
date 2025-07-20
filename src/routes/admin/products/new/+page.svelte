@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { goto } from '$app/navigation';
   import type { ActionData } from './$types';
 
   export let form: ActionData;
@@ -13,11 +14,30 @@
   function removeImageUrlInput(index: number) {
     imageUrls = imageUrls.filter((_, i) => i !== index);
   }
+
+  const handleSubmit = () => {
+    return async ({ result }) => {
+      if (result.type === 'success') {
+        if (result.data && result.data.productId) {
+          form = { success: true, message: result.data.message || 'Producto creado exitosamente!' };
+          setTimeout(() => {
+            goto(`/admin/products/${result.data.productId}/edit`);
+          }, 1500);
+        } else {
+          form = { success: true, message: 'Producto creado exitosamente!' };
+        }
+      } else if (result.type === 'failure') {
+        form = { success: false, message: result.data?.message || 'Fallo al crear el producto.' };
+      } else if (result.type === 'error') {
+        form = { success: false, message: 'Ocurrió un error inesperado.' };
+      }
+    };
+  };
 </script>
 
 <h1 class="text-2xl font-bold mb-4">Añadir Nuevo Producto</h1>
 
-<form method="POST" action="?/createProduct" use:enhance>
+<form method="POST" action="?/createProduct" use:enhance={handleSubmit}>
   <div class="mb-4">
     <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nombre del Producto:</label>
     <input type="text" id="name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />

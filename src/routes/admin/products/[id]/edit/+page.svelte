@@ -22,11 +22,23 @@
     imageUrls = imageUrls.filter((_, i) => i !== index);
     existingImageIds = existingImageIds.filter((_, i) => i !== index);
   }
+
+  const handleSubmit = () => {
+    return async ({ result }) => {
+      if (result.type === 'success') {
+        form = { success: true, message: result.data?.message || 'Producto actualizado exitosamente!' };
+      } else if (result.type === 'failure') {
+        form = { success: false, message: result.data?.message || 'Fallo al actualizar el producto.' };
+      } else if (result.type === 'error') {
+        form = { success: false, message: 'Ocurrió un error inesperado.' };
+      }
+    };
+  };
 </script>
 
 <h1 class="text-2xl font-bold mb-4">Editar Producto: {product.name}</h1>
 
-<form method="POST" action="?/updateProduct" use:enhance>
+<form method="POST" action="?/updateProduct" use:enhance={handleSubmit}>
   <div class="mb-4">
     <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nombre del Producto:</label>
     <input type="text" id="name" name="name" required bind:value={product.name} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
