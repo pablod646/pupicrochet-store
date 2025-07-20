@@ -20,9 +20,14 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Añadida información adicional del producto (dimensiones, materiales).
 4.  **Corrección de Errores:**
     *   Manejo de caso de producto no encontrado en la página de detalle.
+5.  **Gestión de Usuarios:**
+    *   Añadido modelo `User` a `prisma/schema.prisma`.
+    *   Implementadas rutas de registro (`/register`), inicio de sesión (`/auth`) y cierre de sesión (`/logout`).
+    *   Integración de `bcrypt` para el hash de contraseñas.
+    *   Asociación del carrito de compras con el usuario autenticado, incluyendo la fusión de carritos anónimos al iniciar sesión.
+    *   Resolución de errores y advertencias de tipo en los componentes de SvelteKit.
 
 ## Tareas Pendientes (Orden de Prioridad):
 
-1.  **Gestión de Usuarios:** Implementar registro y autenticación.
-2.  **Proceso de Compra:** Crear un flujo de checkout completo.
-3.  **Panel de Administración:** Desarrollar una interfaz para gestionar productos, pedidos, etc.
+1.  **Proceso de Compra:** Crear un flujo de checkout completo.
+2.  **Panel de Administración:** Desarrollar una interfaz para gestionar productos, pedidos, etc.
