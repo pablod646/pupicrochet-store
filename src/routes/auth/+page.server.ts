@@ -9,19 +9,19 @@ export const actions = {
     const password = data.get('password') as string;
 
     if (!email || !password) {
-      return fail(400, { email, message: 'Missing email or password' });
+      return fail(400, { email, message: 'Falta correo electrónico o contraseña' });
     }
 
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      return fail(400, { email, message: 'Invalid credentials' });
+      return fail(400, { email, message: 'Credenciales inválidas' });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return fail(400, { email, message: 'Invalid credentials' });
+      return fail(400, { email, message: 'Credenciales inválidas' });
     }
 
     cookies.set('sessionid', user.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });

@@ -26,8 +26,11 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Integración de `bcrypt` para el hash de contraseñas.
     *   Asociación del carrito de compras con el usuario autenticado, incluyendo la fusión de carritos anónimos al iniciar sesión.
     *   Resolución de errores y advertencias de tipo en los componentes de SvelteKit.
+    *   Implementación de feedback visual para el usuario durante el registro (éxito, errores de validación, errores inesperados).
+    *   Mejora del diseño del formulario de registro para que coincida con el estilo de la aplicación.
 
 ## Tareas Pendientes (Orden de Prioridad):
 
-1.  **Proceso de Compra:** Crear un flujo de checkout completo.
-2.  **Panel de Administración:** Desarrollar una interfaz para gestionar productos, pedidos, etc.
+1.  **Implementar Confirmación de Correo Electrónico:** Enviar un enlace de verificación al correo del usuario tras el registro.
+2.  **Proceso de Compra:** Crear un flujo de checkout completo.
+3.  **Panel de Administración:** Desarrollar una interfaz para gestionar productos, pedidos, etc.

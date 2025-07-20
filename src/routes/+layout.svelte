@@ -26,6 +26,9 @@
           </li>
           {#if user}
             <li class="text-gray-600">Hello, {user.name || user.email}!</li>
+            {#if user.role === 'ADMIN'}
+              <li><a href="/admin" class="text-gray-600 hover:text-purple-600">Admin</a></li>
+            {/if}
             <li>
               <form action="/logout" method="POST">
                 <button type="submit" class="text-gray-600 hover:text-purple-600">Logout</button>

@@ -14,7 +14,7 @@
 
     return async ({ result }) => {
       if (result.type === 'success') {
-        message = 'Registration successful! Redirecting...';
+        message = '¡Registro exitoso! Redireccionando...';
         messageType = 'success';
         // Manually redirect after a short delay to show the success message
         setTimeout(() => {
@@ -25,12 +25,12 @@
         if (result.data && result.data.message) {
           message = result.data.message;
         } else {
-          message = 'Registration failed due to validation errors.';
+          message = 'El registro falló debido a errores de validación.';
         }
         messageType = 'error';
       } else if (result.type === 'error') {
         // Network errors or unhandled exceptions during form submission
-        message = 'An unexpected error occurred. Please try again.';
+        message = 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.';
         messageType = 'error';
       }
       // For 'redirect' type, SvelteKit handles it automatically, so no explicit message needed here
@@ -41,7 +41,7 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-      Create a new account
+      Crea una nueva cuenta
     </h2>
   </div>
 
@@ -49,7 +49,7 @@
     <form class="space-y-6" method="POST" action="?/register" use:enhance={handleSubmit}>
       <div>
         <label for="email" class="block text-sm font-medium leading-6 text-gray-900"
-          >Email address</label
+          >Correo electrónico</label
         >
         <div class="mt-2">
           <input
@@ -59,13 +59,14 @@
             autocomplete="email"
             required
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            placeholder="tu@ejemplo.com"
           />
         </div>
       </div>
 
       <div>
         <label for="name" class="block text-sm font-medium leading-6 text-gray-900"
-          >Name (Optional)</label
+          >Nombre (Opcional)</label
         >
         <div class="mt-2">
           <input
@@ -74,6 +75,7 @@
             type="text"
             autocomplete="name"
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            placeholder="Tu nombre"
           />
         </div>
       </div>
@@ -81,7 +83,7 @@
       <div>
         <div class="flex items-center justify-between">
           <label for="password" class="block text-sm font-medium leading-6 text-gray-900"
-            >Password</label
+            >Contraseña</label
           >
         </div>
         <div class="mt-2">
@@ -92,6 +94,7 @@
             autocomplete="new-password"
             required
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            placeholder="Contraseña"
           />
         </div>
       </div>
@@ -100,15 +103,15 @@
         <button
           type="submit"
           class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >Register</button
+          >Registrarse</button
         >
       </div>
     </form>
 
     <p class="mt-10 text-center text-sm text-gray-500">
-      Already have an account?
+      ¿Ya tienes una cuenta?
       <a href="/auth" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-        >Sign in here</a
+        >Inicia sesión aquí</a
       >
     </p>
   </div>

@@ -11,13 +11,18 @@ export const actions = {
       const name = data.get('name') as string;
 
       if (!email || !password) {
-        return fail(400, { email, message: 'Missing email or password' });
+        return fail(400, { email, message: 'Falta correo electrónico o contraseña' });
+      }
+
+      // Basic email format validation
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return fail(400, { email, message: 'Formato de correo electrónico inválido' });
       }
 
       const existingUser = await prisma.user.findUnique({ where: { email } });
 
       if (existingUser) {
-        return fail(400, { email, message: 'User with this email already exists' });
+        return fail(400, { email, message: 'Ya existe un usuario con este correo electrónico' });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -31,7 +36,7 @@ export const actions = {
       });
     } catch (error) {
       console.error("Registration error:", error);
-      return fail(500, { message: 'An unexpected error occurred during registration.' });
+      return fail(500, { message: 'Ocurrió un error inesperado durante el registro.' });
     }
     return { success: true };
   },

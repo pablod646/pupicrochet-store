@@ -9,7 +9,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
   if (sessionId) {
     user = await prisma.user.findUnique({
       where: { id: sessionId },
-      select: { id: true, email: true, name: true }, // Select only necessary fields
+      select: { id: true, email: true, name: true, role: true }, // Select necessary fields including role
     });
   }
 
