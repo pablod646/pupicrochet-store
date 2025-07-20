@@ -15,11 +15,11 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Contador de productos distintos en el carrito en el encabezado.
 3.  **Mejora de la Página de Detalle del Producto:**
     *   Añadido selector de cantidad para el producto.
+    *   Implementada galería de imágenes (con miniaturas seleccionables).
 
 ## Tareas Pendientes (Orden de Prioridad):
 
 1.  **Mejorar la Página de Detalle del Producto:**
-    *   (Opcional) Galería de imágenes.
     *   (Opcional) Información adicional del producto (dimensiones, materiales).
     *   (Opcional) Sección de productos relacionados.
 2.  **Gestión de Usuarios:** Implementar registro y autenticación.
