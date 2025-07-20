@@ -18,6 +18,8 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Implementada galería de imágenes (con miniaturas seleccionables).
     *   Añadida sección de productos relacionados.
     *   Añadida información adicional del producto (dimensiones, materiales).
+4.  **Corrección de Errores:**
+    *   Manejo de caso de producto no encontrado en la página de detalle.
 
 ## Tareas Pendientes (Orden de Prioridad):
 
