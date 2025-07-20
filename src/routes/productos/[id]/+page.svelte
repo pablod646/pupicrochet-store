@@ -37,6 +37,19 @@
       <div class="flex-grow">
         <h1 class="text-3xl lg:text-4xl font-bold text-gray-900">{product.name}</h1>
         <p class="mt-4 text-gray-600 text-lg">{product.description}</p>
+        
+        <!-- Detalles Adicionales -->
+        <div class="mt-6 border-t pt-4">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Detalles</h2>
+          <ul class="space-y-2 text-gray-600">
+            {#if product.materials}
+              <li><strong>Materiales:</strong> {product.materials}</li>
+            {/if}
+            {#if product.dimensions}
+              <li><strong>Dimensiones:</strong> {product.dimensions}</li>
+            {/if}
+          </ul>
+        </div>
       </div>
       <div class="mt-8">
         <p class="text-4xl font-bold text-gray-900">${product.price}</p>

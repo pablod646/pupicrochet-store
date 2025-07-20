@@ -16,6 +16,8 @@ async function main() {
       name: 'Amigurumi de Pulpo',
       description: 'Un adorable pulpo tejido a mano con hilo de algodón hipoalergénico, perfecto para los más pequeños. Suave y seguro para abrazar.',
       price: 1500,
+      dimensions: 'Aprox. 15cm de alto x 10cm de ancho',
+      materials: 'Hilo de algodón 100% hipoalergénico, relleno de fibra sintética.',
       images: {
         create: [
           { url: 'https://placehold.co/600x600/e2c2e6/7d4e8a?text=Pulpo+1' },
@@ -31,6 +33,8 @@ async function main() {
       name: 'Sonajero de Elefante',
       description: 'Sonajero de madera natural y crochet con un diseño de elefante. Estimula los sentidos del bebé con su sonido suave y diferentes texturas.',
       price: 1200,
+      dimensions: '12cm de largo',
+      materials: 'Madera de haya sin tratar, hilo de algodón, cascabel interno.',
       images: {
         create: [
           { url: 'https://placehold.co/600x600/c2dbe6/4e7d8a?text=Elefante+1' },
@@ -45,6 +49,8 @@ async function main() {
       name: 'Manta de Apego Conejito',
       description: 'Una manta de apego ultra suave para acompañar a tu bebé en sus sueños. La cabeza de conejito es ideal para que las manitas pequeñas la agarren.',
       price: 2500,
+      dimensions: '35cm x 35cm',
+      materials: 'Tela de muselina suave, hilo de algodón.',
       images: {
         create: [
           { url: 'https://placehold.co/600x600/c2e6d2/4e8a60?text=Conejito+1' },
