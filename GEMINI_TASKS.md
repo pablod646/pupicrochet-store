@@ -16,12 +16,12 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 3.  **Mejora de la Página de Detalle del Producto:**
     *   Añadido selector de cantidad para el producto.
     *   Implementada galería de imágenes (con miniaturas seleccionables).
+    *   Añadida sección de productos relacionados.
 
 ## Tareas Pendientes (Orden de Prioridad):
 
 1.  **Mejorar la Página de Detalle del Producto:**
     *   (Opcional) Información adicional del producto (dimensiones, materiales).
-    *   (Opcional) Sección de productos relacionados.
 2.  **Gestión de Usuarios:** Implementar registro y autenticación.
 3.  **Proceso de Compra:** Crear un flujo de checkout completo.
 4.  **Panel de Administración:** Desarrollar una interfaz para gestionar productos, pedidos, etc.
