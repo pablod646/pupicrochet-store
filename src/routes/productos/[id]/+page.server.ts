@@ -6,6 +6,9 @@ const prisma = new PrismaClient();
 export const load: PageServerLoad = async ({ params }) => {
   const product = await prisma.product.findUnique({
     where: { id: params.id },
+    include: {
+      images: true, // Incluimos las imágenes relacionadas
+    },
   });
   return { product };
 };

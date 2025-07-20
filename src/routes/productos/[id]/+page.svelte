@@ -1,16 +1,34 @@
 <script lang="ts">
-  // Los datos que devuelve la función `load` llegan aquí
   export let data;
   const { product } = data;
+
+  // Estado para la imagen seleccionada
+  let selectedImage = product.images[0]?.url || 'https://placehold.co/600x600';
 </script>
 
 <div class="grid md:grid-cols-2 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
-  <div>
-    <img 
-      src={product.imageUrl} 
-      alt={product.name} 
-      class="w-full rounded-lg shadow-lg aspect-square object-cover" 
-    />
+  <div class="grid gap-4">
+    <div class="aspect-square w-full overflow-hidden rounded-lg shadow-lg">
+      <img 
+        src={selectedImage} 
+        alt={product.name} 
+        class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+      />
+    </div>
+    <div class="grid grid-cols-5 gap-2">
+      {#each product.images as image, i}
+        <button 
+          on:click={() => selectedImage = image.url}
+          class="aspect-square w-full overflow-hidden rounded-md border-2 {selectedImage === image.url ? 'border-purple-600' : 'border-transparent'} transition focus:outline-none focus:ring-2 focus:ring-purple-500"
+        >
+          <img 
+            src={image.url} 
+            alt="{product.name} - Miniatura {i + 1}" 
+            class="w-full h-full object-cover"
+          />
+        </button>
+      {/each}
+    </div>
   </div>
   <div class="flex flex-col h-full">
     <div class="flex-grow">
