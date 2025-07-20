@@ -10,7 +10,23 @@ export const load: PageServerLoad = async ({ params }) => {
       images: true, // Incluimos las imágenes relacionadas
     },
   });
-  return { product };
+
+  // Buscamos hasta 4 productos relacionados (excluyendo el actual)
+  const relatedProducts = await prisma.product.findMany({
+    where: {
+      id: {
+        not: params.id,
+      },
+    },
+    take: 4,
+    include: {
+      images: {
+        take: 1, // Solo necesitamos la primera imagen para la tarjeta
+      },
+    },
+  });
+
+  return { product, relatedProducts };
 };
 
 export const actions = {
