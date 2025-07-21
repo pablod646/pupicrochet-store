@@ -25,9 +25,14 @@
   <header class="bg-white shadow-sm sticky top-0 z-10">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
-        <a href="/" class="text-2xl font-bold text-purple-700">Pupicrochet</a>
+        <div class="flex items-center space-x-8">
+          <a href="/" class="text-2xl font-bold text-purple-700">Pupicrochet</a>
+          <form action="/productos" method="GET" class="hidden md:flex">
+            <input type="search" name="search" placeholder="Buscar productos..." class="px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+          </form>
+        </div>
         <ul class="hidden md:flex space-x-8 items-center">
-          <li><a href="/" class="text-gray-600 hover:text-purple-600">Productos</a></li>
+          <li><a href="/productos" class="text-gray-600 hover:text-purple-600">Productos</a></li>
           <li>
             <a href="/carrito" class="text-gray-600 hover:text-purple-600 flex items-center">
               Carrito

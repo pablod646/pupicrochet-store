@@ -1,4 +1,4 @@
-# Tareas del Proyecto PupiCrochet
+Okay, something like "Trade on Fairmint and earn leaf points" and then a breakdown of what you'll get with those points?# Tareas del Proyecto PupiCrochet
 
 Este documento registra el progreso y las próximas tareas del proyecto, gestionadas por Gemini.
 
@@ -53,7 +53,21 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Implementación de la funcionalidad de edición de categorías.
     *   Corrección de la visualización de categorías para mostrar un único árbol jerárquico.
 
+10. **Descubrimiento de Productos:**
+    *   **Barra Lateral de Filtros:** Implementada en la página `/productos` para filtrar por categoría.
+    *   **Búsqueda Global:** Añadida barra de búsqueda en la cabecera para encontrar productos por nombre.
+    *   **Paginación:** Añadida paginación a la lista de productos para mejorar el rendimiento y la navegación.
+
 ## Tareas Pendientes (Orden de Prioridad):
 
- 1.  **Implementar Confirmación de Correo Electrónico:** Enviar un enlace de verificación al correo del usuario tras el registro.
- 2.  **Proceso de Compra:** Crear un flujo de checkout completo.
+1.  **Mejoras en la Página de Inicio (Homepage):** Diseñar y construir una página de inicio atractiva que muestre productos destacados, categorías principales y promociones.
+2.  **Panel de Cliente / Área de "Mi Cuenta":**
+    *   Crear una sección dedicada para los usuarios registrados (`/cuenta`).
+    *   **Gestión de Perfil:** Permitir al usuario actualizar su nombre y datos de contacto.
+    *   **Gestión de Direcciones:** Permitir al usuario guardar y administrar múltiples direcciones de envío.
+    *   **Historial de Pedidos:** Crear una página para que los usuarios vean el estado y los detalles de sus pedidos anteriores.
+3.  **Implementar Confirmación de Correo Electrónico:** Enviar un enlace de verificación al correo del usuario tras el registro.
+4.  **Proceso de Compra (Checkout):** Crear un flujo de compra completo, desde el carrito hasta la confirmación del pedido, permitiendo seleccionar direcciones guardadas.
+5.  **Funcionalidades de la Cuenta de Usuario (Seguridad):**
+    *   **Reseteo de Contraseña:** Implementar la funcionalidad de "Olvidé mi contraseña".
+6.  **Reseñas de Productos:** Permitir a los usuarios dejar calificaciones y comentarios en los productos que han comprado.
