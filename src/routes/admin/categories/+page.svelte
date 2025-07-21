@@ -2,6 +2,7 @@
   import type { PageData, ActionData } from './$types';
   import { enhance } from '$app/forms';
   import { invalidateAll } from '$app/navigation';
+  import CategoryTreeItem from '$lib/components/CategoryTreeItem.svelte';
 
   export let data: PageData;
   export let form: ActionData;
@@ -87,31 +88,7 @@
   {:else}
     <ul class="space-y-4">
       {#each data.categories as category}
-        <li class="border p-4 rounded-md bg-gray-50">
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="text-lg font-bold">{category.name}</h3>
-            <form method="POST" action="?/deleteCategory" use:enhance={handleDeleteCategory}>
-              <input type="hidden" name="categoryId" value={category.id}>
-              <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs" on:click={() => confirm('¿Estás seguro de que quieres eliminar esta categoría y todas sus subcategorías y desvincular productos?')}>Eliminar Categoría</button>
-            </form>
-          </div>
-          {#if category.children.length > 0}
-            <h4 class="font-semibold mt-2">Subcategorías:</h4>
-            <ul class="ml-4 list-disc list-inside">
-              {#each category.children as subcategory}
-                <li class="flex justify-between items-center">
-                  <span>{subcategory.name}</span>
-                  <form method="POST" action="?/deleteCategory" use:enhance={handleDeleteCategory}>
-                    <input type="hidden" name="categoryId" value={subcategory.id}>
-                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs" on:click={() => confirm('¿Estás seguro de que quieres eliminar esta subcategoría y desvincular productos?')}>Eliminar Subcategoría</button>
-                  </form>
-                </li>
-              {/each}
-            </ul>
-          {:else}
-            <p class="text-sm text-gray-600">No hay subcategorías para esta categoría.</p>
-          {/if}
-        </li>
+        <CategoryTreeItem {category} />
       {/each}
     </ul>
   {/if}

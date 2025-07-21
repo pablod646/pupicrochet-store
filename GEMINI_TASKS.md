@@ -49,7 +49,8 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Generación y aplicación de migración de base de datos (eliminación de `Subcategory`).
     *   Actualización de formularios de creación y edición de productos para usar el selector de categoría jerárquico.
     *   Asignación de categoría "Default" a productos existentes sin categoría.
-    *   Implementación de la interfaz de administración de categorías (CRUD para categorías jerárquicas, con formulario unificado para creación).
+    *   Implementación de la interfaz de administración de categorías (CRUD para categorías jerárquicas, con formulario unificado para creación y selección jerárquica de categoría padre).
+    *   Implementación de la funcionalidad de edición de categorías.
 
 ## Tareas Pendientes (Orden de Prioridad):
 

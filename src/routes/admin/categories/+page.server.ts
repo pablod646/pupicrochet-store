@@ -5,6 +5,9 @@ import { generateSlug } from '$lib/utils/slug';
 
 export const load: PageServerLoad = async () => {
   const categories = await prisma.category.findMany({
+    where: {
+      parentId: null, // Fetch only top-level categories
+    },
     include: {
       children: {
         include: {
