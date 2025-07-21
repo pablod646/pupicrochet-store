@@ -27,6 +27,24 @@ model Product {
   updatedAt   DateTime  @updatedAt
   images      ProductImage[]
   cartItems   CartItem[]
+  subcategoryId String?
+  subcategory   Subcategory? @relation(fields: [subcategoryId], references: [id])
+}
+
+model Category {
+  id            String        @id @default(cuid())
+  name          String        @unique
+  slug          String        @unique
+  subcategories Subcategory[]
+}
+
+model Subcategory {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id])
+  products    Product[]
 }
 
 model ProductImage {

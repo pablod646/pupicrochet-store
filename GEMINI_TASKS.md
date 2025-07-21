@@ -43,6 +43,11 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Refactorización de rutas dinámicas de productos para usar `[slug]` en lugar de `[id]`.
     *   Actualización de enlaces internos y componentes para utilizar los slugs en las URLs, manteniendo el `id` como identificador interno.
 
+9.  **Categorías y Subcategorías de Productos:**
+    *   Implementación de modelos `Category` y `Subcategory` en Prisma.
+    *   Relación de `Product` con `Subcategory`.
+    *   Generación y aplicación de migración de base de datos.
+
 ## Tareas Pendientes (Orden de Prioridad):
 
  1.  **Implementar Confirmación de Correo Electrónico:** Enviar un enlace de verificación al correo del usuario tras el registro.
