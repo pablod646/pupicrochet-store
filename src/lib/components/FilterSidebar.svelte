@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { Category } from '@prisma/client';
+	import CategoryItem from './CategoryItem.svelte';
 
-	export let categories: Category[] = [];
+	export let categories: any[] = []; // Will be Category & { children: CategoryWithChildren[]; _count: { products: number } }[]
 	export let selectedCategoryId: string | null = null;
 </script>
 
@@ -16,13 +16,7 @@
 			>
 		</li>
 		{#each categories as category (category.id)}
-			<li class="mb-2">
-				<a
-					href={`/productos?category=${category.id}`}
-					class="hover:underline"
-					class:font-bold={selectedCategoryId === category.id}>{category.name}</a
-				>
-			</li>
+			<CategoryItem {category} />
 		{/each}
 	</ul>
 </aside>

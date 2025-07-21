@@ -2,6 +2,9 @@ import { prisma } from '$lib/server/prisma';
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { generateSlug } from '$lib/utils/slug';
+import type { Category } from '@prisma/client';
+
+type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
 export const load: PageServerLoad = async ({ params }) => {
   const product = await prisma.product.findUnique({
@@ -35,7 +38,7 @@ export const load: PageServerLoad = async ({ params }) => {
     },
   });
 
-  return { product: { ...product, price: product.price / 100 }, categories }; // Convert price back to dollars
+  return { product: { ...product, price: product.price / 100 }, categories: categories as CategoryWithChildren[] }; // Convert price back to dollars
 };
 
 export const actions = {

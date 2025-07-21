@@ -1,15 +1,18 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
   import type { ActionData, PageData } from './$types';
+  import type { Category } from '@prisma/client';
+
+  type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
   export let data: PageData;
   export let form: ActionData;
 
-  let category = data.category;
+  let category = data.category as CategoryWithChildren;
   let selectedParentCategory: string | undefined = category.parentId || undefined;
 
   const handleSubmit = () => {
-    return async ({ result }) => {
+    return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string }> }) => {
       if (result.type === 'success') {
         form = { success: true, message: result.data?.message || 'Categoría actualizada exitosamente!' };
       } else if (result.type === 'failure') {
@@ -20,7 +23,7 @@
     };
   };
 
-  function renderCategoryOptions(categories: typeof data.categories, indent = 0) {
+  function renderCategoryOptions(categories: CategoryWithChildren[], indent = 0) {
     let options = '';
     for (const cat of categories) {
       // Exclude the current category from being its own parent or a child of itself

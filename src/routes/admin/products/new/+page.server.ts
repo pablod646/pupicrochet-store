@@ -2,6 +2,9 @@ import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
 import type { Actions, PageServerLoad } from './$types';
 import { generateSlug } from '$lib/utils/slug';
+import type { Category } from '@prisma/client';
+
+type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
 export const load: PageServerLoad = async () => {
   const categories = await prisma.category.findMany({
@@ -22,7 +25,7 @@ export const load: PageServerLoad = async () => {
       name: 'asc',
     },
   });
-  return { categories };
+  return { categories: categories as CategoryWithChildren[] };
 };
 
 export const actions = {

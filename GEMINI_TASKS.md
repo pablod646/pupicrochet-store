@@ -5,7 +5,7 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 ## Tareas Completadas:
 
 1.  **Análisis Inicial del Proyecto:** Identificación de tecnologías (SvelteKit, Vite, TypeScript, Prisma, Tailwind CSS) y estructura general.
-2.  **Implementación del Carrito de Compras (Funcionalidad Básica):**
+2.  **Implementación del Carrito deCompras (Funcionalidad Básica):**
     *   Actualización del esquema de Prisma (`Cart`, `CartItem`).
     *   Migración de la base de datos.
     *   Funcionalidad para añadir productos al carrito desde la página de detalle.
@@ -57,6 +57,13 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   **Barra Lateral de Filtros:** Implementada en la página `/productos` para filtrar por categoría.
     *   **Búsqueda Global:** Añadida barra de búsqueda en la cabecera para encontrar productos por nombre.
     *   **Paginación:** Añadida paginación a la lista de productos para mejorar el rendimiento y la navegación.
+
+11. **Mejoras en la Página de Productos:**
+    *   Implementación de búsqueda de productos insensible a mayúsculas y minúsculas para bases de datos SQLite.
+    *   Resolución del error `ReferenceError: window is not defined` durante la renderización del lado del servidor, pasando los parámetros de búsqueda del servidor al cliente.
+    *   Implementación de la visualización de categorías anidadas en la barra lateral de filtros de productos.
+    *   Adición de un contador de productos junto a cada categoría en la barra lateral de filtros.
+    *   Corrección de varios errores de TypeScript y advertencias de accesibilidad en los componentes de Svelte.
 
 ## Tareas Pendientes (Orden de Prioridad):
 

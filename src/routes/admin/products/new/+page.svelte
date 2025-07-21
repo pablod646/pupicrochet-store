@@ -2,6 +2,9 @@
   import { enhance } from '$app/forms';
   import { goto } from '$app/navigation';
   import type { ActionData, PageData } from './$types';
+  import type { Category } from '@prisma/client';
+
+  type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
   export let form: ActionData;
   export let data: PageData;
@@ -18,25 +21,25 @@
   }
 
   const handleSubmit = () => {
-    return async ({ result }) => {
+    return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string; productId?: string; productSlug?: string }> }) => {
       if (result.type === 'success') {
         if (result.data && result.data.productSlug) {
-          form = { success: true, message: result.data.message || 'Producto creado exitosamente!' };
+          form = { success: true, message: result.data.message || 'Producto creado exitosamente!', productId: result.data.productId || '', productSlug: result.data.productSlug };
           setTimeout(() => {
-            goto(`/admin/products/${result.data.productSlug}/edit`);
+            goto(`/admin/products/${result.data!.productSlug}/edit`);
           }, 1500);
         } else {
-          form = { success: true, message: 'Producto creado exitosamente!' };
+          form = { success: true, message: 'Producto creado exitosamente!', productId: '', productSlug: '' };
         }
       } else if (result.type === 'failure') {
-        form = { success: false, message: result.data?.message || 'Fallo al crear el producto.' };
+        form = { success: false, message: result.data?.message || 'Fallo al crear el producto.', productId: '', productSlug: '' };
       } else if (result.type === 'error') {
-        form = { success: false, message: 'Ocurrió un error inesperado.' };
+        form = { success: false, message: 'Ocurrió un error inesperado.', productId: '', productSlug: '' };
       }
     };
   };
 
-  function renderCategoryOptions(categories: typeof data.categories, indent = 0) {
+  function renderCategoryOptions(categories: CategoryWithChildren[], indent = 0) {
     let options = '';
     for (const category of categories) {
       const prefix = '&nbsp;'.repeat(indent * 4);
@@ -85,8 +88,8 @@
     <input type="text" id="materials" name="materials" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
   </div>
 
-  <div class="mb-4">
-    <label class="block text-gray-700 text-sm font-bold mb-2">URLs de Imágenes:</label>
+  <fieldset class="mb-4">
+    <legend class="block text-gray-700 text-sm font-bold mb-2">URLs de Imágenes:</legend>
     {#each imageUrls as url, i}
       <div class="flex items-center mb-2">
         <input
@@ -102,7 +105,7 @@
       </div>
     {/each}
     <button type="button" on:click={addImageUrlInput} class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-xs">Añadir URL de Imagen</button>
-  </div>
+  </fieldset>
 
   <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Crear Producto</button>
 

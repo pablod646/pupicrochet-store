@@ -23,11 +23,16 @@
 			{#if data.products.length > 0}
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 					{#each data.products as product (product.id)}
-						<ProductCard {product} />
+						<ProductCard
+							productName={product.name}
+							price={product.price / 100}
+							imageUrl={product.images[0]?.url || ''}
+							productSlug={product.slug}
+						/>
 					{/each}
 				</div>
 
-				<PaginationControls currentPage={data.currentPage} totalPages={data.totalPages} />
+				<PaginationControls currentPage={data.currentPage} totalPages={data.totalPages} searchParams={data.searchParams} />
 			{:else}
 				<p>No se encontraron productos que coincidan con tu búsqueda.</p>
 			{/if}

@@ -1,5 +1,6 @@
 import { prisma } from '$lib/server/prisma';
 import type { PageServerLoad } from './$types';
+import { fail, type Actions } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async () => {
   const products = await prisma.product.findMany({

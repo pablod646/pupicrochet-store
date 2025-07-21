@@ -3,6 +3,9 @@
   import { enhance } from '$app/forms';
   import { invalidateAll } from '$app/navigation';
   import CategoryTreeItem from '$lib/components/CategoryTreeItem.svelte';
+  import type { Category } from '@prisma/client';
+
+  type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
   export let data: PageData;
   export let form: ActionData;
@@ -26,7 +29,7 @@
   const handleDeleteCategory = () => {
     message = null;
     messageType = null;
-    return async ({ result }) => {
+    return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string }> }) => {
       if (result.type === 'success') {
         message = result.data?.message || 'Categoría eliminada exitosamente!';
         messageType = 'success';
@@ -41,7 +44,7 @@
     };
   };
 
-  function renderCategoryOptions(categories: typeof data.categories, indent = 0) {
+  function renderCategoryOptions(categories: CategoryWithChildren[], indent = 0) {
     let options = '';
     for (const category of categories) {
       const prefix = '&nbsp;'.repeat(indent * 4);

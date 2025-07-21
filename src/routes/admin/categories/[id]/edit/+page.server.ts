@@ -2,6 +2,9 @@ import { prisma } from '$lib/server/prisma';
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { generateSlug } from '$lib/utils/slug';
+import type { Category } from '@prisma/client';
+
+type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
 export const load: PageServerLoad = async ({ params }) => {
   const category = await prisma.category.findUnique({
@@ -18,12 +21,19 @@ export const load: PageServerLoad = async ({ params }) => {
         not: params.id, // Exclude the current category from parent options
       },
     },
+    include: {
+      children: {
+        include: {
+          children: true,
+        },
+      },
+    },
     orderBy: {
       name: 'asc',
     },
   });
 
-  return { category, categories };
+  return { category, categories: categories as CategoryWithChildren[] };
 };
 
 export const actions = {

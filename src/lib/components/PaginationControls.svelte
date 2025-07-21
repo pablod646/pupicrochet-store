@@ -2,8 +2,9 @@
 	export let currentPage: number;
 	export let totalPages: number;
 	export let baseUrl = '/productos';
+	export let searchParams: string;
 
-	$: queryParams = new URLSearchParams(window.location.search);
+	$: queryParams = new URLSearchParams(searchParams);
 
 	function getPageUrl(page: number): string {
 		queryParams.set('page', page.toString());

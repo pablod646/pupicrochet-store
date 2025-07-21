@@ -11,7 +11,7 @@
   const handleDelete = () => {
     message = null;
     messageType = null;
-    return async ({ result }) => {
+    return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string }> }) => {
       if (result.type === 'success') {
         message = result.data?.message || 'Usuario eliminado exitosamente.';
         messageType = 'success';

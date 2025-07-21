@@ -9,7 +9,7 @@
   let user = data.user;
 
   const handleSubmit = () => {
-    return async ({ result }) => {
+    return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string }> }) => {
       if (result.type === 'success') {
         form = { success: true, message: result.data?.message || 'Usuario actualizado exitosamente!' };
       } else if (result.type === 'failure') {
