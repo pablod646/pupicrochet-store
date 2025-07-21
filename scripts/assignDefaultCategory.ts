@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 async function main() {
   const defaultCategoryName = 'Default';
-  const defaultSubcategoryName = 'Default';
 
   let defaultCategory = await prisma.category.findUnique({
     where: { name: defaultCategoryName },
@@ -21,39 +20,24 @@ async function main() {
     console.log(`Created default category: ${defaultCategory.name}`);
   }
 
-  let defaultSubcategory = await prisma.subcategory.findUnique({
-    where: { name: defaultSubcategoryName },
-  });
-
-  if (!defaultSubcategory) {
-    defaultSubcategory = await prisma.subcategory.create({
-      data: {
-        name: defaultSubcategoryName,
-        slug: generateSlug(defaultSubcategoryName),
-        categoryId: defaultCategory.id,
-      },
-    });
-    console.log(`Created default subcategory: ${defaultSubcategory.name}`);
-  }
-
-  // Assign default subcategory to products with null subcategoryId
-  const productsWithoutSubcategory = await prisma.product.findMany({
+  // Assign default category to products with null categoryId
+  const productsWithoutCategory = await prisma.product.findMany({
     where: {
-      subcategoryId: null,
+      categoryId: null,
     },
   });
 
-  console.log(`Found ${productsWithoutSubcategory.length} products without a subcategory.`);
+  console.log(`Found ${productsWithoutCategory.length} products without a category.`);
 
-  for (const product of productsWithoutSubcategory) {
+  for (const product of productsWithoutCategory) {
     await prisma.product.update({
       where: { id: product.id },
-      data: { subcategoryId: defaultSubcategory.id },
+      data: { categoryId: defaultCategory.id },
     });
-    console.log(`Assigned default subcategory to product: ${product.name}`);
+    console.log(`Assigned default category to product: ${product.name}`);
   }
 
-  console.log('Default category and subcategory assignment complete.');
+  console.log('Default category assignment complete.');
 }
 
 main()

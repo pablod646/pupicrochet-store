@@ -6,7 +6,14 @@ import { generateSlug } from '$lib/utils/slug';
 export const load: PageServerLoad = async () => {
   const categories = await prisma.category.findMany({
     include: {
-      subcategories: true,
+      children: {
+        include: {
+          children: true, // Include nested children if needed, up to a certain depth
+        },
+        orderBy: {
+          name: 'asc',
+        },
+      },
     },
     orderBy: {
       name: 'asc',
@@ -19,7 +26,7 @@ export const actions = {
   createCategoryOrSubcategory: async ({ request }) => {
     const data = await request.formData();
     const name = data.get('name') as string;
-    const parentCategoryId = data.get('parentCategoryId') as string | null;
+    const parentId = data.get('parentCategoryId') as string | null;
 
     if (!name) {
       return fail(400, { message: 'El nombre es requerido.' });
@@ -27,26 +34,14 @@ export const actions = {
 
     try {
       const slug = generateSlug(name);
-      if (parentCategoryId) {
-        // Create Subcategory
-        await prisma.subcategory.create({
-          data: {
-            name,
-            slug,
-            categoryId: parentCategoryId,
-          },
-        });
-        return { success: true, message: 'Subcategoría creada exitosamente.' };
-      } else {
-        // Create Category
-        await prisma.category.create({
-          data: {
-            name,
-            slug,
-          },
-        });
-        return { success: true, message: 'Categoría creada exitosamente.' };
-      }
+      await prisma.category.create({
+        data: {
+          name,
+          slug,
+          parentId: parentId || undefined,
+        },
+      });
+      return { success: true, message: parentId ? 'Subcategoría creada exitosamente.' : 'Categoría creada exitosamente.' };
     } catch (error) {
       console.error("Error creating category/subcategory:", error);
       return fail(500, { message: 'Fallo al crear la categoría/subcategoría.' });
@@ -62,21 +57,20 @@ export const actions = {
     }
 
     try {
-      // Disconnect products from subcategories within this category
+      // Disconnect products from this category
       await prisma.product.updateMany({
-        where: {
-          subcategory: {
-            categoryId: categoryId,
-          },
-        },
+        where: { categoryId: categoryId },
         data: {
-          subcategoryId: null, // Or assign to a default subcategory if one exists
+          categoryId: null, // Or assign to a default category if one exists
         },
       });
 
-      // Delete all subcategories within this category
-      await prisma.subcategory.deleteMany({
-        where: { categoryId: categoryId },
+      // Disconnect children categories from this category (make them top-level)
+      await prisma.category.updateMany({
+        where: { parentId: categoryId },
+        data: {
+          parentId: null,
+        },
       });
 
       // Then delete the category
@@ -87,33 +81,6 @@ export const actions = {
     } catch (error) {
       console.error("Error deleting category:", error);
       return fail(500, { message: 'Fallo al eliminar la categoría.' });
-    }
-  },
-
-  deleteSubcategory: async ({ request }) => {
-    const data = await request.formData();
-    const subcategoryId = data.get('subcategoryId') as string;
-
-    if (!subcategoryId) {
-      return fail(400, { message: 'El ID de la subcategoría es requerido.' });
-    }
-
-    try {
-      // Disconnect products from this subcategory
-      await prisma.product.updateMany({
-        where: { subcategoryId: subcategoryId },
-        data: {
-          subcategoryId: null, // Or assign to a default subcategory if one exists
-        },
-      });
-
-      await prisma.subcategory.delete({
-        where: { id: subcategoryId },
-      });
-      return { success: true, message: 'Subcategoría eliminada exitosamente.' };
-    } catch (error) {
-      console.error("Error deleting subcategory:", error);
-      return fail(500, { message: 'Fallo al eliminar la subcategoría.' });
     }
   },
 } satisfies Actions;

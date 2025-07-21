@@ -43,13 +43,13 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Refactorización de rutas dinámicas de productos para usar `[slug]` en lugar de `[id]`.
     *   Actualización de enlaces internos y componentes para utilizar los slugs en las URLs, manteniendo el `id` como identificador interno.
 
-9.  **Categorías y Subcategorías de Productos:**
-    *   Implementación de modelos `Category` y `Subcategory` en Prisma.
-    *   Relación de `Product` con `Subcategory`.
-    *   Generación y aplicación de migración de base de datos.
-    *   Integración de selección de categorías y subcategorías en los formularios de creación y edición de productos.
-    *   Asignación de categoría y subcategoría "Default" a productos existentes sin categoría.
-    *   Implementación de la interfaz de administración de categorías (CRUD para categorías y subcategorías, con formulario unificado para creación de categorías/subcategorías).
+9.  **Categorías de Productos (Jerárquicas):**
+    *   Refactorización del esquema de Prisma para un modelo `Category` único con `parentId` para jerarquía.
+    *   Relación directa de `Product` con `Category`.
+    *   Generación y aplicación de migración de base de datos (eliminación de `Subcategory`).
+    *   Actualización de formularios de creación y edición de productos para usar el selector de categoría jerárquico.
+    *   Asignación de categoría "Default" a productos existentes sin categoría.
+    *   Implementación de la interfaz de administración de categorías (CRUD para categorías jerárquicas, con formulario unificado para creación).
 
 ## Tareas Pendientes (Orden de Prioridad):
 

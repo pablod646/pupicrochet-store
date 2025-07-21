@@ -8,11 +8,7 @@ export const load: PageServerLoad = async ({ params }) => {
     where: { slug: params.slug },
     include: {
       images: true,
-      subcategory: {
-        include: {
-          category: true,
-        },
-      },
+      category: true, // Include the associated category
     },
   });
 
@@ -21,8 +17,21 @@ export const load: PageServerLoad = async ({ params }) => {
   }
 
   const categories = await prisma.category.findMany({
+    where: {
+      parentId: null, // Fetch only top-level categories
+    },
     include: {
-      subcategories: true,
+      children: {
+        include: {
+          children: true, // Include nested children if needed, up to a certain depth
+        },
+        orderBy: {
+          name: 'asc',
+        },
+      },
+    },
+    orderBy: {
+      name: 'asc',
     },
   });
 
@@ -39,7 +48,7 @@ export const actions = {
     const materials = data.get('materials') as string | null;
     const imageUrls = data.getAll('imageUrls[]') as string[];
     const existingImageIds = data.getAll('existingImageIds[]') as string[];
-    const subcategoryId = data.get('subcategoryId') as string | null;
+    const categoryId = data.get('categoryId') as string | null;
 
     if (!name || !description || isNaN(price) || price <= 0) {
       return fail(400, { message: 'Nombre, descripción y un precio válido son requeridos.' });
@@ -66,7 +75,7 @@ export const actions = {
           price: Math.round(price * 100),
           dimensions,
           materials,
-          subcategoryId: subcategoryId || undefined, // Set to undefined if null to avoid Prisma error
+          categoryId: categoryId || undefined, // Set to undefined if null to avoid Prisma error
         },
       });
 

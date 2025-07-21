@@ -9,7 +9,7 @@
   let imageUrls: string[] = product.images.map(img => img.url);
   let existingImageIds: string[] = product.images.map(img => img.id);
 
-  let selectedSubcategory: string | undefined = product.subcategoryId || undefined;
+  let selectedCategory: string | undefined = product.categoryId || undefined;
 
   function addImageUrlInput() {
     imageUrls = [...imageUrls, ''];
@@ -36,6 +36,18 @@
       }
     };
   };
+
+  function renderCategoryOptions(categories: typeof data.categories, indent = 0) {
+    let options = '';
+    for (const category of categories) {
+      const prefix = '&nbsp;'.repeat(indent * 4);
+      options += `<option value="${category.id}">${prefix}${category.name}</option>`;
+      if (category.children && category.children.length > 0) {
+        options += renderCategoryOptions(category.children, indent + 1);
+      }
+    }
+    return options;
+  }
 </script>
 
 <h1 class="text-2xl font-bold mb-4">Editar Producto: {product.name}</h1>
@@ -57,15 +69,10 @@
   </div>
 
   <div class="mb-4">
-    <label for="subcategoryId" class="block text-gray-700 text-sm font-bold mb-2">Categoría/Subcategoría:</label>
-    <select id="subcategoryId" name="subcategoryId" bind:value={selectedSubcategory} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-      <option value="">Selecciona una categoría/subcategoría</option>
-      {#each data.categories as category}
-        <option value="" disabled>{category.name}</option>
-        {#each category.subcategories as subcategory}
-          <option value={subcategory.id}>&nbsp;&nbsp;&nbsp;&nbsp;{subcategory.name}</option>
-        {/each}
-      {/each}
+    <label for="categoryId" class="block text-gray-700 text-sm font-bold mb-2">Categoría:</label>
+    <select id="categoryId" name="categoryId" bind:value={selectedCategory} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      <option value="">Selecciona una categoría</option>
+      {@html renderCategoryOptions(data.categories)}
     </select>
   </div>
 
