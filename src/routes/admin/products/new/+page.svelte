@@ -18,10 +18,10 @@
   const handleSubmit = () => {
     return async ({ result }) => {
       if (result.type === 'success') {
-        if (result.data && result.data.productId) {
+        if (result.data && result.data.productSlug) {
           form = { success: true, message: result.data.message || 'Producto creado exitosamente!' };
           setTimeout(() => {
-            goto(`/admin/products/${result.data.productId}/edit`);
+            goto(`/admin/products/${result.data.productSlug}/edit`);
           }, 1500);
         } else {
           form = { success: true, message: 'Producto creado exitosamente!' };

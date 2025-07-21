@@ -31,13 +31,19 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 6.  **Panel de Administración:**
     *   Implementación de autenticación y autorización basada en roles (`UserRole` enum en Prisma).
     *   Configuración de rutas protegidas para el panel de administración (`/admin`).
-    *   Implementación de operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para productos en el panel de administración.
+    *   Implementación de operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para productos y usuarios en el panel de administración.
     *   Añadida navegación básica al panel de administración.
 7.  **Traducción a Español:**
     *   Traducción de todos los textos visibles en los formularios de inicio de sesión, registro y gestión de productos del panel de administración al español.
+
+8.  **URLs de Productos Amigables para SEO (Slugs):**
+    *   Implementación de slugs únicos para productos basados en el nombre.
+    *   Actualización del esquema de Prisma para incluir el campo `slug`.
+    *   Lógica para generar y asegurar la unicidad de los slugs al crear/actualizar productos.
+    *   Refactorización de rutas dinámicas de productos para usar `[slug]` en lugar de `[id]`.
+    *   Actualización de enlaces internos y componentes para utilizar los slugs en las URLs, manteniendo el `id` como identificador interno.
 
 ## Tareas Pendientes (Orden de Prioridad):
 
  1.  **Implementar Confirmación de Correo Electrónico:** Enviar un enlace de verificación al correo del usuario tras el registro.
  2.  **Proceso de Compra:** Crear un flujo de checkout completo.
- 3.  **Panel de Administración:** Desarrollar una interfaz para gestionar productos, pedidos, y usuarios.

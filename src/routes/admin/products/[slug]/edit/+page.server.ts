@@ -1,10 +1,11 @@
 import { prisma } from '$lib/server/prisma';
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
+import { generateSlug } from '$lib/utils/slug';
 
 export const load: PageServerLoad = async ({ params }) => {
   const product = await prisma.product.findUnique({
-    where: { id: params.id },
+    where: { slug: params.slug },
     include: {
       images: true,
     },
@@ -33,11 +34,22 @@ export const actions = {
     }
 
     try {
-      // Update product details
+      // Find the product by slug to get its ID
+      const productToUpdate = await prisma.product.findUnique({
+        where: { slug: params.slug },
+        select: { id: true },
+      });
+
+      if (!productToUpdate) {
+        return fail(404, { message: 'Producto no encontrado.' });
+      }
+
+      // Update product details using its ID
       const updatedProduct = await prisma.product.update({
-        where: { id: params.id },
+        where: { id: productToUpdate.id },
         data: {
           name,
+          slug: generateSlug(name),
           description,
           price: Math.round(price * 100),
           dimensions,
@@ -46,7 +58,7 @@ export const actions = {
       });
 
       // Handle images: delete removed, create new
-      const currentImages = await prisma.productImage.findMany({ where: { productId: params.id } });
+      const currentImages = await prisma.productImage.findMany({ where: { productId: productToUpdate.id } });
       const imagesToDelete = currentImages.filter(img => !existingImageIds.includes(img.id));
 
       for (const img of imagesToDelete) {
@@ -56,7 +68,7 @@ export const actions = {
       const newImageUrls = imageUrls.filter(url => url && !currentImages.some(img => img.url === url));
       if (newImageUrls.length > 0) {
         await prisma.productImage.createMany({
-          data: newImageUrls.map(url => ({ url, productId: params.id })),
+          data: newImageUrls.map(url => ({ url, productId: productToUpdate.id })),
         });
       }
 

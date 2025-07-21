@@ -11,7 +11,11 @@ export const load: PageServerLoad = async ({ parent }) => {
   }
 
   const products = await prisma.product.findMany({
-    include: {
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      price: true,
       images: {
         take: 1,
       },

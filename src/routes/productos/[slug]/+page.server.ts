@@ -3,7 +3,7 @@ import { prisma } from '$lib/server/prisma';
 
 export const load: PageServerLoad = async ({ params }) => {
   const product = await prisma.product.findUnique({
-    where: { id: params.id },
+    where: { slug: params.slug },
     include: {
       images: true, // Incluimos las imágenes relacionadas
     },
@@ -12,8 +12,8 @@ export const load: PageServerLoad = async ({ params }) => {
   // Buscamos hasta 4 productos relacionados (excluyendo el actual)
   const relatedProducts = await prisma.product.findMany({
     where: {
-      id: {
-        not: params.id,
+      slug: {
+        not: params.slug,
       },
     },
     take: 4,

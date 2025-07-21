@@ -81,13 +81,12 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-6">También te podría interesar</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
           {#each relatedProducts as relatedProduct}
-            <a href="/productos/{relatedProduct.id}" class="block">
-              <ProductCard 
-                productName={relatedProduct.name} 
-                price={relatedProduct.price} 
-                imageUrl={relatedProduct.images[0]?.url || 'https://placehold.co/600x400'}
-              />
-            </a>
+            <ProductCard 
+              productName={relatedProduct.name} 
+              price={relatedProduct.price} 
+              imageUrl={relatedProduct.images[0]?.url || 'https://placehold.co/600x400'}
+              productSlug={relatedProduct.slug}
+            />
           {/each}
         </div>
       </div>

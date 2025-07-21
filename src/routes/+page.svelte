@@ -14,13 +14,12 @@
 <div class="max-w-7xl mx-auto px-4">
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     {#each data.products as product}
-      <a href="/productos/{product.id}" class="no-underline">
-        <ProductCard
-          productName={product.name}
-          price={product.price}
-          imageUrl={product.images[0]?.url}
-        />
-      </a>
+      <ProductCard
+        productName={product.name}
+        price={product.price}
+        imageUrl={product.images[0]?.url}
+        productSlug={product.slug}
+      />
     {/each}
   </div>
 </div>

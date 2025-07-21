@@ -1,10 +1,10 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
 import type { Actions } from './$types';
+import { generateSlug } from '$lib/utils/slug';
 
 export const actions = {
   createProduct: async ({ request }) => {
-    console.log("*** Entering createProduct action ***");
     const data = await request.formData();
     const name = data.get('name') as string;
     const description = data.get('description') as string;
@@ -12,8 +12,6 @@ export const actions = {
     const dimensions = data.get('dimensions') as string | null;
     const materials = data.get('materials') as string | null;
     const imageUrls = data.getAll('imageUrls[]') as string[];
-
-    console.log("Received data:", { name, description, price, dimensions, materials, imageUrls });
 
     if (!name || !description || isNaN(price) || price <= 0) {
       return fail(400, { message: 'Nombre, descripción y un precio válido son requeridos.' });
@@ -23,6 +21,7 @@ export const actions = {
       const product = await prisma.product.create({
         data: {
           name,
+          slug: generateSlug(name),
           description,
           price: Math.round(price * 100), // Store price in cents
           dimensions,
@@ -32,8 +31,7 @@ export const actions = {
           },
         },
       });
-      return { success: true, productId: product.id, message: '¡Producto creado exitosamente!' };
-    throw redirect(303, `/admin/products/${product.id}/edit`);
+      return { success: true, productId: product.id, productSlug: product.slug, message: '¡Producto creado exitosamente!' };
     } catch (error) {
       console.error("Error creating product:", error);
       return fail(500, { message: 'Fallo al crear el producto.' });

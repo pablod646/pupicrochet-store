@@ -58,9 +58,9 @@
           <td class="py-2 px-4 border-b">{product.name}</td>
           <td class="py-2 px-4 border-b">${product.price}</td>
           <td class="py-2 px-4 border-b">
-            <a href="/admin/products/{product.id}/edit" class="text-blue-600 hover:underline mr-2">Editar</a>
+            <a href="/admin/products/{product.slug}/edit" class="text-blue-600 hover:underline mr-2">Editar</a>
             <form method="POST" action="?/deleteProduct" use:enhance={handleDelete}>
-              <input type="hidden" name="productId" value={product.id}>
+              <input type="hidden" name="productSlug" value={product.slug}>
               <button type="submit" class="text-red-600 hover:underline" on:click={() => confirm('¿Estás seguro de que quieres eliminar este producto?')}>Eliminar</button>
             </form>
           </td>

@@ -16,16 +16,17 @@ datasource db {
 }
 
 model Product {
-  id          String         @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
+  slug        String    @unique
   description String
-  price       Int
+  price       Float
   dimensions  String?
   materials   String?
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  cartItems   CartItem[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   images      ProductImage[]
+  cartItems   CartItem[]
 }
 
 model ProductImage {
