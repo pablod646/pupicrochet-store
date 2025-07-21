@@ -1,0 +1,3 @@
+feat: Unify category and subcategory creation form
+
+This commit refactors the category administration page to use a single, unified form for creating both main categories and subcategories. The form now includes an optional "Parent Category" selector, allowing users to define a new entry as a subcategory if a parent is selected, or as a top-level category otherwise. This streamlines the category management process.

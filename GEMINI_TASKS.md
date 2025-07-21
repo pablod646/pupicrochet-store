@@ -49,6 +49,7 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Generación y aplicación de migración de base de datos.
     *   Integración de selección de categorías y subcategorías en los formularios de creación y edición de productos.
     *   Asignación de categoría y subcategoría "Default" a productos existentes sin categoría.
+    *   Implementación de la interfaz de administración de categorías (CRUD para categorías y subcategorías, con formulario unificado para creación de categorías/subcategorías).
 
 ## Tareas Pendientes (Orden de Prioridad):
 
