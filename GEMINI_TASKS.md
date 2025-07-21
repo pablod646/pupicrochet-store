@@ -47,6 +47,8 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Implementación de modelos `Category` y `Subcategory` en Prisma.
     *   Relación de `Product` con `Subcategory`.
     *   Generación y aplicación de migración de base de datos.
+    *   Integración de selección de categorías y subcategorías en los formularios de creación y edición de productos.
+    *   Asignación de categoría y subcategoría "Default" a productos existentes sin categoría.
 
 ## Tareas Pendientes (Orden de Prioridad):
 

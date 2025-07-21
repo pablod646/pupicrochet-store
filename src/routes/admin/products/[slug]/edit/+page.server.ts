@@ -8,6 +8,11 @@ export const load: PageServerLoad = async ({ params }) => {
     where: { slug: params.slug },
     include: {
       images: true,
+      subcategory: {
+        include: {
+          category: true,
+        },
+      },
     },
   });
 
@@ -15,7 +20,13 @@ export const load: PageServerLoad = async ({ params }) => {
     throw redirect(303, '/admin/products');
   }
 
-  return { product: { ...product, price: product.price / 100 } }; // Convert price back to dollars
+  const categories = await prisma.category.findMany({
+    include: {
+      subcategories: true,
+    },
+  });
+
+  return { product: { ...product, price: product.price / 100 }, categories }; // Convert price back to dollars
 };
 
 export const actions = {
@@ -28,6 +39,7 @@ export const actions = {
     const materials = data.get('materials') as string | null;
     const imageUrls = data.getAll('imageUrls[]') as string[];
     const existingImageIds = data.getAll('existingImageIds[]') as string[];
+    const subcategoryId = data.get('subcategoryId') as string | null;
 
     if (!name || !description || isNaN(price) || price <= 0) {
       return fail(400, { message: 'Nombre, descripción y un precio válido son requeridos.' });
@@ -54,6 +66,7 @@ export const actions = {
           price: Math.round(price * 100),
           dimensions,
           materials,
+          subcategoryId: subcategoryId || undefined, // Set to undefined if null to avoid Prisma error
         },
       });
 

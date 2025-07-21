@@ -1,7 +1,16 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/server/prisma';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { generateSlug } from '$lib/utils/slug';
+
+export const load: PageServerLoad = async () => {
+  const categories = await prisma.category.findMany({
+    include: {
+      subcategories: true,
+    },
+  });
+  return { categories };
+};
 
 export const actions = {
   createProduct: async ({ request }) => {
@@ -12,6 +21,7 @@ export const actions = {
     const dimensions = data.get('dimensions') as string | null;
     const materials = data.get('materials') as string | null;
     const imageUrls = data.getAll('imageUrls[]') as string[];
+    const subcategoryId = data.get('subcategoryId') as string | null;
 
     if (!name || !description || isNaN(price) || price <= 0) {
       return fail(400, { message: 'Nombre, descripción y un precio válido son requeridos.' });
@@ -26,6 +36,7 @@ export const actions = {
           price: Math.round(price * 100), // Store price in cents
           dimensions,
           materials,
+          subcategoryId: subcategoryId || undefined, // Set to undefined if null to avoid Prisma error
           images: {
             create: imageUrls.filter(url => url).map(url => ({ url })),
           },

@@ -9,6 +9,8 @@
   let imageUrls: string[] = product.images.map(img => img.url);
   let existingImageIds: string[] = product.images.map(img => img.id);
 
+  let selectedSubcategory: string | undefined = product.subcategoryId || undefined;
+
   function addImageUrlInput() {
     imageUrls = [...imageUrls, ''];
   }
@@ -52,6 +54,19 @@
   <div class="mb-4">
     <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Precio:</label>
     <input type="number" id="price" name="price" required bind:value={product.price} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+  </div>
+
+  <div class="mb-4">
+    <label for="subcategoryId" class="block text-gray-700 text-sm font-bold mb-2">Categoría/Subcategoría:</label>
+    <select id="subcategoryId" name="subcategoryId" bind:value={selectedSubcategory} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      <option value="">Selecciona una categoría/subcategoría</option>
+      {#each data.categories as category}
+        <option value="" disabled>{category.name}</option>
+        {#each category.subcategories as subcategory}
+          <option value={subcategory.id}>&nbsp;&nbsp;&nbsp;&nbsp;{subcategory.name}</option>
+        {/each}
+      {/each}
+    </select>
   </div>
 
   <div class="mb-4">
