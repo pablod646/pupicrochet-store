@@ -51,6 +51,7 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Asignación de categoría "Default" a productos existentes sin categoría.
     *   Implementación de la interfaz de administración de categorías (CRUD para categorías jerárquicas, con formulario unificado para creación y selección jerárquica de categoría padre).
     *   Implementación de la funcionalidad de edición de categorías.
+    *   Corrección de la visualización de categorías para mostrar un único árbol jerárquico.
 
 ## Tareas Pendientes (Orden de Prioridad):
 
