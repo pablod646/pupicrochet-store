@@ -12,7 +12,9 @@
   let imageUrls: string[] = product.images.map(img => img.url);
   let existingImageIds: string[] = product.images.map(img => img.id);
 
-  let selectedCategory: string | undefined = product.categoryId || undefined;
+  let selectedCategories: Category[] = product.categories || [];
+  let searchTerm = '';
+  let showSuggestions = false;
 
   function addImageUrlInput() {
     imageUrls = [...imageUrls, ''];
@@ -40,16 +42,34 @@
     };
   };
 
-  function renderCategoryOptions(categories: CategoryWithChildren[], indent = 0) {
-    let options = '';
+  function flattenCategories(categories: CategoryWithChildren[]): Category[] {
+    let flat: Category[] = [];
     for (const category of categories) {
-      const prefix = '&nbsp;'.repeat(indent * 4);
-      options += `<option value="${category.id}">${prefix}${category.name}</option>`;
+      flat.push(category);
       if (category.children && category.children.length > 0) {
-        options += renderCategoryOptions(category.children, indent + 1);
+        flat = flat.concat(flattenCategories(category.children));
       }
     }
-    return options;
+    return flat;
+  }
+
+  $: allCategories = flattenCategories(data.categories);
+  $: filteredCategories = searchTerm
+    ? allCategories.filter(
+        category =>
+          category.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+          !selectedCategories.some(sc => sc.id === category.id)
+      )
+    : [];
+
+  function selectCategory(category: Category) {
+    selectedCategories = [...selectedCategories, category];
+    searchTerm = '';
+    showSuggestions = false;
+  }
+
+  function removeCategory(category: Category) {
+    selectedCategories = selectedCategories.filter(c => c.id !== category.id);
   }
 </script>
 
@@ -72,11 +92,39 @@
   </div>
 
   <div class="mb-4">
-    <label for="categoryId" class="block text-gray-700 text-sm font-bold mb-2">Categoría:</label>
-    <select id="categoryId" name="categoryId" bind:value={selectedCategory} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-      <option value="">Selecciona una categoría</option>
-      {@html renderCategoryOptions(data.categories)}
-    </select>
+    <label for="categories" class="block text-gray-700 text-sm font-bold mb-2">Categorías:</label>
+    <div class="relative">
+      <div class="flex flex-wrap gap-2 p-2 border rounded bg-white">
+        {#each selectedCategories as category}
+          <div class="flex items-center gap-2 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+            {category.name}
+            <button type="button" on:click={() => removeCategory(category)} class="text-blue-400 hover:text-blue-600">
+              &times;
+            </button>
+          </div>
+        {/each}
+        <input
+          type="text"
+          bind:value={searchTerm}
+          on:focus={() => showSuggestions = true}
+          on:blur={() => setTimeout(() => showSuggestions = false, 200)}
+          class="flex-grow p-1 focus:outline-none"
+          placeholder="Buscar categorías..."
+        />
+      </div>
+      {#if showSuggestions && filteredCategories.length > 0}
+        <ul class="absolute z-10 w-full bg-white border rounded mt-1 max-h-60 overflow-y-auto">
+          {#each filteredCategories as category}
+            <li on:mousedown={() => selectCategory(category)} class="p-2 hover:bg-gray-100 cursor-pointer">
+              {category.name}
+            </li>
+          {/each}
+        </ul>
+      {/if}
+    </div>
+    {#each selectedCategories as category}
+      <input type="hidden" name="categoryIds[]" value={category.id} />
+    {/each}
   </div>
 
   <div class="mb-4">

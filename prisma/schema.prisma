@@ -16,19 +16,18 @@ datasource db {
 }
 
 model Product {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
-  slug        String    @unique
+  slug        String     @unique
   description String
   price       Float
   dimensions  String?
   materials   String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   images      ProductImage[]
   cartItems   CartItem[]
-  categoryId  String?
-  category    Category? @relation(fields: [categoryId], references: [id])
+  categories  Category[]
 }
 
 model Category {

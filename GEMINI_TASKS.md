@@ -65,6 +65,12 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Adición de un contador de productos junto a cada categoría en la barra lateral de filtros.
     *   Corrección de varios errores de TypeScript y advertencias de accesibilidad en los componentes de Svelte.
 
+12. **Categorías de Productos Múltiples:**
+    *   Actualización del esquema de Prisma para una relación de muchos a muchos entre `Product` y `Category`.
+    *   Migración de la base de datos para reflejar el nuevo esquema.
+    *   Modificación de la lógica del backend para manejar múltiples categorías en la creación y edición de productos.
+    *   Reemplazo del selector de categoría por un campo de entrada con etiquetas en los formularios de administración de productos.
+
 ## Tareas Pendientes (Orden de Prioridad):
 
 1.  **Mejoras en la Página de Inicio (Homepage):** Diseñar y construir una página de inicio atractiva que muestre productos destacados, categorías principales y promociones.

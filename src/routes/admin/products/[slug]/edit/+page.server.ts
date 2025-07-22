@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ params }) => {
     where: { slug: params.slug },
     include: {
       images: true,
-      category: true, // Include the associated category
+      categories: true, // Include the associated categories
     },
   });
 
@@ -51,7 +51,7 @@ export const actions = {
     const materials = data.get('materials') as string | null;
     const imageUrls = data.getAll('imageUrls[]') as string[];
     const existingImageIds = data.getAll('existingImageIds[]') as string[];
-    const categoryId = data.get('categoryId') as string | null;
+    const categoryIds = data.getAll('categoryIds[]') as string[];
 
     if (!name || !description || isNaN(price) || price <= 0) {
       return fail(400, { message: 'Nombre, descripción y un precio válido son requeridos.' });
@@ -78,7 +78,9 @@ export const actions = {
           price: Math.round(price * 100),
           dimensions,
           materials,
-          categoryId: categoryId || undefined, // Set to undefined if null to avoid Prisma error
+          categories: {
+            set: categoryIds.map(id => ({ id }))
+          }
         },
       });
 
