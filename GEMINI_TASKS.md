@@ -100,3 +100,6 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   **Modelo de Datos:** Actualizar `schema.prisma` para soportar variantes (ej. `ProductVariant`, `OptionType`, `OptionValue`).
     *   **Interfaz de Admin:** En el formulario de producto, reemplazar el campo de texto de variantes por una UI que permita añadir/editar tipos de opción (ej. "Talla", "Color") y sus valores correspondientes (ej. "S, M, L"; "Rojo, Azul").
     *   **Lógica de Backend:** Implementar la lógica para crear, actualizar y eliminar variantes asociadas a un producto.
+13. **Funcionalidad de Ordenamiento de Productos:**
+    *   Implementar la lógica en `productos/+page.server.ts` para que el `select` de ordenamiento funcione.
+    *   Añadir opciones como "Más vendidos" y "Más nuevos" (requerirá registrar fechas de creación y/o contador de ventas en el modelo `Product`).
