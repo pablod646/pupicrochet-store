@@ -12,7 +12,11 @@ export const load: PageServerLoad = async ({ url }) => {
 	const where: Prisma.ProductWhereInput = {};
 
 	if (selectedCategoryId) {
-		where.categoryId = selectedCategoryId;
+		where.categories = {
+			some: {
+				id: selectedCategoryId
+			}
+		};
 	}
 
 	if (searchQuery) {
@@ -43,7 +47,7 @@ export const load: PageServerLoad = async ({ url }) => {
 				}
 			},
 			include: {
-				category: true,
+				categories: true,
 				images: true
 			}
 		});
@@ -62,7 +66,7 @@ export const load: PageServerLoad = async ({ url }) => {
 			skip: (page - 1) * PAGE_SIZE,
 			take: PAGE_SIZE,
 			include: {
-				category: true,
+				categories: true,
 				images: true
 			}
 		});
