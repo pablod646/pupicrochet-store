@@ -71,6 +71,11 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   Modificación de la lógica del backend para manejar múltiples categorías en la creación y edición de productos.
     *   Reemplazo del selector de categoría por un campo de entrada con etiquetas en los formularios de administración de productos.
 
+13. **Mejora de Estilos Visuales:**
+    *   Actualización y refinamiento de los estilos del encabezado (`Header`).
+    *   Mejora del diseño del pie de página (`Footer`).
+    *   Ajustes en las tarjetas de producto (`ProductCard`) para una apariencia más limpia y moderna.
+
 ## Tareas Pendientes (Orden de Prioridad):
 
 1.  **Mejoras en la Página de Inicio (Homepage):** Diseñar y construir una página de inicio atractiva que muestre productos destacados, categorías principales y promociones.
