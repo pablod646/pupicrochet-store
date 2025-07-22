@@ -1,4 +1,4 @@
-Okay, something like "Trade on Fairmint and earn leaf points" and then a breakdown of what you'll get with those points?# Tareas del Proyecto PupiCrochet
+# Tareas del Proyecto PupiCrochet
 
 Este documento registra el progreso y las próximas tareas del proyecto, gestionadas por Gemini.
 
@@ -84,3 +84,19 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 5.  **Funcionalidades de la Cuenta de Usuario (Seguridad):**
     *   **Reseteo de Contraseña:** Implementar la funcionalidad de "Olvidé mi contraseña".
 6.  **Reseñas de Productos:** Permitir a los usuarios dejar calificaciones y comentarios en los productos que han comprado.
+7.  **Implementar Estrategia de Testing:**
+    *   **Pruebas Unitarias y de Integración:** Utilizar Vitest para probar la lógica de negocio clave.
+    *   **Pruebas End-to-End (E2E):** Utilizar Playwright para validar los flujos de usuario críticos (registro, compra, etc.).
+8.  **Validación de Datos Robusta:**
+    *   Implementar `zod` para la definición de esquemas de validación.
+    *   Integrar `sveltekit-superforms` o similar para gestionar formularios de manera segura y eficiente.
+9.  **Refuerzo de Autenticación:**
+    *   Evaluar e implementar una librería como `lucia-auth` para una gestión más segura y completa de sesiones y roles.
+10. **Optimización del Estado Global:**
+    *   Revisar y asegurar que el estado compartido (ej. carrito de compras) se gestiona eficientemente con Svelte Stores.
+11. **Backend para Carga de Imágenes:**
+    *   Modificar el `+page.server.ts` del formulario de productos para procesar y guardar archivos de imagen subidos por el usuario, en lugar de solo URLs de texto.
+12. **Gestión de Variantes de Producto:**
+    *   **Modelo de Datos:** Actualizar `schema.prisma` para soportar variantes (ej. `ProductVariant`, `OptionType`, `OptionValue`).
+    *   **Interfaz de Admin:** En el formulario de producto, reemplazar el campo de texto de variantes por una UI que permita añadir/editar tipos de opción (ej. "Talla", "Color") y sus valores correspondientes (ej. "S, M, L"; "Rojo, Azul").
+    *   **Lógica de Backend:** Implementar la lógica para crear, actualizar y eliminar variantes asociadas a un producto.

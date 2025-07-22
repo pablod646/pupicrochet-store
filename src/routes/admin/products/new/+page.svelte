@@ -2,162 +2,129 @@
   import { enhance } from '$app/forms';
   import { goto } from '$app/navigation';
   import type { ActionData, PageData } from './$types';
-  import type { Category } from '@prisma/client';
-
-  type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
+  import CategorySelector from '$lib/components/CategorySelector.svelte';
 
   export let form: ActionData;
   export let data: PageData;
 
-  let imageUrls: string[] = [''];
-  let selectedCategories: Category[] = [];
-  let searchTerm = '';
-  let showSuggestions = false;
-
-  function addImageUrlInput() {
-    imageUrls = [...imageUrls, ''];
-  }
-
-  function removeImageUrlInput(index: number) {
-    imageUrls = imageUrls.filter((_, i) => i !== index);
-  }
+  // Lógica para la carga de imágenes (simplificada por ahora)
+  let files: FileList;
+  let feedbackMessage = '';
 
   const handleSubmit = () => {
-    return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string; productId?: string; productSlug?: string }> }) => {
+    return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string; productSlug?: string }> }) => {
       if (result.type === 'success') {
-        if (result.data && result.data.productSlug) {
-          form = { success: true, message: result.data.message || 'Producto creado exitosamente!', productId: result.data.productId || '', productSlug: result.data.productSlug };
+        feedbackMessage = result.data?.message || 'Producto creado exitosamente!';
+        if (result.data?.productSlug) {
           setTimeout(() => {
             goto(`/admin/products/${result.data!.productSlug}/edit`);
           }, 1500);
-        } else {
-          form = { success: true, message: 'Producto creado exitosamente!', productId: '', productSlug: '' };
         }
       } else if (result.type === 'failure') {
-        form = { success: false, message: result.data?.message || 'Fallo al crear el producto.', productId: '', productSlug: '' };
+        feedbackMessage = result.data?.message || 'Fallo al crear el producto.';
       } else if (result.type === 'error') {
-        form = { success: false, message: 'Ocurrió un error inesperado.', productId: '', productSlug: '' };
+        feedbackMessage = 'Ocurrió un error inesperado.';
       }
     };
   };
-
-  function flattenCategories(categories: CategoryWithChildren[]): Category[] {
-    let flat: Category[] = [];
-    for (const category of categories) {
-      flat.push(category);
-      if (category.children && category.children.length > 0) {
-        flat = flat.concat(flattenCategories(category.children));
-      }
-    }
-    return flat;
-  }
-
-  $: allCategories = flattenCategories(data.categories);
-  $: filteredCategories = searchTerm
-    ? allCategories.filter(
-        category =>
-          category.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-          !selectedCategories.some(sc => sc.id === category.id)
-      )
-    : [];
-
-  function selectCategory(category: Category) {
-    selectedCategories = [...selectedCategories, category];
-    searchTerm = '';
-    showSuggestions = false;
-  }
-
-  function removeCategory(category: Category) {
-    selectedCategories = selectedCategories.filter(c => c.id !== category.id);
-  }
 </script>
 
-<h1 class="text-2xl font-bold mb-4">Añadir Nuevo Producto</h1>
-
-<form method="POST" action="?/createProduct" use:enhance={handleSubmit}>
-  <div class="mb-4">
-    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nombre del Producto:</label>
-    <input type="text" id="name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1 mx-auto">
+  <div class="flex flex-wrap justify-between gap-3 p-4">
+    <p class="text-[#1b0e15] tracking-light text-[32px] font-bold leading-tight min-w-72">Crear un producto</p>
   </div>
 
-  <div class="mb-4">
-    <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Descripción:</label>
-    <textarea id="description" name="description" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-  </div>
-
-  <div class="mb-4">
-    <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Precio:</label>
-    <input type="number" id="price" name="price" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-  </div>
-
-  <div class="mb-4">
-    <label for="categories" class="block text-gray-700 text-sm font-bold mb-2">Categorías:</label>
-    <div class="relative">
-      <div class="flex flex-wrap gap-2 p-2 border rounded bg-white">
-        {#each selectedCategories as category}
-          <div class="flex items-center gap-2 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-            {category.name}
-            <button type="button" on:click={() => removeCategory(category)} class="text-blue-400 hover:text-blue-600">
-              &times;
-            </button>
-          </div>
-        {/each}
+  <form method="POST" action="?/createProduct" use:enhance={handleSubmit} enctype="multipart/form-data">
+    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+      <label class="flex flex-col min-w-40 flex-1" for="name">
+        <span class="text-[#1b0e15] text-base font-medium leading-normal pb-2">Nombre del producto</span>
         <input
-          type="text"
-          bind:value={searchTerm}
-          on:focus={() => showSuggestions = true}
-          on:blur={() => setTimeout(() => showSuggestions = false, 200)} 
-          class="flex-grow p-1 focus:outline-none"
-          placeholder="Buscar categorías..."
+          id="name"
+          name="name"
+          placeholder="Ej. Amigurumi de Pulpo"
+          class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#1b0e15] focus:outline-0 focus:ring-0 border border-[#e6d1dc] bg-[#fbf8fa] focus:border-[#955074] h-14 placeholder:text-[#955074] p-[15px] text-base font-normal leading-normal"
+          required
         />
-      </div>
-      {#if showSuggestions && filteredCategories.length > 0}
-        <ul class="absolute z-10 w-full bg-white border rounded mt-1 max-h-60 overflow-y-auto">
-          {#each filteredCategories as category}
-            <li on:mousedown={() => selectCategory(category)} class="p-2 hover:bg-gray-100 cursor-pointer">
-              {category.name}
-            </li>
-          {/each}
-        </ul>
-      {/if}
+      </label>
     </div>
-    {#each selectedCategories as category}
-      <input type="hidden" name="categoryIds[]" value={category.id} />
-    {/each}
-  </div>
 
-  <div class="mb-4">
-    <label for="dimensions" class="block text-gray-700 text-sm font-bold mb-2">Dimensiones (Opcional):</label>
-    <input type="text" id="dimensions" name="dimensions" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-  </div>
+    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+      <label class="flex flex-col min-w-40 flex-1" for="description">
+        <span class="text-[#1b0e15] text-base font-medium leading-normal pb-2">Descripción</span>
+        <textarea
+          id="description"
+          name="description"
+          placeholder="Describe tu producto, sus materiales, dimensiones, etc."
+          class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#1b0e15] focus:outline-0 focus:ring-0 border border-[#e6d1dc] bg-[#fbf8fa] focus:border-[#955074] min-h-36 placeholder:text-[#955074] p-[15px] text-base font-normal leading-normal"
+          required
+        ></textarea>
+      </label>
+    </div>
 
-  <div class="mb-4">
-    <label for="materials" class="block text-gray-700 text-sm font-bold mb-2">Materiales (Opcional):</label>
-    <input type="text" id="materials" name="materials" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-  </div>
-
-  <fieldset class="mb-4">
-    <legend class="block text-gray-700 text-sm font-bold mb-2">URLs de Imágenes:</legend>
-    {#each imageUrls as url, i}
-      <div class="flex items-center mb-2">
+    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+      <label class="flex flex-col min-w-40 flex-1" for="price">
+        <span class="text-[#1b0e15] text-base font-medium leading-normal pb-2">Precio</span>
         <input
-          type="url"
-          name="imageUrls[]"
-          placeholder="URL de Imagen {i + 1}"
-          bind:value={imageUrls[i]}
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"
+          type="number"
+          id="price"
+          name="price"
+          placeholder="Ej. 25.00"
+          class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#1b0e15] focus:outline-0 focus:ring-0 border border-[#e6d1dc] bg-[#fbf8fa] focus:border-[#955074] h-14 placeholder:text-[#955074] p-[15px] text-base font-normal leading-normal"
+          required
+          step="0.01"
         />
-        {#if imageUrls.length > 1}
-          <button type="button" on:click={() => removeImageUrlInput(i)} class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs">Eliminar</button>
-        {/if}
+      </label>
+    </div>
+
+    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+      <label class="flex flex-col min-w-40 flex-1" for="stock">
+        <span class="text-[#1b0e15] text-base font-medium leading-normal pb-2">Cantidad</span>
+        <input
+          type="number"
+          id="stock"
+          name="stock"
+          placeholder="Ej. 10"
+          class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#1b0e15] focus:outline-0 focus:ring-0 border border-[#e6d1dc] bg-[#fbf8fa] focus:border-[#955074] h-14 placeholder:text-[#955074] p-[15px] text-base font-normal leading-normal"
+          required
+        />
+      </label>
+    </div>
+
+    <div class="px-4 py-3">
+      <p class="text-[#1b0e15] text-base font-medium leading-normal pb-2">Categorías</p>
+      <div class="p-4 border border-[#e6d1dc] rounded-xl bg-[#fbf8fa]">
+        <CategorySelector allCategories={data.categories} />
       </div>
-    {/each}
-    <button type="button" on:click={addImageUrlInput} class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-xs">Añadir URL de Imagen</button>
-  </fieldset>
+    </div>
 
-  <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Crear Producto</button>
+    <div class="flex flex-col p-4">
+        <p class="text-[#1b0e15] text-base font-medium leading-normal pb-2">Imágenes del producto</p>
+        <label for="image-upload" class="flex flex-col items-center gap-6 rounded-xl border-2 border-dashed border-[#e6d1dc] px-6 py-14 cursor-pointer hover:bg-[#f3e8ed]">
+            <div class="flex max-w-[480px] flex-col items-center gap-2">
+                <p class="text-[#1b0e15] text-lg font-bold leading-tight tracking-[-0.015em] max-w-[480px] text-center">Arrastra y suelta imágenes aquí, o haz clic para explorar</p>
+                <p class="text-[#955074] text-sm font-normal leading-normal max-w-[480px] text-center">
+                    {#if files && files.length}
+                        {files.length} archivo(s) seleccionado(s)
+                    {:else}
+                        (PNG, JPG, WEBP)
+                    {/if}
+                </p>
+            </div>
+            <input id="image-upload" name="imageUrls" type="file" class="hidden" multiple bind:files on:change={() => feedbackMessage = ''} />
+        </label>
+    </div>
 
-  {#if form?.message}
-    <p class="mt-4 {form.success ? 'text-green-500' : 'text-red-500'}">{form.message}</p>
+    <div class="flex px-4 py-3 justify-end">
+      <button
+        type="submit"
+        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#5d0d36] text-[#fbf8fa] text-sm font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-colors"
+      >
+        <span class="truncate">Crear producto</span>
+      </button>
+    </div>
+  </form>
+
+  {#if feedbackMessage}
+    <p class="mt-4 px-4 py-2 rounded-md {result.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">{feedbackMessage}</p>
   {/if}
-</form>
+</div>

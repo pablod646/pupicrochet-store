@@ -2,6 +2,7 @@
   import { enhance } from '$app/forms';
   import type { ActionData, PageData } from './$types';
   import type { Category } from '@prisma/client';
+  import CategorySelector from '$lib/components/CategorySelector.svelte';
 
   type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
@@ -11,10 +12,6 @@
   let product = data.product;
   let imageUrls: string[] = product.images.map(img => img.url);
   let existingImageIds: string[] = product.images.map(img => img.id);
-
-  let selectedCategories: Category[] = product.categories || [];
-  let searchTerm = '';
-  let showSuggestions = false;
 
   function addImageUrlInput() {
     imageUrls = [...imageUrls, ''];
@@ -41,36 +38,6 @@
       }
     };
   };
-
-  function flattenCategories(categories: CategoryWithChildren[]): Category[] {
-    let flat: Category[] = [];
-    for (const category of categories) {
-      flat.push(category);
-      if (category.children && category.children.length > 0) {
-        flat = flat.concat(flattenCategories(category.children));
-      }
-    }
-    return flat;
-  }
-
-  $: allCategories = flattenCategories(data.categories);
-  $: filteredCategories = searchTerm
-    ? allCategories.filter(
-        category =>
-          category.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-          !selectedCategories.some(sc => sc.id === category.id)
-      )
-    : [];
-
-  function selectCategory(category: Category) {
-    selectedCategories = [...selectedCategories, category];
-    searchTerm = '';
-    showSuggestions = false;
-  }
-
-  function removeCategory(category: Category) {
-    selectedCategories = selectedCategories.filter(c => c.id !== category.id);
-  }
 </script>
 
 <h1 class="text-2xl font-bold mb-4">Editar Producto: {product.name}</h1>
@@ -92,39 +59,8 @@
   </div>
 
   <div class="mb-4">
-    <label for="categories" class="block text-gray-700 text-sm font-bold mb-2">Categorías:</label>
-    <div class="relative">
-      <div class="flex flex-wrap gap-2 p-2 border rounded bg-white">
-        {#each selectedCategories as category}
-          <div class="flex items-center gap-2 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-            {category.name}
-            <button type="button" on:click={() => removeCategory(category)} class="text-blue-400 hover:text-blue-600">
-              &times;
-            </button>
-          </div>
-        {/each}
-        <input
-          type="text"
-          bind:value={searchTerm}
-          on:focus={() => showSuggestions = true}
-          on:blur={() => setTimeout(() => showSuggestions = false, 200)}
-          class="flex-grow p-1 focus:outline-none"
-          placeholder="Buscar categorías..."
-        />
-      </div>
-      {#if showSuggestions && filteredCategories.length > 0}
-        <ul class="absolute z-10 w-full bg-white border rounded mt-1 max-h-60 overflow-y-auto">
-          {#each filteredCategories as category}
-            <li on:mousedown={() => selectCategory(category)} class="p-2 hover:bg-gray-100 cursor-pointer">
-              {category.name}
-            </li>
-          {/each}
-        </ul>
-      {/if}
-    </div>
-    {#each selectedCategories as category}
-      <input type="hidden" name="categoryIds[]" value={category.id} />
-    {/each}
+    <label class="block text-gray-700 text-sm font-bold mb-2">Categorías:</label>
+    <CategorySelector allCategories={data.categories} initialSelectedCategories={product.categories} />
   </div>
 
   <div class="mb-4">
