@@ -111,7 +111,7 @@
   <!-- Panel Derecho: Árbol Jerárquico de Categorías -->
   <div class="w-1/2 border rounded p-4 bg-white flex flex-col">
     <h3 class="font-bold mb-2">Seleccionar Categorías:</h3>
-    <div class="flex-grow overflow-y-auto border p-2 rounded" on:click={handleListClick} on:keydown={handleListKeyDown}>
+    <div class="flex-grow overflow-y-auto border p-2 rounded" on:click={handleListClick} on:keydown={handleListKeyDown} role="listbox" tabindex="0">
       <ul class="list-none p-0">
         {@html renderedCategoryTreeHtml}
       </ul>

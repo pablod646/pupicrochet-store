@@ -13,6 +13,7 @@
     messageType = null;
 
     return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string }> }) => {
+      console.log('Form submission result:', result);
       if (result.type === 'success') {
         message = '¡Registro exitoso! Redireccionando...';
         messageType = 'success';

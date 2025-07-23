@@ -4,7 +4,7 @@
   import type { ActionData, PageData } from './$types';
   import CategorySelector from '$lib/components/CategorySelector.svelte';
 
-  export let form: ActionData;
+  
   export let data: PageData;
 
   // Lógica para la carga de imágenes (simplificada por ahora)

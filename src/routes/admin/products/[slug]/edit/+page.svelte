@@ -58,10 +58,10 @@
     <input type="number" id="price" name="price" required bind:value={product.price} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
   </div>
 
-  <div class="mb-4">
-    <label class="block text-gray-700 text-sm font-bold mb-2">Categorías:</label>
+  <fieldset class="mb-4">
+    <legend class="block text-gray-700 text-sm font-bold mb-2">Categorías:</legend>
     <CategorySelector allCategories={data.categories} initialSelectedCategories={product.categories} />
-  </div>
+  </fieldset>
 
   <div class="mb-4">
     <label for="dimensions" class="block text-gray-700 text-sm font-bold mb-2">Dimensiones (Opcional):</label>
