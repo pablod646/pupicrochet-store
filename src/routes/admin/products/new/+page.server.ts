@@ -25,7 +25,12 @@ export const load: PageServerLoad = async () => {
       name: 'asc',
     },
   });
-  return { categories: categories as CategoryWithChildren[] };
+  const optionTypes = await prisma.optionType.findMany({
+    include: { values: true },
+    orderBy: { name: 'asc' },
+  });
+
+  return { categories: categories as CategoryWithChildren[], optionTypes };
 };
 
 export const actions = {
@@ -37,7 +42,9 @@ export const actions = {
     const dimensions = data.get('dimensions') as string | null;
     const materials = data.get('materials') as string | null;
     const imageUrls = data.getAll('imageUrls[]') as string[];
-    const categoryIds = data.getAll('categoryIds[]') as string[];
+    // Datos de las variantes
+    const optionTypesData = JSON.parse(data.get('optionTypes') as string);
+    const variantsData = JSON.parse(data.get('variants') as string);
 
     if (!name || !description || isNaN(price) || price <= 0) {
       return fail(400, { message: 'Nombre, descripción y un precio válido son requeridos.' });

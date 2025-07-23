@@ -1,4 +1,39 @@
 -- CreateTable
+CREATE TABLE "ProductVariant" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "productId" TEXT NOT NULL,
+    "sku" TEXT NOT NULL,
+    "price" REAL NOT NULL,
+    "stock" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "ProductVariant_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "OptionType" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "OptionValue" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "value" TEXT NOT NULL,
+    "optionTypeId" TEXT NOT NULL,
+    CONSTRAINT "OptionValue_optionTypeId_fkey" FOREIGN KEY ("optionTypeId") REFERENCES "OptionType" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ProductVariantOptionValue" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "variantId" TEXT NOT NULL,
+    "optionValueId" TEXT NOT NULL,
+    CONSTRAINT "ProductVariantOptionValue_variantId_fkey" FOREIGN KEY ("variantId") REFERENCES "ProductVariant" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "ProductVariantOptionValue_optionValueId_fkey" FOREIGN KEY ("optionValueId") REFERENCES "OptionValue" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
 CREATE TABLE "Product" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
@@ -70,6 +105,18 @@ CREATE TABLE "_CategoryToProduct" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "ProductVariant_sku_key" ON "ProductVariant"("sku");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "OptionType_name_key" ON "OptionType"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "OptionValue_optionTypeId_value_key" ON "OptionValue"("optionTypeId", "value");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ProductVariantOptionValue_variantId_optionValueId_key" ON "ProductVariantOptionValue"("variantId", "optionValueId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Product_slug_key" ON "Product"("slug");
 
 -- CreateIndex
@@ -92,4 +139,3 @@ CREATE UNIQUE INDEX "_CategoryToProduct_AB_unique" ON "_CategoryToProduct"("A", 
 
 -- CreateIndex
 CREATE INDEX "_CategoryToProduct_B_index" ON "_CategoryToProduct"("B");
-

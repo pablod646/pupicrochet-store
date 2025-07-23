@@ -1,5 +1,6 @@
 // prisma/seed.ts
 import { PrismaClient } from '@prisma/client';
+import { generateSlug } from '../src/lib/utils/slug';
 
 const prisma = new PrismaClient();
 
@@ -14,6 +15,7 @@ async function main() {
   const product1 = await prisma.product.create({
     data: {
       name: 'Amigurumi de Pulpo',
+      slug: generateSlug('Amigurumi de Pulpo'),
       description: 'Un adorable pulpo tejido a mano con hilo de algodón hipoalergénico, perfecto para los más pequeños. Suave y seguro para abrazar.',
       price: 1500,
       dimensions: 'Aprox. 15cm de alto x 10cm de ancho',
@@ -31,6 +33,7 @@ async function main() {
   const product2 = await prisma.product.create({
     data: {
       name: 'Sonajero de Elefante',
+      slug: generateSlug('Sonajero de Elefante'),
       description: 'Sonajero de madera natural y crochet con un diseño de elefante. Estimula los sentidos del bebé con su sonido suave y diferentes texturas.',
       price: 1200,
       dimensions: '12cm de largo',
@@ -47,6 +50,7 @@ async function main() {
   const product3 = await prisma.product.create({
     data: {
       name: 'Manta de Apego Conejito',
+      slug: generateSlug('Manta de Apego Conejito'),
       description: 'Una manta de apego ultra suave para acompañar a tu bebé en sus sueños. La cabeza de conejito es ideal para que las manitas pequeñas la agarren.',
       price: 2500,
       dimensions: '35cm x 35cm',

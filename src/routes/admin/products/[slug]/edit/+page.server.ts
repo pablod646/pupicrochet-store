@@ -11,7 +11,19 @@ export const load: PageServerLoad = async ({ params }) => {
     where: { slug: params.slug },
     include: {
       images: true,
-      categories: true, // Include the associated categories
+      variants: {
+        include: {
+          options: {
+            include: {
+              optionValue: {
+                include: {
+                  optionType: true
+                }
+              }
+            }
+          }
+        }
+      }
     },
   });
 
@@ -51,7 +63,9 @@ export const actions = {
     const materials = data.get('materials') as string | null;
     const imageUrls = data.getAll('imageUrls[]') as string[];
     const existingImageIds = data.getAll('existingImageIds[]') as string[];
-    const categoryIds = data.getAll('categoryIds[]') as string[];
+    // Datos de las variantes
+    const optionTypesData = JSON.parse(data.get('optionTypes') as string);
+    const variantsData = JSON.parse(data.get('variants') as string);
 
     if (!name || !description || isNaN(price) || price <= 0) {
       return fail(400, { message: 'Nombre, descripción y un precio válido son requeridos.' });

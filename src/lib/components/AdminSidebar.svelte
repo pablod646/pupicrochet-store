@@ -48,14 +48,8 @@
           Gestión de Usuarios
         </a>
       </li>
-      <li>
-        <a
-          href="/admin/categories"
-          class="block py-2 px-4 rounded transition duration-200 { $page.url.pathname.startsWith('/admin/categories') ? 'bg-gray-700' : 'hover:bg-gray-700' }"
-        >
-          Gestión de Categorías
-        </a>
-      </li>
+      <li><a href="/admin/categories" class="block py-2 px-4 hover:bg-gray-700">Categorías</a></li>
+      <li><a href="/admin/variants" class="block py-2 px-4 hover:bg-gray-700">Variantes</a></li>
       <!-- Add more admin sections here -->
     </ul>
   </nav>

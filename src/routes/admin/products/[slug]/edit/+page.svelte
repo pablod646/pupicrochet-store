@@ -12,6 +12,72 @@
   let product = data.product;
   let imageUrls: string[] = product.images.map(img => img.url);
   let existingImageIds: string[] = product.images.map(img => img.id);
+  // Lógica para las variantes
+  let optionTypes = [];
+  let variants = [];
+
+  // Cargar variantes existentes
+  if (product.variants && product.variants.length > 0) {
+    const types = {};
+    product.variants.forEach(variant => {
+      variant.options.forEach(opt => {
+        const typeName = opt.optionValue.optionType.name;
+        if (!types[typeName]) {
+          types[typeName] = new Set();
+        }
+        types[typeName].add(opt.optionValue.value);
+      });
+    });
+
+    optionTypes = Object.entries(types).map(([name, valuesSet]) => ({
+      name,
+      values: Array.from(valuesSet as Set<string>)
+    }));
+
+    variants = product.variants.map(v => ({
+      ...v,
+      price: v.price / 100,
+      options: v.options.map(o => `${o.optionValue.optionType.name}: ${o.optionValue.value}`).join(' / ')
+    }));
+  }
+
+  function addOptionType() {
+    optionTypes = [...optionTypes, { name: '', values: [''] }];
+  }
+
+  function removeOptionType(index) {
+    optionTypes = optionTypes.filter((_, i) => i !== index);
+    generateVariants();
+  }
+
+  function addOptionValue(typeIndex) {
+    optionTypes[typeIndex].values = [...optionTypes[typeIndex].values, ''];
+  }
+
+  function removeOptionValue(typeIndex, valueIndex) {
+    optionTypes[typeIndex].values = optionTypes[typeIndex].values.filter((_, i) => i !== valueIndex);
+    generateVariants();
+  }
+
+  function generateVariants() {
+    const allOptions = optionTypes.map(t => t.values.filter(v => v));
+    if (allOptions.some(o => o.length === 0)) {
+      variants = [];
+      return;
+    }
+
+    const combinations = allOptions.reduce((acc, values) => {
+      if (acc.length === 0) return values.map(v => [v]);
+      return acc.flatMap(combo => values.map(v => [...combo, v]));
+    }, []);
+
+    variants = combinations.map(combo => ({
+      options: combo.join(' / '),
+      price: 0,
+      stock: 0,
+      sku: ''
+    }));
+  }
 
   function addImageUrlInput() {
     imageUrls = [...imageUrls, ''];
@@ -59,8 +125,51 @@
   </div>
 
   <fieldset class="mb-4">
-    <legend class="block text-gray-700 text-sm font-bold mb-2">Categorías:</legend>
-    <CategorySelector allCategories={data.categories} initialSelectedCategories={product.categories} />
+    <legend class="block text-gray-700 text-sm font-bold mb-2">Variantes del Producto</legend>
+    <div class="p-4 border rounded bg-gray-50">
+        {#each optionTypes as type, typeIndex}
+          <div class="mb-4 border-b pb-4">
+            <div class="flex items-center">
+              <input type="text" placeholder="Ej. Color" bind:value={type.name} on:input={generateVariants} class="form-input flex-grow mr-2" />
+              <button type="button" on:click={() => removeOptionType(typeIndex)} class="text-red-500">Eliminar tipo</button>
+            </div>
+            <div class="pl-4 mt-2">
+              {#each type.values as value, valueIndex}
+                <div class="flex items-center mt-1">
+                  <input type="text" placeholder="Ej. Rojo" bind:value={type.values[valueIndex]} on:input={generateVariants} class="form-input flex-grow mr-2" />
+                  <button type="button" on:click={() => removeOptionValue(typeIndex, valueIndex)} class="text-red-500">x</button>
+                </div>
+              {/each}
+              <button type="button" on:click={() => addOptionValue(typeIndex)} class="text-sm text-green-600 mt-2">+ Añadir valor</button>
+            </div>
+          </div>
+        {/each}
+        <button type="button" on:click={addOptionType} class="text-sm text-blue-600">+ Añadir tipo de opción</button>
+
+        {#if variants.length > 0}
+          <h4 class="mt-6 mb-2 font-bold">Variantes generadas:</h4>
+          <table class="w-full text-sm text-left">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3">Opciones</th>
+                <th scope="col" class="px-6 py-3">Precio</th>
+                <th scope="col" class="px-6 py-3">Stock</th>
+                <th scope="col" class="px-6 py-3">SKU</th>
+              </tr>
+            </thead>
+            <tbody>
+              {#each variants as variant, i}
+                <tr class="bg-white border-b">
+                  <td class="px-6 py-4">{variant.options}</td>
+                  <td><input type="number" step="0.01" bind:value={variant.price} class="form-input w-full" /></td>
+                  <td><input type="number" bind:value={variant.stock} class="form-input w-full" /></td>
+                  <td><input type="text" bind:value={variant.sku} class="form-input w-full" /></td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        {/if}
+      </div>
   </fieldset>
 
   <div class="mb-4">

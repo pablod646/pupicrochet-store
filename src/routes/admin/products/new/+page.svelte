@@ -9,7 +9,72 @@
 
   // Lógica para la carga de imágenes (simplificada por ahora)
   let files: FileList;
+  import Modal from '$lib/components/Modal.svelte';
+
+  
+  export let data: PageData;
+
+  // Lógica para la carga de imágenes (simplificada por ahora)
+  let files: FileList;
   let feedbackMessage = '';
+
+  // Lógica para las variantes
+  let optionTypes = [{ name: '', values: [''] }];
+  let variants = [];
+  let showNewOptionTypeModal = false;
+  let newOptionTypeName = '';
+
+  function addOptionType() {
+    optionTypes = [...optionTypes, { name: '', values: [''] }];
+  }
+
+  function removeOptionType(index) {
+    optionTypes = optionTypes.filter((_, i) => i !== index);
+    generateVariants();
+  }
+
+  function addOptionValue(typeIndex) {
+    optionTypes[typeIndex].values = [...optionTypes[typeIndex].values, ''];
+  }
+
+  function removeOptionValue(typeIndex, valueIndex) {
+    optionTypes[typeIndex].values = optionTypes[typeIndex].values.filter((_, i) => i !== valueIndex);
+    generateVariants();
+  }
+
+  function generateVariants() {
+    const allOptions = optionTypes.map(t => t.values.filter(v => v));
+    if (allOptions.some(o => o.length === 0)) {
+      variants = [];
+      return;
+    }
+
+    const combinations = allOptions.reduce((acc, values) => {
+      if (acc.length === 0) return values.map(v => [v]);
+      return acc.flatMap(combo => values.map(v => [...combo, v]));
+    }, []);
+
+    variants = combinations.map(combo => ({
+      options: combo.join(' / '),
+      price: 0,
+      stock: 0,
+      sku: ''
+    }));
+  }
+
+  async function createNewOptionType() {
+    const res = await fetch('/admin/variants?/createOptionType', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: newOptionTypeName })
+    });
+    if (res.ok) {
+      // Actualizar la lista de tipos de opción y cerrar el modal
+      data.optionTypes = [...data.optionTypes, { id: '', name: newOptionTypeName, values: [] }];
+      showNewOptionTypeModal = false;
+      newOptionTypeName = '';
+    }
+  }
 
   const handleSubmit = () => {
     return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string; productSlug?: string }> }) => {
@@ -35,6 +100,8 @@
   </div>
 
   <form method="POST" action="?/createProduct" use:enhance={handleSubmit} enctype="multipart/form-data">
+    <input type="hidden" name="optionTypes" value={JSON.stringify(optionTypes)} />
+    <input type="hidden" name="variants" value={JSON.stringify(variants)} />
     <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
       <label class="flex flex-col min-w-40 flex-1" for="name">
         <span class="text-[#1b0e15] text-base font-medium leading-normal pb-2">Nombre del producto</span>
@@ -91,9 +158,74 @@
     </div>
 
     <div class="px-4 py-3">
-      <p class="text-[#1b0e15] text-base font-medium leading-normal pb-2">Categorías</p>
+      <p class="text-[#1b0e15] text-base font-medium leading-normal pb-2">Variantes del Producto</p>
       <div class="p-4 border border-[#e6d1dc] rounded-xl bg-[#fbf8fa]">
-        <CategorySelector allCategories={data.categories} />
+        {#each optionTypes as type, typeIndex}
+          <div class="mb-4 border-b pb-4">
+            <div class="flex items-center">
+              <select bind:value={type.name} on:change={generateVariants} class="form-select flex-grow mr-2">
+                <option value="">Seleccionar tipo</option>
+                {#each data.optionTypes as availableType}
+                  <option value={availableType.name}>{availableType.name}</option>
+                {/each}
+              </select>
+              <button type="button" on:click={() => removeOptionType(typeIndex)} class="text-red-500">Eliminar tipo</button>
+            </div>
+            <div class="pl-4 mt-2">
+              {#each type.values as value, valueIndex}
+                <div class="flex items-center mt-1">
+                  <select bind:value={type.values[valueIndex]} on:change={generateVariants} class="form-select flex-grow mr-2">
+                    <option value="">Seleccionar valor</option>
+                    {#if type.name}
+                      {@const selectedType = data.optionTypes.find(t => t.name === type.name)}
+                      {#if selectedType}
+                        {#each selectedType.values as availableValue}
+                          <option value={availableValue.value}>{availableValue.value}</option>
+                        {/each}
+                      {/if}
+                    {/if}
+                  </select>
+                  <button type="button" on:click={() => removeOptionValue(typeIndex, valueIndex)} class="text-red-500">x</button>
+                </div>
+              {/each}
+              <button type="button" on:click={() => addOptionValue(typeIndex)} class="text-sm text-green-600 mt-2">+ Añadir valor</button>
+            </div>
+          </div>
+        {/each}
+        <button type="button" on:click={() => showNewOptionTypeModal = true} class="text-sm text-blue-600">+ Añadir nuevo tipo</button>
+
+        <Modal show={showNewOptionTypeModal}>
+          <h2 class="text-lg font-bold mb-4">Crear Nuevo Tipo de Opción</h2>
+          <input type="text" bind:value={newOptionTypeName} placeholder="Ej. Talla" class="form-input w-full mb-4" />
+          <div class="flex justify-end gap-4">
+            <button type="button" on:click={() => showNewOptionTypeModal = false} class="btn-secondary">Cancelar</button>
+            <button type="button" on:click={createNewOptionType} class="btn-primary">Crear</button>
+          </div>
+        </Modal>
+
+        {#if variants.length > 0}
+          <h4 class="mt-6 mb-2 font-bold">Variantes generadas:</h4>
+          <table class="w-full text-sm text-left">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3">Opciones</th>
+                <th scope="col" class="px-6 py-3">Precio</th>
+                <th scope="col" class="px-6 py-3">Stock</th>
+                <th scope="col" class="px-6 py-3">SKU</th>
+              </tr>
+            </thead>
+            <tbody>
+              {#each variants as variant, i}
+                <tr class="bg-white border-b">
+                  <td class="px-6 py-4">{variant.options}</td>
+                  <td><input type="number" step="0.01" bind:value={variant.price} class="form-input w-full" /></td>
+                  <td><input type="number" bind:value={variant.stock} class="form-input w-full" /></td>
+                  <td><input type="text" bind:value={variant.sku} class="form-input w-full" /></td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        {/if}
       </div>
     </div>
 
