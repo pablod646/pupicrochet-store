@@ -4,33 +4,46 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 ## Tareas Pendientes (Orden de Prioridad):
 
-1.  **Depuración de Error de Variantes:** Investigar y resolver el `TypeError: Cannot read properties of undefined (reading 'variantType')` que persiste al intentar acceder al gestor de variantes desde el administrador.
-2.  **Mejoras en la Página de Inicio (Homepage):** Diseñar y construir una página de inicio atractiva que muestre productos destacados, categorías principales y promociones.
-3.  **Panel de Cliente / Área de "Mi Cuenta":**
-    *   Crear una sección dedicada para los usuarios registrados (`/cuenta`).
-    *   **Gestión de Perfil:** Permitir al usuario actualizar su nombre y datos de contacto.
-    *   **Gestión de Direcciones:** Permitir al usuario guardar y administrar múltiples direcciones de envío.
-    *   **Historial de Pedidos:** Crear una página para que los usuarios vean el estado y los detalles de sus pedidos anteriores.
-4.  **Implementar Confirmación de Correo Electrónico:** Enviar un enlace de verificación al correo del usuario tras el registro.
-5.  **Proceso de Compra (Checkout):** Crear un flujo de compra completo, desde el carrito hasta la confirmación del pedido, permitiendo seleccionar direcciones guardadas.
-6.  **Funcionalidades de la Cuenta de Usuario (Seguridad):**
-    *   **Reseteo de Contraseña:** Implementar la funcionalidad de "Olvidé mi contraseña".
-7.  **Reseñas de Productos:** Permitir a los usuarios dejar calificaciones y comentarios en los productos que han comprado.
-8.  **Implementar Estrategia de Testing:**
-    *   **Pruebas Unitarias y de Integración:** Utilizar Vitest para probar la lógica de negocio clave.
-    *   **Pruebas End-to-End (E2E):** Utilizar Playwright para validar los flujos de usuario críticos (registro, compra, etc.).
-9.  **Validación de Datos Robusta:**
-    *   Implementar `zod` para la definición de esquemas de validación.
-    *   Integrar `sveltekit-superforms` o similar para gestionar formularios de manera segura y eficiente.
-10. **Refuerzo de Autenticación:**
-    *   Evaluar e implementar una librería como `lucia-auth` para una gestión más segura y completa de sesiones y roles.
-11. **Optimización del Estado Global:**
-    *   Revisar y asegurar que el estado compartido (ej. carrito de compras) se gestiona eficientemente con Svelte Stores.
-12. **Backend para Carga de Imágenes:**
-    *   Modificar el `+page.server.ts` del formulario de productos para procesar y guardar archivos de imagen subidos por el usuario, en lugar de solo URLs de texto.
-13. **Funcionalidad de Ordenamiento de Productos:**
-    *   Implementar la lógica en `productos/+page.server.ts` para que el `select` de ordenamiento funcione.
-    *   Añadir opciones como "Más vendidos" y "Más nuevos" (requerirá registrar fechas de creación y/o contador de ventas en el modelo `Product`).
+### 0. Refactorización Post-Auditoría
+
+**Descripción:** Aplicar los cambios identificados en `PROJECT_AUDIT.md` para limpiar y estandarizar el código base antes de añadir nuevas funcionalidades.
+
+**Tareas Principales:**
+- [ ] 0.1 **Dependencias:** Mover las dependencias de desarrollo (`tailwindcss`, `@types/*`, etc.) a `devDependencies` en `package.json` y eliminar `@types/uuid`.
+- [ ] 0.2 **Componentes de Layout:** Extraer el Header y el Footer de `src/routes/+layout.svelte` a sus propios componentes en `src/lib/components/layout/`.
+- [ ] 0.3 **Lógica de Categorías:** Refactorizar la lógica duplicada de carga de jerarquía de categorías a una única función en `src/lib/server/queries/categories.ts`.
+- [ ] 0.4 **Servicio de Carrito:** Extraer la lógica compleja de `addToCart` a un nuevo módulo de servicio en `src/lib/server/services/cart.service.ts`.
+- [ ] 0.5 **Componente de Categorías:** Fusionar `CategoryItem.svelte` y `CategoryTreeItem.svelte` en un único componente `CategoryNode.svelte`.
+- [ ] 0.6 **Selector de Categorías:** Refactorizar `CategorySelector.svelte` para que sea más declarativo y no manipule el DOM directamente.
+
+### 1. Implementar Validación de Datos Robusta
+
+**Descripción:** Integrar `zod` para la definición de esquemas de validación y `sveltekit-superforms` para gestionar los formularios de manera segura y eficiente, mejorando la experiencia del usuario y la fiabilidad del código.
+
+**Archivos Relevantes:**
+*   `src/routes/register/+page.svelte`: Se refactorizará para usar el helper de formulario de `sveltekit-superforms`.
+*   `src/routes/register/+page.server.ts`: Se modificará para usar `zod` y `sveltekit-superforms` en la lógica del `action`.
+*   `src/lib/schemas/auth.ts`: (Archivo nuevo) Se creará para alojar los esquemas de `zod` relacionados con la autenticación (registro, login).
+*   `package.json`: Se actualizará con las nuevas dependencias.
+
+**Tareas Principales:**
+- [ ] 1.0 Configuración e Instalación de Dependencias
+- [ ] 2.0 Creación del Esquema de Validación para Registro
+- [ ] 3.0 Refactorización del Backend del Formulario (Server Action)
+- [ ] 4.0 Refactorización del Frontend del Formulario (Componente Svelte)
+- [ ] 5.0 Verificación y Pruebas
+
+2.  **Refuerzo de Autenticación:** Evaluar e implementar una librería como `lucia-auth`.
+3.  **Backend para Carga de Imágenes:** Permitir la subida de archivos de imagen desde el panel de administración.
+4.  **Panel de Cliente / Área de "Mi Cuenta":** Crear la sección para que los usuarios gestionen su perfil, direcciones e historial de pedidos.
+5.  **Implementar Confirmación de Correo Electrónico:** Una funcionalidad molecular importante para la gestión de usuarios.
+6.  **Funcionalidades de la Cuenta de Usuario (Seguridad):** Implementar el reseteo de contraseña.
+7.  **Proceso de Compra (Checkout):** Construir el flujo completo de compra.
+8.  **Funcionalidad de Ordenamiento de Productos:** Añadir opciones de ordenamiento a la página de productos.
+9.  **Reseñas de Productos:** Permitir a los usuarios dejar calificaciones y comentarios.
+10. **Mejoras en la Página de Inicio (Homepage):** Una vez que todas las funcionalidades críticas estén en su lugar, nos enfocaremos en el diseño de la página de inicio.
+11. **Optimización del Estado Global:** Tarea de refactorización técnica.
+12. **Implementar Estrategia de Testing:** Aunque está al final de la lista, idealmente las pruebas se irán añadiendo a medida que se desarrollan las funcionalidades.
 
 ## Tareas Completadas:
 
@@ -110,11 +123,11 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     *   **Modelo de Datos:** Se han añadido los modelos `VariantType`, `VariantValue`, `ProductVariant`, `ProductVariantValue` a `prisma/schema.prisma` y se ha actualizado el modelo `Product` con la relación `productVariants`.
     *   **Migración de Base de Datos:** Se ha generado y aplicado una nueva migración para incorporar los modelos de variantes a la base de datos existente, manteniendo los datos.
     *   **Panel de Administración de Variantes:**
-        *   Se han creado los endpoints (`+page.server.ts`) para las operaciones CRUD de `VariantType` y `VariantValue`.
-        *   Se han desarrollado los componentes Svelte (`+page.svelte`) para la interfaz de usuario de gestión de `VariantType`s y `VariantValue`s en el panel de administración (`/admin/variant-types` y `/admin/variant-types/[id]/variant-values`).
+        *   Se han creado los endpoints (`+page.server.ts`) para las operaciones CRUD de `VariantType` y `Value`.
+        *   Se han desarrollado los componentes Svelte (`+page.svelte`) para la interfaz de usuario de gestión de `VariantType`s y `Value`s en el panel de administración (`/admin/variant-types` y `/admin/variant-types/[id]/variant-values`).
         *   Se ha actualizado la barra lateral de administración (`AdminSidebar.svelte`) para incluir un enlace a la gestión de variantes.
     *   **Integración en Creación/Edición de Productos:**
-        *   Se han actualizado los `+page.server.ts` de creación (`/admin/products/new`) y edición (`/admin/products/[slug]/edit`) de productos para cargar los `VariantType`s y `VariantValue`s disponibles, y para manejar el guardado/actualización de `ProductVariant`s.
+        *   Se han actualizado los `+page.server.ts` de creación (`/admin/products/new`) y edición (`/admin/products/[slug]/edit`) de productos para cargar los `VariantType`s y `Value`s disponibles, y para manejar el guardado/actualización de `ProductVariant`s.
         *   Se ha creado un componente Svelte reutilizable (`ProductVariantManager.svelte`) para gestionar la selección de tipos de variantes, la adición de valores de variantes (existentes o nuevos), la generación dinámica de combinaciones de variantes de producto, y la edición de SKU, precio, stock e imagen para cada `ProductVariant`.
         *   Se ha integrado `ProductVariantManager.svelte` en las páginas de creación y edición de productos.
     *   **Dependencias:** Se han instalado las dependencias `uuid` y `sveltekit-superforms`.
