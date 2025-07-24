@@ -59,23 +59,13 @@
     <div class="flex-grow overflow-y-auto border p-2 rounded">
       <ul class="list-none p-0">
         {#each allCategories as category (category.id)}
-          <CategoryNode node={category} let:node let:level>
-            <div
-              class="p-2 cursor-pointer hover:bg-gray-100"
-              class:bg-green-100={selectedCategories.some((c) => c.id === node.id)}
-              class:text-green-800={selectedCategories.some((c) => c.id === node.id)}
-              class:bg-blue-200={highlightedCategory?.id === node.id}
-              class:opacity-50={selectedCategories.some((c) => c.id === node.id)}
-              class:cursor-not-allowed={selectedCategories.some((c) => c.id === node.id)}
-              style="padding-left: {level * 20 + 8}px;"
-              on:click={() => handleCategoryClick(node)}
-              on:keydown={(e) => e.key === 'Enter' && handleCategoryClick(node)}
-              role="button"
-              tabindex={selectedCategories.some((c) => c.id === node.id) ? -1 : 0}
-            >
-              {node.name}
-            </div>
-          </CategoryNode>
+          <CategoryNode
+            node={category}
+            level={0}
+            {selectedCategories}
+            {highlightedCategory}
+            on:categoryClick={(event) => handleCategoryClick(event.detail)}
+          />
         {/each}
       </ul>
     </div>

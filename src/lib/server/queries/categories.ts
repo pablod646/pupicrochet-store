@@ -5,22 +5,22 @@ export type CategoryWithChildren = Category & { children: CategoryWithChildren[]
 
 export async function getCategoriesHierarchy(): Promise<CategoryWithChildren[]> {
   const categories = await prisma.category.findMany({
-    where: {
-      parentId: null, // Fetch only top-level categories
-    },
-    include: {
-      children: {
-        include: {
-          children: true, // Include nested children if needed, up to a certain depth
-        },
-        orderBy: {
-          name: 'asc',
-        },
-      },
-    },
     orderBy: {
       name: 'asc',
     },
   });
-  return categories as CategoryWithChildren[];
+
+  const buildHierarchy = (
+    categories: Category[],
+    parentId: string | null
+  ): CategoryWithChildren[] => {
+    return categories
+      .filter((category) => category.parentId === parentId)
+      .map((category) => ({
+        ...category,
+        children: buildHierarchy(categories, category.id),
+      }));
+  };
+
+  return buildHierarchy(categories, null);
 }
