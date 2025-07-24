@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Category } from '@prisma/client';
+  import CategoryNode from './CategoryNode.svelte';
 
   type CategoryWithProductCount = Category & { _count: { products: number }; children: CategoryWithProductCount[] };
 
@@ -25,18 +26,9 @@
       <div class="pl-4 pt-2">
         <ul class="space-y-2">
           {#each categories as category}
-            <li>
-              <a href={`/productos?category=${category.slug}`}>{category.name} ({category._count.products})</a>
-              {#if category.children && category.children.length > 0}
-                <ul class="pl-4 space-y-2 mt-2">
-                  {#each category.children as child}
-                    <li>
-                      <a href={`/productos?category=${child.slug}`}>{child.name} ({child._count.products})</a>
-                    </li>
-                  {/each}
-                </ul>
-              {/if}
-            </li>
+            <CategoryNode node={category} let:node>
+              <a href={`/productos?category=${node.slug}`}>{node.name} ({node._count.products})</a>
+            </CategoryNode>
           {/each}
         </ul>
       </div>

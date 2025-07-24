@@ -10,6 +10,7 @@ Este documento describe los objetivos a alto nivel y la dirección futura de Pup
     *   **Completar Tarea 1:** Implementar validación robusta con `zod` y `sveltekit-superforms`.
     *   **Completar Tarea 2:** Reforzar la autenticación con una librería como `lucia-auth`.
     *   **Completar Tarea 3:** Habilitar la carga de imágenes de productos desde el panel de administración.
+    *   **Añadir Tarea X (Nueva):** Implementar la gestión de variantes de producto (tamaño, color) con control de SKU, precio y stock por variante.
     *   **Completar Tarea 7:** Construir el flujo de compra (Checkout) completo.
 
 ## Q4 2025: Mejora de la Experiencia del Usuario y Engagement

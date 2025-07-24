@@ -9,12 +9,12 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 **Descripción:** Aplicar los cambios identificados en `PROJECT_AUDIT.md` para limpiar y estandarizar el código base antes de añadir nuevas funcionalidades.
 
 **Tareas Principales:**
-- [ ] 0.1 **Dependencias:** Mover las dependencias de desarrollo (`tailwindcss`, `@types/*`, etc.) a `devDependencies` en `package.json` y eliminar `@types/uuid`.
-- [ ] 0.2 **Componentes de Layout:** Extraer el Header y el Footer de `src/routes/+layout.svelte` a sus propios componentes en `src/lib/components/layout/`.
-- [ ] 0.3 **Lógica de Categorías:** Refactorizar la lógica duplicada de carga de jerarquía de categorías a una única función en `src/lib/server/queries/categories.ts`.
-- [ ] 0.4 **Servicio de Carrito:** Extraer la lógica compleja de `addToCart` a un nuevo módulo de servicio en `src/lib/server/services/cart.service.ts`.
-- [ ] 0.5 **Componente de Categorías:** Fusionar `CategoryItem.svelte` y `CategoryTreeItem.svelte` en un único componente `CategoryNode.svelte`.
-- [ ] 0.6 **Selector de Categorías:** Refactorizar `CategorySelector.svelte` para que sea más declarativo y no manipule el DOM directamente.
+- [x] 0.1 **Dependencias:** Mover las dependencias de desarrollo (`tailwindcss`, `@types/*`, etc.) a `devDependencies` en `package.json` y eliminar `@types/uuid`.
+- [x] 0.2 **Componentes de Layout:** Extraer el Header y el Footer de `src/routes/+layout.svelte` a sus propios componentes en `src/lib/components/layout/`.
+- [x] 0.3 **Lógica de Categorías:** Refactorizar la lógica duplicada de carga de jerarquía de categorías a una única función en `src/lib/server/queries/categories.ts`.
+- [x] 0.4 **Servicio de Carrito:** Extraer la lógica compleja de `addToCart` a un nuevo módulo de servicio en `src/lib/server/services/cart.service.ts`.
+- [x] 0.5 **Componente de Categorías:** Fusionar `CategoryItem.svelte` y `CategoryTreeItem.svelte` en un único componente `CategoryNode.svelte`.
+- [x] 0.6 **Selector de Categorías:** Refactorizar `CategorySelector.svelte` para que sea más declarativo y no manipule el DOM directamente.
 
 ### 1. Implementar Validación de Datos Robusta
 
@@ -35,15 +35,35 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 2.  **Refuerzo de Autenticación:** Evaluar e implementar una librería como `lucia-auth`.
 3.  **Backend para Carga de Imágenes:** Permitir la subida de archivos de imagen desde el panel de administración.
-4.  **Panel de Cliente / Área de "Mi Cuenta":** Crear la sección para que los usuarios gestionen su perfil, direcciones e historial de pedidos.
-5.  **Implementar Confirmación de Correo Electrónico:** Una funcionalidad molecular importante para la gestión de usuarios.
-6.  **Funcionalidades de la Cuenta de Usuario (Seguridad):** Implementar el reseteo de contraseña.
-7.  **Proceso de Compra (Checkout):** Construir el flujo completo de compra.
-8.  **Funcionalidad de Ordenamiento de Productos:** Añadir opciones de ordenamiento a la página de productos.
-9.  **Reseñas de Productos:** Permitir a los usuarios dejar calificaciones y comentarios.
-10. **Mejoras en la Página de Inicio (Homepage):** Una vez que todas las funcionalidades críticas estén en su lugar, nos enfocaremos en el diseño de la página de inicio.
-11. **Optimización del Estado Global:** Tarea de refactorización técnica.
-12. **Implementar Estrategia de Testing:** Aunque está al final de la lista, idealmente las pruebas se irán añadiendo a medida que se desarrollan las funcionalidades.
+3.  **Backend para Carga de Imágenes:** Permitir la subida de archivos de imagen desde el panel de administración.
+
+### 4. Implementar Variantes de Producto
+
+**Descripción:** Desarrollar la funcionalidad para que los productos puedan tener múltiples variantes (ej. por tamaño, color), cada una con su propio SKU, precio y nivel de stock.
+
+**Archivos Relevantes (Potenciales):**
+*   `prisma/schema.prisma`: Se añadirán nuevos modelos para `VariantType`, `VariantValue`, `ProductVariant`, etc.
+*   `src/routes/admin/products/new/+page.server.ts` y `+page.svelte`: Se modificarán para permitir la creación de variantes.
+*   `src/routes/admin/products/[slug]/edit/+page.server.ts` y `+page.svelte`: Se modificarán para permitir la edición de variantes.
+*   `src/routes/productos/[slug]/+page.svelte`: Se actualizará para mostrar un selector de variantes al cliente.
+*   `src/lib/components/admin/ProductVariantManager.svelte`: (Archivo nuevo) Un componente para gestionar la creación y edición de variantes en el panel de admin.
+
+**Tareas Principales:**
+- [ ] 4.1 Diseño y Migración del Modelo de Datos en Prisma.
+- [ ] 4.2 CRUD para Tipos y Valores de Variantes en el Panel de Admin (ej. "Color": "Rojo", "Verde").
+- [ ] 4.3 Integración en la Creación/Edición de Productos para generar SKU de variantes.
+- [ ] 4.4 Modificación de la Página de Producto para mostrar y seleccionar variantes.
+- [ ] 4.5 Ajuste de la lógica del Carrito para manejar SKUs de variantes específicas.
+
+5.  **Panel de Cliente / Área de "Mi Cuenta":** Crear la sección para que los usuarios gestionen su perfil, direcciones e historial de pedidos.
+6.  **Implementar Confirmación de Correo Electrónico:** Una funcionalidad molecular importante para la gestión de usuarios.
+7.  **Funcionalidades de la Cuenta de Usuario (Seguridad):** Implementar el reseteo de contraseña.
+8.  **Proceso de Compra (Checkout):** Construir el flujo completo de compra.
+9.  **Funcionalidad de Ordenamiento de Productos:** Añadir opciones de ordenamiento a la página de productos.
+10. **Reseñas de Productos:** Permitir a los usuarios dejar calificaciones y comentarios.
+11. **Mejoras en la Página de Inicio (Homepage):** Una vez que todas las funcionalidades críticas estén en su lugar, nos enfocaremos en el diseño de la página de inicio.
+12. **Optimización del Estado Global:** Tarea de refactorización técnica.
+13. **Implementar Estrategia de Testing:** Aunque está al final de la lista, idealmente las pruebas se irán añadiendo a medida que se desarrollan las funcionalidades.
 
 ## Tareas Completadas:
 

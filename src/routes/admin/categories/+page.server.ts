@@ -1,31 +1,12 @@
 import { prisma } from '$lib/server/prisma';
 import type { PageServerLoad, Actions } from './$types';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { generateSlug } from '$lib/utils/slug';
-import type { Category } from '@prisma/client';
-
-type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
+import { getCategoriesHierarchy } from '$lib/server/queries/categories';
 
 export const load: PageServerLoad = async () => {
-  const categories = await prisma.category.findMany({
-    where: {
-      parentId: null, // Fetch only top-level categories
-    },
-    include: {
-      children: {
-        include: {
-          children: true, // Include nested children if needed, up to a certain depth
-        },
-        orderBy: {
-          name: 'asc',
-        },
-      },
-    },
-    orderBy: {
-      name: 'asc',
-    },
-  });
-  return { categories: categories as CategoryWithChildren[] };
+  const categories = await getCategoriesHierarchy();
+  return { categories };
 };
 
 export const actions = {
