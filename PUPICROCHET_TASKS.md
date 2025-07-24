@@ -17,6 +17,210 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 - [x] 0.6 **Selector de Categorías:** Refactorizar `CategorySelector.svelte` para que sea más declarativo y no manipule el DOM directamente.
 
 ---
+### A. Establecer Automatización y Calidad Continua (CI)
+
+**Descripción:** Configurar un pipeline de Integración Continua (CI) usando GitHub Actions para automatizar las verificaciones de calidad en cada commit y pull request. Esto asegura que el código base se mantenga saludable y consistente.
+
+- [x] **A.1 Crear Workflow de CI**
+    - [x] A.1.1 Crear el archivo `.github/workflows/ci.yml`.
+    - [x] A.1.2 Configurar el workflow para que se dispare en eventos `push` y `pull_request` a la rama `main`.
+- [x] **A.2 Añadir Jobs de Verificación**
+    - [x] A.2.1 Añadir un job para instalar dependencias (`npm ci`).
+    - [x] A.2.2 Añadir un paso para ejecutar el linter (`npm run lint`).
+    - [x] A.2.3 Añadir un paso para verificar el formato del código (`npm run format:check`).
+    - [x] A.2.4 Añadir un paso para ejecutar las pruebas (`npm run test`).
+- [x] **A.3 Proteger la Rama Principal**
+    - [x] A.3.1 Configurar reglas de protección para la rama `main` en GitHub, requiriendo que el workflow de CI pase antes de poder hacer merge.
+
+---
+### B. Implementar Gestión de Variables de Entorno
+
+**Descripción:** Establecer un sistema robusto para manejar secretos y configuraciones específicas del entorno (desarrollo, producción) usando archivos `.env`. Es un prerrequisito para la Tarea 3 (Auth) y el despliegue.
+
+- [ ] **B.1 Configuración de .env**
+    - [ ] B.1.1 Crear un archivo `.env.example` en la raíz del proyecto con todas las variables de entorno necesarias (ej. `DATABASE_URL`, `AUTH_SECRET`).
+    - [ ] B.1.2 Añadir `.env` y `.env.*.local` al archivo `.gitignore` para evitar subir secretos al repositorio.
+- [ ] **B.2 Integración en SvelteKit**
+    - [ ] B.2.1 Utilizar los módulos `$env/static/private` y `$env/static/public` de SvelteKit para acceder a las variables de forma segura.
+    - [ ] B.2.2 Documentar el proceso de configuración de entorno en el `README.md`.
+
+---
+### C. Crear Script de Poblado de Base de Datos (Seeding)
+
+**Descripción:** Crear un script de "seeding" con Prisma para poblar la base de datos con datos de prueba (categorías, productos, usuario admin). Esto agiliza el desarrollo y las pruebas.
+
+- [ ] **C.1 Configurar Prisma Seed**
+    - [ ] C.1.1 Añadir la configuración `prisma.seed` al `package.json`.
+    - [ ] C.1.2 Crear el archivo `prisma/seed.ts`.
+- [ ] **C.2 Implementar Lógica de Seeding**
+    - [ ] C.2.1 Escribir la lógica en `prisma/seed.ts` para crear categorías de ejemplo.
+    - [ ] C.2.2 Añadir la creación de productos de ejemplo, asociándolos a las categorías.
+    - [ ] C.2.3 Añadir la creación de un usuario administrador de prueba.
+- [ ] **C.3 Ejecución y Verificación**
+    - [ ] C.3.1 Ejecutar `npx prisma db seed` y verificar que la base de datos se puebla correctamente.
+
+---
+### D. Implementar Manejo de Errores Global
+
+**Descripción:** Centralizar el manejo de errores de la aplicación para presentar páginas de error amigables al usuario y facilitar el logging y debugging en el servidor.
+
+- [ ] **D.1 Hook `handleError`**
+    - [ ] D.1.1 Implementar el hook `handleError` en `src/hooks.server.ts`.
+    - [ ] D.1.2 Configurar un sistema de logging (ej. `console.error` por ahora) para capturar los detalles del error en el servidor.
+- [ ] **D.2 Páginas de Error Personalizadas**
+    - [ ] D.2.1 Crear un componente `src/lib/components/Error.svelte` para mostrar mensajes de error.
+    - [ ] D.2.2 Crear la ruta `src/routes/+error.svelte` para capturar errores inesperados y mostrar el componente `Error`.
+    - [ ] D.2.3 Diseñar una página 404 personalizada en `+error.svelte` que se muestre cuando el status sea 404.
+
+---
+### E. Adelantar Configuración de Infraestructura de Testing
+
+**Descripción:** Aunque la Tarea 12 cubre una estrategia de testing completa, es crucial establecer la infraestructura básica ahora para que las nuevas funcionalidades (como la validación en Tarea 2) nazcan con pruebas.
+
+- [ ] **E.1 Configuración de Vitest**
+    - [ ] E.1.1 Asegurar que `vitest.config.ts` esté correctamente configurado para Svelte.
+    - [ ] E.1.2 Crear una base de datos de prueba separada (ej. `test.db`) y configurar un script para aplicarle las migraciones antes de ejecutar las pruebas.
+- [ ] **E.2 Configuración de Playwright**
+    - [ ] E.2.1 Verificar la configuración de Playwright y los scripts en `package.json`.
+    - [ ] E.2.2 Crear un flujo de prueba E2E básico (ej. visitar la página de inicio) para asegurar que el setup funciona.
+
+---
+### F. Configurar Hooks de Git con Husky y lint-staged
+
+**Descripción:** Automatizar la verificación de calidad de código localmente antes de cada commit. Esto complementa la CI (Tarea A) y previene que código mal formateado o con errores de linting llegue al repositorio.
+
+- [ ] **F.1 Instalación y Configuración**
+    - [ ] F.1.1 Instalar `husky` y `lint-staged` como dependencias de desarrollo.
+    - [ ] F.1.2 Ejecutar `npx husky init` para inicializar la configuración de Husky.
+- [ ] **F.2 Crear Hook Pre-Commit**
+    - [ ] F.2.1 Crear el archivo de hook `.husky/pre-commit`.
+    - [ ] F.2.2 Añadir el comando `npx lint-staged` al hook `pre-commit`.
+- [ ] **F.3 Configurar lint-staged**
+    - [ ] F.3.1 Añadir la configuración de `lint-staged` al `package.json`.
+    - [ ] F.3.2 Configurar `lint-staged` para que ejecute `prettier --write` y `eslint` en los archivos `.ts` y `.svelte` que estén en "stage".
+
+---
+### G. Mejorar la Documentación del Proyecto (README.md)
+
+**Descripción:** Reemplazar el `README.md` genérico por uno que describa el proyecto PupiCrochet, sus tecnologías y los pasos para que un desarrollador pueda ponerlo en marcha.
+
+- [ ] **G.1 Escribir Descripción del Proyecto**
+    - [ ] G.1.1 Añadir una descripción clara de lo que es PupiCrochet Store.
+    - [ ] G.1.2 Listar las tecnologías principales utilizadas (SvelteKit, Prisma, Tailwind, etc.).
+- [ ] **G.2 Añadir Guía de Instalación**
+    - [ ] G.2.1 Detallar los pasos: clonar repositorio, `npm install`.
+    - [ ] G.2.2 Explicar cómo crear el archivo `.env` a partir de `.env.example` (de la Tarea B).
+- [ ] **G.3 Añadir Guía de Base de Datos**
+    - [ ] G.3.1 Añadir instrucciones para ejecutar las migraciones (`npx prisma migrate dev`).
+    - [ ] G.3.2 Añadir instrucciones para poblar la base de datos (`npx prisma db seed`) (de la Tarea C).
+- [ ] **G.4 Listar Scripts Disponibles**
+    - [ ] G.4.1 Documentar los scripts principales en `package.json` (`dev`, `build`, `test`, `lint`, `format:check`).
+
+---
+### H. Configurar Alias de Rutas (Path Aliases)
+
+**Descripción:** Configurar alias para las rutas de importación comunes (`$lib`, `$components`, etc.) para mejorar la legibilidad y mantenibilidad del código.
+
+- [ ] **H.1 Configurar `tsconfig.json`**
+    - [ ] H.1.1 Abrir `tsconfig.json` y localizar la propiedad `compilerOptions.paths`.
+    - [ ] H.1.2 Añadir alias para las rutas más comunes. Como mínimo:
+        - `$lib`: `src/lib` (normalmente ya está)
+        - `$components/*`: `src/lib/components/*`
+        - `$server/*`: `src/lib/server/*`
+        - `$schemas/*`: `src/lib/schemas/*`
+- [ ] **H.2 Actualizar Código Existente (Opcional)**
+    - [ ] H.2.1 Realizar una búsqueda global para reemplazar algunas de las importaciones relativas más complejas por los nuevos alias.
+- [ ] **H.3 Verificación**
+    - [ ] H.3.1 Ejecutar `npm run check` para asegurar que TypeScript resuelve los nuevos alias correctamente.
+
+---
+### I. Fortalecer la Configuración de TypeScript
+
+**Descripción:** Añadir flags de compilador más estrictos a `tsconfig.json` para detectar posibles errores en tiempo de compilación y mejorar la limpieza y robustez del código.
+
+- [ ] **I.1 Actualizar `tsconfig.json`**
+    - [ ] I.1.1 Añadir `"noUnusedLocals": true` a `compilerOptions`.
+    - [ ] I.1.2 Añadir `"noUnusedParameters": true` a `compilerOptions`.
+    - [ ] I.1.3 Añadir `"noImplicitReturns": true` a `compilerOptions`.
+    - [ ] I.1.4 Añadir `"exactOptionalPropertyTypes": true` a `compilerOptions`.
+- [ ] **I.2 Verificación y Corrección**
+    - [ ] I.2.1 Ejecutar `npm run check` para identificar cualquier error existente introducido por las nuevas reglas.
+    - [ ] I.2.2 Corregir los errores reportados para cumplir con la nueva configuración estricta.
+
+---
+### J. Estandarizar Respuestas de la API del Servidor
+
+**Descripción:** Definir una estructura de respuesta estándar y helpers para todas las funciones `load` y `actions` del servidor. Esto hará que el manejo de datos y errores en el cliente sea más predecible y robusto.
+
+- [ ] **J.1 Definir Tipos de Respuesta**
+    - [ ] J.1.1 Crear el archivo `src/lib/types/api.types.ts`.
+    - [ ] J.1.2 Definir los tipos `ApiSuccessResponse<T>` y `ApiErrorResponse` para encapsular las respuestas.
+        *   Ejemplo: `{ success: true; data: T; }` y `{ success: false; error: { message: string; code?: string; }; }`.
+    - [ ] J.1.3 Definir un tipo `ApiResponse<T>` que sea la unión de los dos anteriores.
+- [ ] **J.2 Crear Helpers de Respuesta**
+    - [ ] J.2.1 Crear el archivo `src/lib/server/api.ts`.
+    - [ ] J.2.2 Implementar una función `jsonSuccess<T>(data: T, init?: ResponseInit)` que devuelva una `Response` con una `ApiSuccessResponse`.
+    - [ ] J.2.3 Implementar una función `jsonError(message: string, status: number, code?: string)` que devuelva una `Response` con una `ApiErrorResponse`.
+- [ ] **J.3 Documentar y Adoptar**
+    - [ ] J.3.1 Actualizar la documentación (ej. `README.md`) para indicar que todas las respuestas de la API deben usar estos helpers.
+    - [ ] J.3.2 Refactorizar un `action` existente (ej. `addToCart`) para usar los nuevos helpers como prueba de concepto.
+
+---
+### K. Implementar Logging Estructurado del Lado del Servidor
+
+**Descripción:** Configurar un sistema de logging estructurado (JSON) para el servidor. Esto reemplaza los `console.log` básicos y prepara la aplicación para un monitoreo y depuración efectivos en producción.
+
+- [ ] **K.1 Elegir e Instalar Librería de Logging**
+    - [ ] K.1.1 Investigar y elegir una librería de logging ligera y moderna (ej. `pino`).
+    - [ ] K.1.2 Instalar la librería como dependencia.
+- [ ] **K.2 Crear Servicio de Logger**
+    - [ ] K.2.1 Crear el archivo `src/lib/server/logger.service.ts`.
+    - [ ] K.2.2 Configurar una instancia del logger, asegurando que escriba en formato JSON.
+    - [ ] K.2.3 Exportar la instancia del logger para ser usada en toda la aplicación del servidor.
+- [ ] **K.3 Integrar con el Manejo de Errores**
+    - [ ] K.3.1 En el hook `handleError` de `src/hooks.server.ts` (Tarea D), reemplazar `console.error` con una llamada al nuevo servicio de logger para registrar los errores de forma estructurada.
+
+---
+### L. Establecer Fundamentos de Accesibilidad (a11y)
+
+**Descripción:** Integrar herramientas y prácticas para asegurar que la aplicación sea accesible desde el principio, cumpliendo con los estándares de la WCAG.
+
+- [ ] **L.1 Linter de Accesibilidad**
+    - [ ] L.1.1 Instalar el plugin `eslint-plugin-jsx-a11y` (funciona con Svelte).
+    - [ ] L.1.2 Configurar las reglas recomendadas en `.eslintrc.cjs`.
+- [ ] **L.2 Auditoría Inicial**
+    - [ ] L.2.1 Ejecutar el linter en el código existente y corregir los errores de bajo esfuerzo.
+    - [ ] L.2.2 Auditar manualmente la navegación por teclado en componentes clave (Header, botones, inputs).
+- [ ] **L.3 Establecer Prácticas**
+    - [ ] L.3.1 Documentar en el `README.md` o en una guía de contribución la importancia de usar HTML semántico (ej. `<button>` en lugar de `<div onclick>`).
+    - [ ] L.3.2 Asegurar que los componentes de formulario (Tarea 1.4) incluyan etiquetas (`<label>`) asociadas correctamente.
+
+---
+### M. Configurar un Entorno de Componentes con Storybook
+
+**Descripción:** Instalar y configurar Storybook para desarrollar, probar y documentar los componentes de la UI de forma aislada. Esto acelera el desarrollo y garantiza la consistencia visual.
+
+- [ ] **M.1 Instalación y Configuración**
+    - [ ] M.1.1 Ejecutar `npx storybook@latest init` para autoconfigurar Storybook para SvelteKit.
+    - [ ] M.1.2 Asegurar que la configuración de Storybook (`.storybook/main.ts`) cargue la configuración de Tailwind CSS.
+- [ ] **M.2 Crear Primeras "Stories"**
+    - [ ] M.2.1 Crear un archivo `src/lib/components/ui/Button.story.svelte` para un componente de botón básico.
+    - [ ] M.2.2 Escribir "stories" para los diferentes estados del botón (primario, secundario, deshabilitado).
+    - [ ] M.2.3 Crear una "story" para el componente `Header.svelte` para visualizarlo en aislamiento.
+- [ ] **M.3 Añadir Scripts a `package.json`**
+    - [ ] M.3.1 Verificar que los scripts `storybook` y `build-storybook` estén presentes.
+
+---
+### N. Facilitar la Gestión de la Base de Datos (DX)
+
+**Descripción:** Añadir un script para lanzar Prisma Studio, una GUI que facilita la visualización y manipulación de la base de datos durante el desarrollo.
+
+- [ ] **N.1 Añadir Script a `package.json`**
+    - [ ] N.1.1 Añadir un nuevo script: `"db:studio": "prisma studio"`.
+- [ ] **N.2 Documentación**
+    - [ ] N.2.1 Añadir el nuevo script a la sección de scripts disponibles en el `README.md` (Tarea G).
+
+---
 ### 1. Establecer y Mantener Consistencia de Estilos y UI
 
 **Descripción:** Asegurar que la aplicación siga un sistema de diseño coherente basado en Tailwind UI, implementando el modo oscuro y manteniendo la convención de clases definida.
