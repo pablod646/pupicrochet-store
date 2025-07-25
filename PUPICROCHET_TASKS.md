@@ -56,8 +56,8 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     - [x] C.2.1 Escribir la lógica en `prisma/seed.ts` para crear categorías de ejemplo.
     - [x] C.2.2 Añadir la creación de productos de ejemplo, asociándolos a las categorías.
     - [x] C.2.3 Añadir la creación de un usuario administrador de prueba.
-- [ ] **C.3 Ejecución y Verificación**
-    - [ ] C.3.1 Ejecutar `npx prisma db seed` y verificar que la base de datos se puebla correctamente.
+- [x] **C.3 Ejecución y Verificación**
+    - [x] C.3.1 Ejecutar `npx prisma db seed` y verificar que la base de datos se puebla correctamente.
 
 ---
 ### D. Implementar Manejo de Errores Global

@@ -17,7 +17,7 @@ async function main() {
     data: {
       name: 'Amigurumis',
       slug: 'amigurumis',
-      description: 'Tiernos muñecos tejidos a crochet.',
+      
     },
   });
 
@@ -25,7 +25,7 @@ async function main() {
     data: {
       name: 'Sonajeros',
       slug: 'sonajeros',
-      description: 'Sonajeros para bebés, seguros y divertidos.',
+      
     },
   });
 
@@ -33,7 +33,7 @@ async function main() {
     data: {
       name: 'Mantas de Apego',
       slug: 'mantas-de-apego',
-      description: 'Mantas suaves para el apego de los más pequeños.',
+      
     },
   });
 
@@ -109,7 +109,7 @@ async function main() {
       password: hashedPassword,
       name: 'Admin User',
       role: 'ADMIN',
-      emailVerified: true,
+      
     },
   });
 
