@@ -64,13 +64,13 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Centralizar el manejo de errores de la aplicación para presentar páginas de error amigables al usuario y facilitar el logging y debugging en el servidor.
 
-- [ ] **D.1 Hook `handleError`**
-    - [ ] D.1.1 Implementar el hook `handleError` en `src/hooks.server.ts`.
-    - [ ] D.1.2 Configurar un sistema de logging (ej. `console.error` por ahora) para capturar los detalles del error en el servidor.
-- [ ] **D.2 Páginas de Error Personalizadas**
-    - [ ] D.2.1 Crear un componente `src/lib/components/Error.svelte` para mostrar mensajes de error.
-    - [ ] D.2.2 Crear la ruta `src/routes/+error.svelte` para capturar errores inesperados y mostrar el componente `Error`.
-    - [ ] D.2.3 Diseñar una página 404 personalizada en `+error.svelte` que se muestre cuando el status sea 404.
+- [x] **D.1 Hook `handleError`**
+    - [x] D.1.1 Implementar el hook `handleError` en `src/hooks.server.ts`.
+    - [x] D.1.2 Configurar un sistema de logging (ej. `console.error` por ahora) para capturar los detalles del error en el servidor.
+- [x] **D.2 Páginas de Error Personalizadas**
+    - [x] D.2.1 Crear un componente `src/lib/components/Error.svelte` para mostrar mensajes de error.
+    - [x] D.2.2 Crear la ruta `src/routes/+error.svelte` para capturar errores inesperados y mostrar el componente `Error`.
+    - [x] D.2.3 Diseñar una página 404 personalizada en `+error.svelte` que se muestre cuando el status sea 404.
 
 ---
 ### E. Adelantar Configuración de Infraestructura de Testing
