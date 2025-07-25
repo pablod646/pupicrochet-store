@@ -1,5 +1,6 @@
 import { prisma } from '$lib/server/prisma';
 import type { Cookies } from '@sveltejs/kit';
+import { env } from '$env/static/private';
 
 export async function addToCart(cookies: Cookies, productId: string, quantity: number) {
   const sessionId = cookies.get('sessionid');
@@ -22,7 +23,7 @@ export async function addToCart(cookies: Cookies, productId: string, quantity: n
         data: { userId: user.id },
       });
       if (cart.id) {
-        cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+        cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
       }
     } else if (cartId && cart.id !== cartId) {
       // If user has a cart and there's an anonymous cart, merge them
@@ -46,7 +47,7 @@ export async function addToCart(cookies: Cookies, productId: string, quantity: n
         await prisma.cart.delete({ where: { id: anonymousCart.id } });
       }
       if (cart.id) {
-        cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+        cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
       }
     }
   } else {
@@ -54,14 +55,14 @@ export async function addToCart(cookies: Cookies, productId: string, quantity: n
     if (!cartId) {
       cart = await prisma.cart.create({ data: {} });
       cartId = cart.id;
-      cookies.set('cartId', cartId, { path: '/', httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+      cookies.set('cartId', cartId, { path: '/', httpOnly: true, sameSite: 'strict', secure: env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
     } else {
       cart = await prisma.cart.findUnique({ where: { id: cartId } });
       if (!cart) {
         // If cartId exists but cart doesn't (e.g., deleted), create a new one
         cart = await prisma.cart.create({ data: {} });
         cartId = cart.id;
-        cookies.set('cartId', cartId, { path: '/', httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+        cookies.set('cartId', cartId, { path: '/', httpOnly: true, sameSite: 'strict', secure: env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
       }
     }
   }

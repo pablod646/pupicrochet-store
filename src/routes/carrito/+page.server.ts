@@ -1,6 +1,7 @@
 import { prisma } from '../../lib/server/prisma';
 import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
+import { PUBLIC_NODE_ENV } from '$env/static/public';
 
 export const load: PageServerLoad = async ({ cookies, parent }) => {
   const { user } = await parent();
@@ -47,7 +48,7 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
         }
         await prisma.cart.delete({ where: { id: anonymousCart.id } });
       }
-      cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+      cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: PUBLIC_NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
     } else if (!cart && cartId) {
       // If user has no cart but there's an anonymous cart, assign it to the user
       cart = await prisma.cart.update({
@@ -85,7 +86,7 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
           },
         },
       });
-      cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+      cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: PUBLIC_NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
     }
   } else if (cartId) {
     // If no user, but there's an anonymous cart

@@ -24,7 +24,9 @@ export const actions = {
       return fail(400, { email, message: 'Credenciales inválidas' });
     }
 
-    cookies.set('sessionid', user.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+    import { PUBLIC_NODE_ENV } from '$env/static/public';
+
+cookies.set('sessionid', user.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: PUBLIC_NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
 
     throw redirect(303, '/');
   },

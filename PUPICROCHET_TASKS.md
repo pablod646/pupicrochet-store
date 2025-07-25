@@ -30,32 +30,32 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
     - [x] A.2.3 Añadir un paso para verificar el formato del código (`npm run format:check`).
     - [x] A.2.4 Añadir un paso para ejecutar las pruebas (`npm run test`).
 - [x] **A.3 Proteger la Rama Principal**
-    - [x] A.3.1 Configurar reglas de protección para la rama `main` en GitHub, requiriendo que el workflow de CI pase antes de poder hacer merge.
+    - [ ] A.3.1 Configurar reglas de protección para la rama `main` en GitHub, requiriendo que el workflow de CI pase antes de poder hacer merge.
 
 ---
 ### B. Implementar Gestión de Variables de Entorno
 
 **Descripción:** Establecer un sistema robusto para manejar secretos y configuraciones específicas del entorno (desarrollo, producción) usando archivos `.env`. Es un prerrequisito para la Tarea 3 (Auth) y el despliegue.
 
-- [ ] **B.1 Configuración de .env**
-    - [ ] B.1.1 Crear un archivo `.env.example` en la raíz del proyecto con todas las variables de entorno necesarias (ej. `DATABASE_URL`, `AUTH_SECRET`).
-    - [ ] B.1.2 Añadir `.env` y `.env.*.local` al archivo `.gitignore` para evitar subir secretos al repositorio.
-- [ ] **B.2 Integración en SvelteKit**
-    - [ ] B.2.1 Utilizar los módulos `$env/static/private` y `$env/static/public` de SvelteKit para acceder a las variables de forma segura.
-    - [ ] B.2.2 Documentar el proceso de configuración de entorno en el `README.md`.
+- [x] **B.1 Configuración de .env**
+    - [x] B.1.1 Crear un archivo `.env.example` en la raíz del proyecto con todas las variables de entorno necesarias (ej. `DATABASE_URL`, `AUTH_SECRET`).
+    - [x] B.1.2 Añadir `.env` y `.env.*.local` al archivo `.gitignore` para evitar subir secretos al repositorio.
+- [x] **B.2 Integración en SvelteKit**
+    - [x] B.2.1 Utilizar los módulos `$env/static/private` y `$env/static/public` de SvelteKit para acceder a las variables de forma segura.
+    - [x] B.2.2 Documentar el proceso de configuración de entorno en el `README.md`.
 
 ---
 ### C. Crear Script de Poblado de Base de Datos (Seeding)
 
 **Descripción:** Crear un script de "seeding" con Prisma para poblar la base de datos con datos de prueba (categorías, productos, usuario admin). Esto agiliza el desarrollo y las pruebas.
 
-- [ ] **C.1 Configurar Prisma Seed**
-    - [ ] C.1.1 Añadir la configuración `prisma.seed` al `package.json`.
-    - [ ] C.1.2 Crear el archivo `prisma/seed.ts`.
-- [ ] **C.2 Implementar Lógica de Seeding**
-    - [ ] C.2.1 Escribir la lógica en `prisma/seed.ts` para crear categorías de ejemplo.
-    - [ ] C.2.2 Añadir la creación de productos de ejemplo, asociándolos a las categorías.
-    - [ ] C.2.3 Añadir la creación de un usuario administrador de prueba.
+- [x] **C.1 Configurar Prisma Seed**
+    - [x] C.1.1 Añadir la configuración `prisma.seed` al `package.json`.
+    - [x] C.1.2 Crear el archivo `prisma/seed.ts`.
+- [x] **C.2 Implementar Lógica de Seeding**
+    - [x] C.2.1 Escribir la lógica en `prisma/seed.ts` para crear categorías de ejemplo.
+    - [x] C.2.2 Añadir la creación de productos de ejemplo, asociándolos a las categorías.
+    - [x] C.2.3 Añadir la creación de un usuario administrador de prueba.
 - [ ] **C.3 Ejecución y Verificación**
     - [ ] C.3.1 Ejecutar `npx prisma db seed` y verificar que la base de datos se puebla correctamente.
 

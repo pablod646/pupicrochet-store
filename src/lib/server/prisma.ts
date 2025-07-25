@@ -8,7 +8,9 @@ declare global {
 
 const prisma = globalThis.prisma || new PrismaClient();
 
-if (process.env.NODE_ENV !== 'production') {
+import { env } from '$env/static/private';
+
+if (env.NODE_ENV !== 'production') {
 	globalThis.prisma = prisma;
 }
 
