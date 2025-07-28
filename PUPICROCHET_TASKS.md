@@ -88,7 +88,7 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
   - [x] E.1.2 Crear una base de datos de prueba separada (ej. `test.db`) y configurar un script para aplicarle las migraciones antes de ejecutar las pruebas.
 - [ ] **E.2 Configuración de Playwright**
   - [ ] E.2.1 Verificar la configuración de Playwright y los scripts en `package.json`.
-  - [ ] E.2.2 Crear un flujo de prueba E2E básico (ej. visitar la página de inicio) para asegurar que el setup funciona.
+  - [x] E.2.2 Crear un flujo de prueba E2E básico (ej. visitar la página de inicio) para asegurar que el setup funciona.
 
 ---
 
