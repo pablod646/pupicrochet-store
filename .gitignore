@@ -24,3 +24,13 @@ vite.config.ts.timestamp-*
 
 /../generated/prisma
 .aider*
+
+# Test reports
+/playwright-report/
+/test-results/
+
+# Databases
+/prisma/dev.db
+/prisma/test.db
+/prisma/prisma/dev.db
+/prisma/prisma/test.db
