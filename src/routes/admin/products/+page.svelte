@@ -61,7 +61,7 @@
             <a href="/admin/products/{product.slug}/edit" class="text-blue-600 hover:underline mr-2">Editar</a>
             <form method="POST" action="?/deleteProduct" use:enhance={handleDelete}>
               <input type="hidden" name="productSlug" value={product.slug}>
-              <button type="submit" class="text-red-600 hover:underline" on:click={() => confirm('¿Estás seguro de que quieres eliminar este producto?')}>Eliminar</button>
+              <button type="submit" class="text-red-600 hover:underline" on:click={(e) => {if(!confirm('¿Estás seguro de que quieres eliminar este producto?')) e.preventDefault()}}>Eliminar</button>
             </form>
           </td>
         </tr>

@@ -6,6 +6,7 @@
 
   export let allCategories: CategoryHierarchy[];
   export let initialSelectedCategories: Category[] = [];
+  export let labelledby: string;
 
   let selectedCategories: Category[] = [...initialSelectedCategories];
   let highlightedCategory: Category | null = null;

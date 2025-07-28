@@ -1,6 +1,7 @@
 import { fail, redirect } from "@sveltejs/kit";
 import { prisma } from "$lib/server/prisma";
 import bcrypt from "bcrypt";
+import { PUBLIC_NODE_ENV } from "$env/static/public";
 
 export const actions = {
   login: async ({ request, cookies }) => {
@@ -26,8 +27,6 @@ export const actions = {
     if (!passwordMatch) {
       return fail(400, { email, message: "Credenciales inválidas" });
     }
-
-    import { PUBLIC_NODE_ENV } from "$env/static/public";
 
     cookies.set("sessionid", user.id, {
       path: "/",
