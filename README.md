@@ -1,61 +1,52 @@
-# sv
+# PupiCrochet Store
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Bienvenido a PupiCrochet Store, una tienda online de amigurumis y productos tejidos a mano. Este proyecto es una aplicación de comercio electrónico full-stack construida con SvelteKit, Prisma y Tailwind CSS.
 
-## Creating a project
+## Tecnologías Utilizadas
 
-If you're seeing this, you've probably already done this step. Congrats!
+*   **Framework:** SvelteKit
+*   **Base de Datos:** Prisma con SQLite
+*   **Estilos:** Tailwind CSS
+*   **Testing:** Playwright para E2E y Vitest para unitarios
+*   **Linting:** ESLint y Prettier
+*   **Hooks de Git:** Husky y lint-staged
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Guía de Instalación
 
-# create a new project in my-app
-npx sv create my-app
-```
+1.  **Clonar el repositorio:**
+    ```bash
+    git clone https://github.com/tu-usuario/pupicrochet-store.git
+    cd pupicrochet-store
+    ```
 
-## Developing
+2.  **Instalar dependencias:**
+    ```bash
+    npm install
+    ```
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+3.  **Configurar variables de entorno:**
+    Crea un archivo `.env` a partir del archivo `.env.example` y rellena las variables necesarias.
+    ```bash
+    cp .env.example .env
+    ```
 
-```bash
-npm run dev
+4.  **Ejecutar las migraciones de la base de datos:**
+    ```bash
+    npx prisma migrate dev
+    ```
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+5.  **Poblar la base de datos con datos de prueba:**
+    ```bash
+    npx prisma db seed
+    ```
 
-## Environment Variables
+## Scripts Disponibles
 
-This project uses environment variables for sensitive information and configuration. A `.env.example` file is provided as a template. To set up your environment variables:
-
-1.  Create a new file named `.env` in the root of the project.
-2.  Copy the contents of `.env.example` into your new `.env` file.
-3.  Fill in the appropriate values for each variable.
-
-Example `.env` file:
-
-```
-DATABASE_URL="your_database_url_here"
-AUTH_SECRET="your_auth_secret_here"
-PUBLIC_NODE_ENV="development"
-```
-
-**Accessing Environment Variables in SvelteKit:**
-
-- For **public** environment variables (accessible in both client and server-side code), prefix them with `PUBLIC_` in your `.env` file and access them using `$env/static/public` (e.g., `import { PUBLIC_NODE_ENV } from '$env/static/public';`).
-- For **private** environment variables (server-side only), do not prefix them with `PUBLIC_` and access them using `$env/static/private` (e.g., `import { DATABASE_URL } from '$env/static/private';`).
-
-**Important:** Do not commit your `.env` file to version control. It is already included in `.gitignore`.
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+*   `npm run dev`: Inicia el servidor de desarrollo.
+*   `npm run build`: Compila la aplicación para producción.
+*   `npm run preview`: Previsualiza la compilación de producción.
+*   `npm run test`: Ejecuta las pruebas unitarias.
+*   `npm run test:e2e`: Ejecuta las pruebas E2E.
+*   `npm run lint`: Comprueba el código con ESLint y Prettier.
+*   `npm run format`: Formatea el código con Prettier.
+*   `npm run db:studio`: Abre Prisma Studio para ver y editar la base de datos.

@@ -112,17 +112,17 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Reemplazar el `README.md` genérico por uno que describa el proyecto PupiCrochet, sus tecnologías y los pasos para que un desarrollador pueda ponerlo en marcha.
 
-- [ ] **G.1 Escribir Descripción del Proyecto**
-  - [ ] G.1.1 Añadir una descripción clara de lo que es PupiCrochet Store.
-  - [ ] G.1.2 Listar las tecnologías principales utilizadas (SvelteKit, Prisma, Tailwind, etc.).
-- [ ] **G.2 Añadir Guía de Instalación**
-  - [ ] G.2.1 Detallar los pasos: clonar repositorio, `npm install`.
-  - [ ] G.2.2 Explicar cómo crear el archivo `.env` a partir de `.env.example` (de la Tarea B).
-- [ ] **G.3 Añadir Guía de Base de Datos**
-  - [ ] G.3.1 Añadir instrucciones para ejecutar las migraciones (`npx prisma migrate dev`).
-  - [ ] G.3.2 Añadir instrucciones para poblar la base de datos (`npx prisma db seed`) (de la Tarea C).
-- [ ] **G.4 Listar Scripts Disponibles**
-  - [ ] G.4.1 Documentar los scripts principales en `package.json` (`dev`, `build`, `test`, `lint`, `format:check`).
+- [x] **G.1 Escribir Descripción del Proyecto**
+  - [x] G.1.1 Añadir una descripción clara de lo que es PupiCrochet Store.
+  - [x] G.1.2 Listar las tecnologías principales utilizadas (SvelteKit, Prisma, Tailwind, etc.).
+- [x] **G.2 Añadir Guía de Instalación**
+  - [x] G.2.1 Detallar los pasos: clonar repositorio, `npm install`.
+  - [x] G.2.2 Explicar cómo crear el archivo `.env` a partir de `.env.example` (de la Tarea B).
+- [x] **G.3 Añadir Guía de Base de Datos**
+  - [x] G.3.1 Añadir instrucciones para ejecutar las migraciones (`npx prisma migrate dev`).
+  - [x] G.3.2 Añadir instrucciones para poblar la base de datos (`npx prisma db seed`) (de la Tarea C).
+- [x] **G.4 Listar Scripts Disponibles**
+  - [x] G.4.1 Documentar los scripts principales en `package.json` (`dev`, `build`, `test`, `lint`, `format:check`).
 
 ---
 
