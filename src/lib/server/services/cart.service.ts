@@ -1,15 +1,19 @@
-import { prisma } from '$lib/server/prisma';
-import type { Cookies } from '@sveltejs/kit';
-import { env } from '$env/static/private';
+import { prisma } from "$lib/server/prisma";
+import type { Cookies } from "@sveltejs/kit";
+import { env } from "$env/static/private";
 
-export async function addToCart(cookies: Cookies, productId: string, quantity: number) {
-  const sessionId = cookies.get('sessionid');
+export async function addToCart(
+  cookies: Cookies,
+  productId: string,
+  quantity: number,
+) {
+  const sessionId = cookies.get("sessionid");
   let user = null;
   if (sessionId) {
     user = await prisma.user.findUnique({ where: { id: sessionId } });
   }
 
-  let cartId = cookies.get('cartId');
+  let cartId = cookies.get("cartId");
   let cart;
 
   if (user) {
@@ -23,7 +27,13 @@ export async function addToCart(cookies: Cookies, productId: string, quantity: n
         data: { userId: user.id },
       });
       if (cart.id) {
-        cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+        cookies.set("cartId", cart.id, {
+          path: "/",
+          httpOnly: true,
+          sameSite: "strict",
+          secure: env.NODE_ENV === "production",
+          maxAge: 60 * 60 * 24 * 7,
+        });
       }
     } else if (cartId && cart.id !== cartId) {
       // If user has a cart and there's an anonymous cart, merge them
@@ -35,7 +45,9 @@ export async function addToCart(cookies: Cookies, productId: string, quantity: n
       if (anonymousCart) {
         for (const item of anonymousCart.items) {
           await prisma.cartItem.upsert({
-            where: { productId_cartId: { productId: item.productId, cartId: cart.id } },
+            where: {
+              productId_cartId: { productId: item.productId, cartId: cart.id },
+            },
             update: { quantity: { increment: item.quantity } },
             create: {
               productId: item.productId,
@@ -47,7 +59,13 @@ export async function addToCart(cookies: Cookies, productId: string, quantity: n
         await prisma.cart.delete({ where: { id: anonymousCart.id } });
       }
       if (cart.id) {
-        cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+        cookies.set("cartId", cart.id, {
+          path: "/",
+          httpOnly: true,
+          sameSite: "strict",
+          secure: env.NODE_ENV === "production",
+          maxAge: 60 * 60 * 24 * 7,
+        });
       }
     }
   } else {
@@ -55,21 +73,33 @@ export async function addToCart(cookies: Cookies, productId: string, quantity: n
     if (!cartId) {
       cart = await prisma.cart.create({ data: {} });
       cartId = cart.id;
-      cookies.set('cartId', cartId, { path: '/', httpOnly: true, sameSite: 'strict', secure: env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+      cookies.set("cartId", cartId, {
+        path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+        secure: env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7,
+      });
     } else {
       cart = await prisma.cart.findUnique({ where: { id: cartId } });
       if (!cart) {
         // If cartId exists but cart doesn't (e.g., deleted), create a new one
         cart = await prisma.cart.create({ data: {} });
         cartId = cart.id;
-        cookies.set('cartId', cartId, { path: '/', httpOnly: true, sameSite: 'strict', secure: env.NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+        cookies.set("cartId", cartId, {
+          path: "/",
+          httpOnly: true,
+          sameSite: "strict",
+          secure: env.NODE_ENV === "production",
+          maxAge: 60 * 60 * 24 * 7,
+        });
       }
     }
   }
 
   if (!cart) {
     // This should ideally not happen with the logic above, but as a fallback
-    return { success: false, message: 'Could not find or create cart.' };
+    return { success: false, message: "Could not find or create cart." };
   }
 
   const targetCartId = cart.id;

@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 // Esta es una forma de asegurar que solo haya una instancia de PrismaClient
 // en desarrollo, donde la recarga en caliente (HMR) podría crear varias.
@@ -8,10 +8,8 @@ declare global {
 
 const prisma = globalThis.prisma || new PrismaClient();
 
-import { env } from '$env/static/private';
-
-if (env.NODE_ENV !== 'production') {
-	globalThis.prisma = prisma;
+if (process.env.NODE_ENV !== "production") {
+  globalThis.prisma = prisma;
 }
 
 export { prisma };

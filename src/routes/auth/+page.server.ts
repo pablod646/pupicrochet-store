@@ -1,33 +1,42 @@
-import { fail, redirect } from '@sveltejs/kit';
-import { prisma } from '$lib/server/prisma';
-import bcrypt from 'bcrypt';
+import { fail, redirect } from "@sveltejs/kit";
+import { prisma } from "$lib/server/prisma";
+import bcrypt from "bcrypt";
 
 export const actions = {
   login: async ({ request, cookies }) => {
     const data = await request.formData();
-    const email = data.get('email') as string;
-    const password = data.get('password') as string;
+    const email = data.get("email") as string;
+    const password = data.get("password") as string;
 
     if (!email || !password) {
-      return fail(400, { email, message: 'Falta correo electrónico o contraseña' });
+      return fail(400, {
+        email,
+        message: "Falta correo electrónico o contraseña",
+      });
     }
 
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      return fail(400, { email, message: 'Credenciales inválidas' });
+      return fail(400, { email, message: "Credenciales inválidas" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return fail(400, { email, message: 'Credenciales inválidas' });
+      return fail(400, { email, message: "Credenciales inválidas" });
     }
 
-    import { PUBLIC_NODE_ENV } from '$env/static/public';
+    import { PUBLIC_NODE_ENV } from "$env/static/public";
 
-cookies.set('sessionid', user.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: PUBLIC_NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+    cookies.set("sessionid", user.id, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: PUBLIC_NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 7,
+    });
 
-    throw redirect(303, '/');
+    throw redirect(303, "/");
   },
 };

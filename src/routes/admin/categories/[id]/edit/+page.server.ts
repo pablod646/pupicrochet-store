@@ -1,8 +1,8 @@
-import { prisma } from '$lib/server/prisma';
-import { fail, redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
-import { generateSlug } from '$lib/utils/slug';
-import type { Category } from '@prisma/client';
+import { prisma } from "$lib/server/prisma";
+import { fail, redirect } from "@sveltejs/kit";
+import type { PageServerLoad, Actions } from "./$types";
+import { generateSlug } from "$lib/utils/slug";
+import type { Category } from "@prisma/client";
 
 type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ params }) => {
   });
 
   if (!category) {
-    throw redirect(303, '/admin/categories');
+    throw redirect(303, "/admin/categories");
   }
 
   const categories = await prisma.category.findMany({
@@ -29,7 +29,7 @@ export const load: PageServerLoad = async ({ params }) => {
       },
     },
     orderBy: {
-      name: 'asc',
+      name: "asc",
     },
   });
 
@@ -39,11 +39,11 @@ export const load: PageServerLoad = async ({ params }) => {
 export const actions = {
   updateCategory: async ({ request, params }) => {
     const data = await request.formData();
-    const name = data.get('name') as string;
-    const parentId = data.get('parentId') as string | null;
+    const name = data.get("name") as string;
+    const parentId = data.get("parentId") as string | null;
 
     if (!name) {
-      return fail(400, { message: 'El nombre es requerido.' });
+      return fail(400, { message: "El nombre es requerido." });
     }
 
     try {
@@ -56,10 +56,10 @@ export const actions = {
           parentId: parentId || undefined,
         },
       });
-      return { success: true, message: 'Categoría actualizada exitosamente.' };
+      return { success: true, message: "Categoría actualizada exitosamente." };
     } catch (error) {
       console.error("Error updating category:", error);
-      return fail(500, { message: 'Fallo al actualizar la categoría.' });
+      return fail(500, { message: "Fallo al actualizar la categoría." });
     }
   },
 } satisfies Actions;

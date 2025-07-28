@@ -43,8 +43,8 @@ PUBLIC_NODE_ENV="development"
 
 **Accessing Environment Variables in SvelteKit:**
 
--   For **public** environment variables (accessible in both client and server-side code), prefix them with `PUBLIC_` in your `.env` file and access them using `$env/static/public` (e.g., `import { PUBLIC_NODE_ENV } from '$env/static/public';`).
--   For **private** environment variables (server-side only), do not prefix them with `PUBLIC_` and access them using `$env/static/private` (e.g., `import { DATABASE_URL } from '$env/static/private';`).
+- For **public** environment variables (accessible in both client and server-side code), prefix them with `PUBLIC_` in your `.env` file and access them using `$env/static/public` (e.g., `import { PUBLIC_NODE_ENV } from '$env/static/public';`).
+- For **private** environment variables (server-side only), do not prefix them with `PUBLIC_` and access them using `$env/static/private` (e.g., `import { DATABASE_URL } from '$env/static/private';`).
 
 **Important:** Do not commit your `.env` file to version control. It is already included in `.gitignore`.
 

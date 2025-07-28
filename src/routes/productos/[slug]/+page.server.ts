@@ -1,5 +1,5 @@
-import type { Actions, PageServerLoad } from './$types';
-import { prisma } from '$lib/server/prisma';
+import type { Actions, PageServerLoad } from "./$types";
+import { prisma } from "$lib/server/prisma";
 
 export const load: PageServerLoad = async ({ params }) => {
   const product = await prisma.product.findUnique({
@@ -27,13 +27,13 @@ export const load: PageServerLoad = async ({ params }) => {
   return { product, relatedProducts };
 };
 
-import { addToCart } from '$lib/server/services/cart.service';
+import { addToCart } from "$lib/server/services/cart.service";
 
 export const actions = {
   addToCart: async ({ request, cookies }) => {
     const data = await request.formData();
-    const productId = data.get('productId') as string;
-    const quantity = Number(data.get('quantity')) || 1;
+    const productId = data.get("productId") as string;
+    const quantity = Number(data.get("quantity")) || 1;
 
     return await addToCart(cookies, productId, quantity);
   },

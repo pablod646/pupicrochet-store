@@ -1,18 +1,22 @@
-import { prisma } from '$lib/server/prisma';
-import type { Category } from '@prisma/client';
+import { prisma } from "$lib/server/prisma";
+import type { Category } from "@prisma/client";
 
-export type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
+export type CategoryWithChildren = Category & {
+  children: CategoryWithChildren[];
+};
 
-export async function getCategoriesHierarchy(): Promise<CategoryWithChildren[]> {
+export async function getCategoriesHierarchy(): Promise<
+  CategoryWithChildren[]
+> {
   const categories = await prisma.category.findMany({
     orderBy: {
-      name: 'asc',
+      name: "asc",
     },
   });
 
   const buildHierarchy = (
     categories: Category[],
-    parentId: string | null
+    parentId: string | null,
   ): CategoryWithChildren[] => {
     return categories
       .filter((category) => category.parentId === parentId)

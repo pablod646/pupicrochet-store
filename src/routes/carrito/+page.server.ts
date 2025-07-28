@@ -1,11 +1,11 @@
-import { prisma } from '../../lib/server/prisma';
-import type { PageServerLoad, Actions } from './$types';
-import { fail } from '@sveltejs/kit';
-import { PUBLIC_NODE_ENV } from '$env/static/public';
+import { prisma } from "../../lib/server/prisma";
+import type { PageServerLoad, Actions } from "./$types";
+import { fail } from "@sveltejs/kit";
+import { PUBLIC_NODE_ENV } from "$env/static/public";
 
 export const load: PageServerLoad = async ({ cookies, parent }) => {
   const { user } = await parent();
-  let cartId = cookies.get('cartId');
+  let cartId = cookies.get("cartId");
   let cart = null;
 
   if (user) {
@@ -16,12 +16,12 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
         items: {
           include: {
             product: {
-            include: {
-              images: {
-                take: 1,
+              include: {
+                images: {
+                  take: 1,
+                },
               },
             },
-          },
           },
         },
       },
@@ -37,7 +37,9 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
       if (anonymousCart) {
         for (const item of anonymousCart.items) {
           await prisma.cartItem.upsert({
-            where: { productId_cartId: { productId: item.productId, cartId: cart.id } },
+            where: {
+              productId_cartId: { productId: item.productId, cartId: cart.id },
+            },
             update: { quantity: { increment: item.quantity } },
             create: {
               productId: item.productId,
@@ -48,7 +50,13 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
         }
         await prisma.cart.delete({ where: { id: anonymousCart.id } });
       }
-      cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: PUBLIC_NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+      cookies.set("cartId", cart.id, {
+        path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+        secure: PUBLIC_NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7,
+      });
     } else if (!cart && cartId) {
       // If user has no cart but there's an anonymous cart, assign it to the user
       cart = await prisma.cart.update({
@@ -58,12 +66,12 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
           items: {
             include: {
               product: {
-            include: {
-              images: {
-                take: 1,
+                include: {
+                  images: {
+                    take: 1,
+                  },
+                },
               },
-            },
-          },
             },
           },
         },
@@ -76,17 +84,23 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
           items: {
             include: {
               product: {
-            include: {
-              images: {
-                take: 1,
+                include: {
+                  images: {
+                    take: 1,
+                  },
+                },
               },
-            },
-          },
             },
           },
         },
       });
-      cookies.set('cartId', cart.id, { path: '/', httpOnly: true, sameSite: 'strict', secure: PUBLIC_NODE_ENV === 'production', maxAge: 60 * 60 * 24 * 7 });
+      cookies.set("cartId", cart.id, {
+        path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+        secure: PUBLIC_NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7,
+      });
     }
   } else if (cartId) {
     // If no user, but there's an anonymous cart
@@ -96,12 +110,12 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
         items: {
           include: {
             product: {
-            include: {
-              images: {
-                take: 1,
+              include: {
+                images: {
+                  take: 1,
+                },
               },
             },
-          },
           },
         },
       },
@@ -112,7 +126,11 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
     return { cart: null, total: 0, products: [] };
   }
 
-  const total = cart.items.reduce((acc: number, item: { quantity: number; product: { price: number; }; }) => acc + item.quantity * item.product.price, 0);
+  const total = cart.items.reduce(
+    (acc: number, item: { quantity: number; product: { price: number } }) =>
+      acc + item.quantity * item.product.price,
+    0,
+  );
 
   const products = await prisma.product.findMany();
 
@@ -122,17 +140,23 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
 export const actions = {
   updateQuantity: async ({ request }) => {
     const data = await request.formData();
-    const itemId = data.get('itemId') as string;
-    const quantityStr = data.get('quantity') as string;
+    const itemId = data.get("itemId") as string;
+    const quantityStr = data.get("quantity") as string;
 
     if (!itemId || !quantityStr) {
-      return fail(400, { success: false, message: 'Faltan datos del artículo.' });
+      return fail(400, {
+        success: false,
+        message: "Faltan datos del artículo.",
+      });
     }
 
     const quantity = parseInt(quantityStr);
 
     if (isNaN(quantity)) {
-      return fail(400, { success: false, message: 'La cantidad no es un número válido.' });
+      return fail(400, {
+        success: false,
+        message: "La cantidad no es un número válido.",
+      });
     }
 
     try {
@@ -146,24 +170,33 @@ export const actions = {
       }
     } catch (error) {
       console.error(error);
-      return fail(500, { success: false, message: 'No se pudo actualizar el artículo.' });
+      return fail(500, {
+        success: false,
+        message: "No se pudo actualizar el artículo.",
+      });
     }
 
     return { success: true };
   },
   removeItem: async ({ request }) => {
     const data = await request.formData();
-    const itemId = data.get('itemId') as string;
+    const itemId = data.get("itemId") as string;
 
     if (!itemId) {
-      return fail(400, { success: false, message: 'Falta el ID del artículo.' });
+      return fail(400, {
+        success: false,
+        message: "Falta el ID del artículo.",
+      });
     }
 
     try {
       await prisma.cartItem.delete({ where: { id: itemId } });
     } catch (error) {
       console.error(error);
-      return fail(500, { success: false, message: 'No se pudo eliminar el artículo.' });
+      return fail(500, {
+        success: false,
+        message: "No se pudo eliminar el artículo.",
+      });
     }
 
     return { success: true };

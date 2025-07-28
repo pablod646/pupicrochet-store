@@ -33,7 +33,7 @@
     </form>
     <div class="flex items-center gap-2">
       <div class="relative">
-          <a href="/carrito" class="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-[#f3e8ed] text-[#1b0e15]">
+          <a href="/carrito" aria-label="Cart" class="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-[#f3e8ed] text-[#1b0e15]">
             <div class="text-[#1b0e15]">
               <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM176,88a48,48,0,0,1-96,0,8,8,0,0,1,16,0,32,32,0,0,0,64,0,8,8,0,0,1,16,0Z"></path></svg>
             </div>

@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-import { generateSlug } from '../src/lib/utils/slug';
+import { PrismaClient } from "@prisma/client";
+import { generateSlug } from "../src/lib/utils/slug";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const defaultCategoryName = 'Default';
+  const defaultCategoryName = "Default";
 
   let defaultCategory = await prisma.category.findUnique({
     where: { name: defaultCategoryName },
@@ -27,7 +27,9 @@ async function main() {
     },
   });
 
-  console.log(`Found ${productsWithoutCategory.length} products without a category.`);
+  console.log(
+    `Found ${productsWithoutCategory.length} products without a category.`,
+  );
 
   for (const product of productsWithoutCategory) {
     await prisma.product.update({
@@ -37,7 +39,7 @@ async function main() {
     console.log(`Assigned default category to product: ${product.name}`);
   }
 
-  console.log('Default category assignment complete.');
+  console.log("Default category assignment complete.");
 }
 
 main()

@@ -31,7 +31,7 @@
   }
 </script>
 
-<div class="flex space-x-4">
+<div class="flex space-x-4" role="group" aria-labelledby={labelledby}>
   <!-- Panel Izquierdo: Categorías Seleccionadas -->
   <div class="w-1/2 border rounded p-4 bg-gray-50">
     <h3 class="font-bold mb-2">Categorías Seleccionadas:</h3>

@@ -1,8 +1,8 @@
-import { prisma } from '$lib/server/prisma';
-import type { PageServerLoad, Actions } from './$types';
-import { fail } from '@sveltejs/kit';
-import { generateSlug } from '$lib/utils/slug';
-import { getCategoriesHierarchy } from '$lib/server/queries/categories';
+import { prisma } from "$lib/server/prisma";
+import type { PageServerLoad, Actions } from "./$types";
+import { fail } from "@sveltejs/kit";
+import { generateSlug } from "$lib/utils/slug";
+import { getCategoriesHierarchy } from "$lib/server/queries/categories";
 
 export const load: PageServerLoad = async () => {
   const categories = await getCategoriesHierarchy();
@@ -12,11 +12,11 @@ export const load: PageServerLoad = async () => {
 export const actions = {
   createCategoryOrSubcategory: async ({ request }) => {
     const data = await request.formData();
-    const name = data.get('name') as string;
-    const parentId = data.get('parentCategoryId') as string | null;
+    const name = data.get("name") as string;
+    const parentId = data.get("parentCategoryId") as string | null;
 
     if (!name) {
-      return fail(400, { message: 'El nombre es requerido.' });
+      return fail(400, { message: "El nombre es requerido." });
     }
 
     try {
@@ -28,19 +28,26 @@ export const actions = {
           parentId: parentId || undefined,
         },
       });
-      return { success: true, message: parentId ? 'Subcategoría creada exitosamente.' : 'Categoría creada exitosamente.' };
+      return {
+        success: true,
+        message: parentId
+          ? "Subcategoría creada exitosamente."
+          : "Categoría creada exitosamente.",
+      };
     } catch (error) {
       console.error("Error creating category/subcategory:", error);
-      return fail(500, { message: 'Fallo al crear la categoría/subcategoría.' });
+      return fail(500, {
+        message: "Fallo al crear la categoría/subcategoría.",
+      });
     }
   },
 
   deleteCategory: async ({ request }) => {
     const data = await request.formData();
-    const categoryId = data.get('categoryId') as string;
+    const categoryId = data.get("categoryId") as string;
 
     if (!categoryId) {
-      return fail(400, { message: 'El ID de la categoría es requerido.' });
+      return fail(400, { message: "El ID de la categoría es requerido." });
     }
 
     try {
@@ -64,10 +71,10 @@ export const actions = {
       await prisma.category.delete({
         where: { id: categoryId },
       });
-      return { success: true, message: 'Categoría eliminada exitosamente.' };
+      return { success: true, message: "Categoría eliminada exitosamente." };
     } catch (error) {
       console.error("Error deleting category:", error);
-      return fail(500, { message: 'Fallo al eliminar la categoría.' });
+      return fail(500, { message: "Fallo al eliminar la categoría." });
     }
   },
 } satisfies Actions;

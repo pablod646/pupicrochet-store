@@ -1,8 +1,8 @@
-import { fail } from '@sveltejs/kit';
-import { prisma } from '$lib/server/prisma';
-import type { Actions, PageServerLoad } from './$types';
-import { generateSlug } from '$lib/utils/slug';
-import { getCategoriesHierarchy } from '$lib/server/queries/categories';
+import { fail } from "@sveltejs/kit";
+import { prisma } from "$lib/server/prisma";
+import type { Actions, PageServerLoad } from "./$types";
+import { generateSlug } from "$lib/utils/slug";
+import { getCategoriesHierarchy } from "$lib/server/queries/categories";
 
 export const load: PageServerLoad = async () => {
   const categories = await getCategoriesHierarchy();
@@ -12,16 +12,18 @@ export const load: PageServerLoad = async () => {
 export const actions = {
   createProduct: async ({ request }) => {
     const data = await request.formData();
-    const name = data.get('name') as string;
-    const description = data.get('description') as string;
-    const price = parseFloat(data.get('price') as string);
-    const dimensions = data.get('dimensions') as string | null;
-    const materials = data.get('materials') as string | null;
-    const imageUrls = data.getAll('imageUrls[]') as string[];
-    const categoryIds = data.getAll('categoryIds[]') as string[];
+    const name = data.get("name") as string;
+    const description = data.get("description") as string;
+    const price = parseFloat(data.get("price") as string);
+    const dimensions = data.get("dimensions") as string | null;
+    const materials = data.get("materials") as string | null;
+    const imageUrls = data.getAll("imageUrls[]") as string[];
+    const categoryIds = data.getAll("categoryIds[]") as string[];
 
     if (!name || !description || isNaN(price) || price <= 0) {
-      return fail(400, { message: 'Nombre, descripción y un precio válido son requeridos.' });
+      return fail(400, {
+        message: "Nombre, descripción y un precio válido son requeridos.",
+      });
     }
 
     try {
@@ -34,17 +36,22 @@ export const actions = {
           dimensions,
           materials,
           categories: {
-            connect: categoryIds.map(id => ({ id }))
+            connect: categoryIds.map((id) => ({ id })),
           },
           images: {
-            create: imageUrls.filter(url => url).map(url => ({ url }))
-          }
-        }
+            create: imageUrls.filter((url) => url).map((url) => ({ url })),
+          },
+        },
       });
-      return { success: true, productId: product.id, productSlug: product.slug, message: '¡Producto creado exitosamente!' };
+      return {
+        success: true,
+        productId: product.id,
+        productSlug: product.slug,
+        message: "¡Producto creado exitosamente!",
+      };
     } catch (error) {
       console.error("Error creating product:", error);
-      return fail(500, { message: 'Fallo al crear el producto.' });
+      return fail(500, { message: "Fallo al crear el producto." });
     }
   },
 } satisfies Actions;

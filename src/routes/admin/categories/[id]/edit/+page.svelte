@@ -2,6 +2,7 @@
   import { enhance } from '$app/forms';
   import type { ActionData, PageData } from './$types';
   import type { Category } from '@prisma/client';
+  import CategoryOption from '$lib/components/CategoryOption.svelte';
 
   type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
@@ -22,21 +23,6 @@
       }
     };
   };
-
-  function renderCategoryOptions(categories: CategoryWithChildren[], indent = 0) {
-    let options = '';
-    for (const cat of categories) {
-      // Exclude the current category from being its own parent or a child of itself
-      if (cat.id === category.id) continue;
-
-      const prefix = '&nbsp;'.repeat(indent * 4);
-      options += `<option value="${cat.id}">${prefix}${cat.name}</option>`;
-      if (cat.children && cat.children.length > 0) {
-        options += renderCategoryOptions(cat.children, indent + 1);
-      }
-    }
-    return options;
-  }
 </script>
 
 <h1 class="text-2xl font-bold mb-4">Editar Categoría: {category.name}</h1>
@@ -51,7 +37,11 @@
     <label for="parentId" class="block text-gray-700 text-sm font-bold mb-2">Categoría Padre (Opcional):</label>
     <select id="parentId" name="parentId" bind:value={selectedParentCategory} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
       <option value="">Ninguna (Categoría Principal)</option>
-      {@html renderCategoryOptions(data.categories)}
+      {#each data.categories as cat}
+        {#if cat.id !== category.id}
+          <CategoryOption category={cat} />
+        {/if}
+      {/each}
     </select>
   </div>
 

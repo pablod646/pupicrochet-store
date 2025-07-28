@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { generateSlug } from '../src/lib/utils/slug';
+import { PrismaClient } from "@prisma/client";
+import { generateSlug } from "../src/lib/utils/slug";
 
 const prisma = new PrismaClient();
 
@@ -38,7 +38,7 @@ async function main() {
     console.log(`Updated product '${product.name}' with slug: ${slug}`);
   }
 
-  console.log('Slug population complete.');
+  console.log("Slug population complete.");
 }
 
 main()

@@ -4,6 +4,7 @@
   import { invalidateAll } from '$app/navigation';
   import CategoryNode from '$lib/components/CategoryNode.svelte';
   import type { Category } from '@prisma/client';
+  import CategoryOption from '$lib/components/CategoryOption.svelte';
 
   type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
@@ -43,18 +44,6 @@
       }
     };
   };
-
-  function renderCategoryOptions(categories: CategoryWithChildren[], indent = 0) {
-    let options = '';
-    for (const category of categories) {
-      const prefix = '&nbsp;'.repeat(indent * 4);
-      options += `<option value="${category.id}">${prefix}${category.name}</option>`;
-      if (category.children && category.children.length > 0) {
-        options += renderCategoryOptions(category.children, indent + 1);
-      }
-    }
-    return options;
-  }
 </script>
 
 <h1 class="text-2xl font-bold mb-4">Administración de Categorías</h1>
@@ -76,7 +65,9 @@
         <label for="parentCategoryId" class="block text-gray-700 text-sm font-bold mb-2">Categoría Padre (Opcional):</label>
         <select id="parentCategoryId" name="parentCategoryId" bind:value={selectedParentCategory} class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
           <option value="">Ninguna (Crear Categoría Principal)</option>
-          {@html renderCategoryOptions(data.categories)}
+          {#each data.categories as category}
+            <CategoryOption {category} />
+          {/each}
         </select>
       </div>
       <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Crear</button>
