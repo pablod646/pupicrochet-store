@@ -212,6 +212,10 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 ### M. Configurar un Entorno de Componentes con Storybook
 
+---
+
+### M. Configurar un Entorno de Componentes con Storybook
+
 **Descripción:** Instalar y configurar Storybook para desarrollar, probar y documentar los componentes de la UI de forma aislada. Esto acelera el desarrollo y garantiza la consistencia visual.
 
 - [ ] **M.1 Instalación y Configuración**
