@@ -1,7 +1,7 @@
 import { fail, redirect } from "@sveltejs/kit";
 import { prisma } from "$lib/server/prisma";
 import bcrypt from "bcrypt";
-import { PUBLIC_NODE_ENV } from "$env/static/public";
+import { NODE_ENV } from "$env/static/private";
 
 export const actions = {
   login: async ({ request, cookies }) => {

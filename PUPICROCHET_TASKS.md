@@ -96,15 +96,15 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Automatizar la verificación de calidad de código localmente antes de cada commit. Esto complementa la CI (Tarea A) y previene que código mal formateado o con errores de linting llegue al repositorio.
 
-- [ ] **F.1 Instalación y Configuración**
-  - [ ] F.1.1 Instalar `husky` y `lint-staged` como dependencias de desarrollo.
-  - [ ] F.1.2 Ejecutar `npx husky init` para inicializar la configuración de Husky.
-- [ ] **F.2 Crear Hook Pre-Commit**
-  - [ ] F.2.1 Crear el archivo de hook `.husky/pre-commit`.
-  - [ ] F.2.2 Añadir el comando `npx lint-staged` al hook `pre-commit`.
-- [ ] **F.3 Configurar lint-staged**
-  - [ ] F.3.1 Añadir la configuración de `lint-staged` al `package.json`.
-  - [ ] F.3.2 Configurar `lint-staged` para que ejecute `prettier --write` y `eslint` en los archivos `.ts` y `.svelte` que estén en "stage".
+- [x] **F.1 Instalación y Configuración**
+  - [x] F.1.1 Instalar `husky` y `lint-staged` como dependencias de desarrollo.
+  - [x] F.1.2 Ejecutar `npx husky init` para inicializar la configuración de Husky.
+- [x] **F.2 Crear Hook Pre-Commit**
+  - [x] F.2.1 Crear el archivo de hook `.husky/pre-commit`.
+  - [x] F.2.2 Añadir el comando `npx lint-staged` al hook `pre-commit`.
+- [x] **F.3 Configurar lint-staged**
+  - [x] F.3.1 Añadir la configuración de `lint-staged` al `package.json`.
+  - [x] F.3.2 Configurar `lint-staged` para que ejecute `prettier --write` y `eslint` en los archivos `.ts` y `.svelte` que estén en "stage".
 
 ---
 

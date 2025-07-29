@@ -1,6 +1,6 @@
 import { prisma } from "$lib/server/prisma";
 import type { Cookies } from "@sveltejs/kit";
-import { env } from "$env/static/private";
+import { NODE_ENV } from "$env/static/private";
 
 export async function addToCart(
   cookies: Cookies,
