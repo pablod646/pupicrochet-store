@@ -173,7 +173,7 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
   - [x] J.2.2 Implementar una función `jsonSuccess<T>(data: T, init?: ResponseInit)` que devuelva una `Response` con una `ApiSuccessResponse`.
   - [x] J.2.3 Implementar una función `jsonError(message: string, status: number, code?: string)` que devuelva una `Response` con una `ApiErrorResponse`.
 - [x] **J.3 Documentar y Adoptar**
-  - [ ] J.3.1 Actualizar la documentación (ej. `README.md`) para indicar que todas las respuestas de la API deben usar estos helpers.
+  - [x] J.3.1 Actualizar la documentación (ej. `README.md`) para indicar que todas las respuestas de la API deben usar estos helpers.
   - [x] J.3.2 Refactorizar un `action` existente (ej. `addToCart`) para usar los nuevos helpers como prueba de concepto.
 
 ---
@@ -182,15 +182,15 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Configurar un sistema de logging estructurado (JSON) para el servidor. Esto reemplaza los `console.log` básicos y prepara la aplicación para un monitoreo y depuración efectivos en producción.
 
-- [ ] **K.1 Elegir e Instalar Librería de Logging**
-  - [ ] K.1.1 Investigar y elegir una librería de logging ligera y moderna (ej. `pino`).
-  - [ ] K.1.2 Instalar la librería como dependencia.
-- [ ] **K.2 Crear Servicio de Logger**
-  - [ ] K.2.1 Crear el archivo `src/lib/server/logger.service.ts`.
-  - [ ] K.2.2 Configurar una instancia del logger, asegurando que escriba en formato JSON.
-  - [ ] K.2.3 Exportar la instancia del logger para ser usada en toda la aplicación del servidor.
-- [ ] **K.3 Integrar con el Manejo de Errores**
-  - [ ] K.3.1 En el hook `handleError` de `src/hooks.server.ts` (Tarea D), reemplazar `console.error` con una llamada al nuevo servicio de logger para registrar los errores de forma estructurada.
+- [x] **K.1 Elegir e Instalar Librería de Logging**
+  - [x] K.1.1 Investigar y elegir una librería de logging ligera y moderna (ej. `pino`).
+  - [x] K.1.2 Instalar la librería como dependencia.
+- [x] **K.2 Crear Servicio de Logger**
+  - [x] K.2.1 Crear el archivo `src/lib/server/logger.service.ts`.
+  - [x] K.2.2 Configurar una instancia del logger, asegurando que escriba en formato JSON.
+  - [x] K.2.3 Exportar la instancia del logger para ser usada en toda la aplicación del servidor.
+- [x] **K.3 Integrar con el Manejo de Errores**
+  - [x] K.3.1 En el hook `handleError` de `src/hooks.server.ts` (Tarea D), reemplazar `console.error` con una llamada al nuevo servicio de logger para registrar los errores de forma estructurada.
 
 ---
 
