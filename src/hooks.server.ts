@@ -1,5 +1,5 @@
 import { prisma } from "$lib/server/prisma";
-import logger from "$lib/server/logger.service";
+import type { Handle, HandleServerError } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
   const sessionId = event.cookies.get("sessionid");
