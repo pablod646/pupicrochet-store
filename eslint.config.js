@@ -1,42 +1,29 @@
-import globals from "globals";
-import eslintPluginSvelte from "eslint-plugin-svelte";
+import js from "@eslint/js";
+import svelte from "eslint-plugin-svelte";
 import svelteParser from "svelte-eslint-parser";
 import typescriptParser from "@typescript-eslint/parser";
-import jsxA11y from "eslint-plugin-jsx-a11y";
+import globals from "globals";
 
 export default [
-  {
-    ignores: [".DS_Store", "build", ".svelte-kit", "dist", "node_modules"],
-  },
-  {
-    files: ["**/*.js", "**/*.ts"],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-      parser: typescriptParser,
-    },
-  },
+  js.configs.recommended,
+  ...svelte.configs['flat/recommended'],
   {
     files: ["**/*.svelte"],
     languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
       parser: svelteParser,
       parserOptions: {
         parser: typescriptParser,
       },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
     plugins: {
-      svelte: eslintPluginSvelte,
-      "jsx-a11y": jsxA11y,
+      svelte,
     },
     rules: {
-      ...eslintPluginSvelte.configs.recommended.rules,
-      ...jsxA11y.configs.recommended.rules,
+      ...svelte.configs.recommended.rules,
     },
   },
 ];
