@@ -25,7 +25,7 @@ export const actions = {
         data: {
           name,
           slug,
-          parentId: parentId || undefined,
+          ...(parentId && { parent: { connect: { id: parentId } } }),
         },
       });
       return {

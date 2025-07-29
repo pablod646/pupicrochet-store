@@ -148,14 +148,14 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Añadir flags de compilador más estrictos a `tsconfig.json` para detectar posibles errores en tiempo de compilación y mejorar la limpieza y robustez del código.
 
-- [ ] **I.1 Actualizar `tsconfig.json`**
-  - [ ] I.1.1 Añadir `"noUnusedLocals": true` a `compilerOptions`.
-  - [ ] I.1.2 Añadir `"noUnusedParameters": true` a `compilerOptions`.
-  - [ ] I.1.3 Añadir `"noImplicitReturns": true` a `compilerOptions`.
-  - [ ] I.1.4 Añadir `"exactOptionalPropertyTypes": true` a `compilerOptions`.
-- [ ] **I.2 Verificación y Corrección**
-  - [ ] I.2.1 Ejecutar `npm run check` para identificar cualquier error existente introducido por las nuevas reglas.
-  - [ ] I.2.2 Corregir los errores reportados para cumplir con la nueva configuración estricta.
+- [x] **I.1 Actualizar `tsconfig.json`**
+  - [x] I.1.1 Añadir `"noUnusedLocals": true` a `compilerOptions`.
+  - [x] I.1.2 Añadir `"noUnusedParameters": true` a `compilerOptions`.
+  - [x] I.1.3 Añadir `"noImplicitReturns": true` a `compilerOptions`.
+  - [x] I.1.4 Añadir `"exactOptionalPropertyTypes": true` a `compilerOptions`.
+- [x] **I.2 Verificación y Corrección**
+  - [x] I.2.1 Ejecutar `npm run check` para identificar cualquier error existente introducido por las nuevas reglas.
+  - [x] I.2.2 Corregir los errores reportados para cumplir con la nueva configuración estricta.
 
 ---
 

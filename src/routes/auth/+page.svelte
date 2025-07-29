@@ -1,8 +1,5 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import type { ActionData } from './$types';
-
-  let form: ActionData;
 </script>
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">

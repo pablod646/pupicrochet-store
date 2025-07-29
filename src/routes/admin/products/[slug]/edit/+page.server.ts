@@ -52,7 +52,7 @@ export const actions = {
       }
 
       // Update product details using its ID
-      const updatedProduct = await prisma.product.update({
+      await prisma.product.update({
         where: { id: productToUpdate.id },
         data: {
           name,

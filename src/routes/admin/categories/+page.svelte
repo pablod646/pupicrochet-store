@@ -3,10 +3,7 @@
   import { enhance } from '$app/forms';
   import { invalidateAll } from '$app/navigation';
   import CategoryNode from '$lib/components/CategoryNode.svelte';
-  import type { Category } from '@prisma/client';
   import CategoryOption from '$lib/components/CategoryOption.svelte';
-
-  type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
   export let data: PageData;
   export let form: ActionData;
@@ -27,23 +24,7 @@
     }
   }
 
-  const handleDeleteCategory = () => {
-    message = null;
-    messageType = null;
-    return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string }> }) => {
-      if (result.type === 'success') {
-        message = result.data?.message || 'Categoría eliminada exitosamente!';
-        messageType = 'success';
-        await invalidateAll();
-      } else if (result.type === 'failure') {
-        message = result.data?.message || 'Fallo al eliminar la categoría.';
-        messageType = 'error';
-      } else if (result.type === 'error') {
-        message = 'Ocurrió un error inesperado al eliminar la categoría.';
-        messageType = 'error';
-      }
-    };
-  };
+  
 </script>
 
 <h1 class="text-2xl font-bold mb-4">Administración de Categorías</h1>

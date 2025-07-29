@@ -1,4 +1,4 @@
-import { fail, redirect } from "@sveltejs/kit";
+import { fail } from "@sveltejs/kit";
 import { prisma } from "$lib/server/prisma";
 import bcrypt from "bcrypt";
 
