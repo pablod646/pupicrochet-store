@@ -67,11 +67,4 @@
       "eslint"
     ]
   }
-},
-  "lint-staged": {
-    "*.{ts,svelte}": [
-      "prettier --write",
-      "eslint"
-    ]
-  }
 }
