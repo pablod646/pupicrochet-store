@@ -2,6 +2,7 @@ import globals from "globals";
 import eslintPluginSvelte from "eslint-plugin-svelte";
 import svelteParser from "svelte-eslint-parser";
 import typescriptParser from "@typescript-eslint/parser";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 
 export default [
   {
@@ -31,9 +32,11 @@ export default [
     },
     plugins: {
       svelte: eslintPluginSvelte,
+      "jsx-a11y": jsxA11y,
     },
     rules: {
       ...eslintPluginSvelte.configs.recommended.rules,
+      ...jsxA11y.configs.recommended.rules,
     },
   },
 ];
