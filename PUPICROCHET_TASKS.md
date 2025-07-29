@@ -198,13 +198,13 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Integrar herramientas y prácticas para asegurar que la aplicación sea accesible desde el principio, cumpliendo con los estándares de la WCAG.
 
-- [ ] **L.1 Linter de Accesibilidad**
+- [x] **L.1 Linter de Accesibilidad**
   - [x] L.1.1 Instalar el plugin `eslint-plugin-jsx-a11y` (funciona con Svelte).
   - [x] L.1.2 Configurar las reglas recomendadas en `.eslintrc.cjs`.
-- [ ] **L.2 Auditoría Inicial**
+- [x] **L.2 Auditoría Inicial**
   - [x] L.2.1 Ejecutar el linter en el código existente y corregir los errores de bajo esfuerzo.
   - [x] L.2.2 Auditar manualmente la navegación por teclado en componentes clave (Header, botones, inputs).
-- [ ] **L.3 Establecer Prácticas**
+- [x] **L.3 Establecer Prácticas**
   - [x] L.3.1 Documentar en el `README.md` o en una guía de contribución la importancia de usar HTML semántico (ej. `<button>` en lugar de `<div onclick>`).
   - [x] L.3.2 Asegurar que los componentes de formulario (Tarea 1.4) incluyan etiquetas (`<label>`) asociadas correctamente.
 
