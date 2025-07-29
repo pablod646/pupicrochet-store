@@ -1,5 +1,5 @@
 import { prisma } from "$lib/server/prisma";
-import type { Handle, HandleServerError } from "@sveltejs/kit";
+import logger from "$lib/server/logger.service";
 
 export const handle: Handle = async ({ event, resolve }) => {
   const sessionId = event.cookies.get("sessionid");
@@ -18,7 +18,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 };
 
 export const handleError: HandleServerError = ({ error, event }) => {
-  console.error("Unhandled server error:", error, event);
+  logger.error({ error, event }, "Unhandled server error");
 
   return {
     message: "An unexpected error occurred.",
