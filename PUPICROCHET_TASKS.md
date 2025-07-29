@@ -206,7 +206,7 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
   - [x] L.2.2 Auditar manualmente la navegación por teclado en componentes clave (Header, botones, inputs).
 - [ ] **L.3 Establecer Prácticas**
   - [x] L.3.1 Documentar en el `README.md` o en una guía de contribución la importancia de usar HTML semántico (ej. `<button>` en lugar de `<div onclick>`).
-  - [ ] L.3.2 Asegurar que los componentes de formulario (Tarea 1.4) incluyan etiquetas (`<label>`) asociadas correctamente.
+  - [x] L.3.2 Asegurar que los componentes de formulario (Tarea 1.4) incluyan etiquetas (`<label>`) asociadas correctamente.
 
 ---
 
