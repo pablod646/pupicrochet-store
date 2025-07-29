@@ -1,6 +1,7 @@
 import { prisma } from "$lib/server/prisma";
 import type { Cookies } from "@sveltejs/kit";
 import { NODE_ENV } from "$env/static/private";
+import { jsonSuccess, jsonError } from "$lib/server/api";
 
 export class CartService {
   async addToCart(cookies: Cookies, productId: string, quantity: number) {
@@ -99,7 +100,7 @@ export class CartService {
 
     if (!cart) {
       // This should ideally not happen with the logic above, but as a fallback
-      return { success: false, message: "Could not find or create cart." };
+      return jsonError("Could not find or create cart.", 500);
     }
 
     const targetCartId = cart.id;
@@ -132,26 +133,26 @@ export class CartService {
       });
     }
 
-    return { success: true };
+    return jsonSuccess({ message: "Product added to cart" });
   }
 
   async removeItem(cookies: Cookies, cartItemId: string) {
     const cartId = cookies.get("cartId");
     if (!cartId) {
-      return { success: false, message: "Cart not found." };
+      return jsonError("Cart not found.", 404);
     }
 
     await prisma.cartItem.delete({
       where: { id: cartItemId, cartId: cartId },
     });
 
-    return { success: true };
+    return jsonSuccess({ message: "Item removed from cart" });
   }
 
   async clearCart(cookies: Cookies) {
     const cartId = cookies.get("cartId");
     if (!cartId) {
-      return { success: false, message: "Cart not found." };
+      return jsonError("Cart not found.", 404);
     }
 
     await prisma.cart.update({
@@ -161,7 +162,7 @@ export class CartService {
       },
     });
 
-    return { success: true };
+    return jsonSuccess({ message: "Cart cleared" });
   }
 
   async getCart(cookies: Cookies) {

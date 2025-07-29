@@ -163,18 +163,18 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Definir una estructura de respuesta estándar y helpers para todas las funciones `load` y `actions` del servidor. Esto hará que el manejo de datos y errores en el cliente sea más predecible y robusto.
 
-- [ ] **J.1 Definir Tipos de Respuesta**
-  - [ ] J.1.1 Crear el archivo `src/lib/types/api.types.ts`.
-  - [ ] J.1.2 Definir los tipos `ApiSuccessResponse<T>` y `ApiErrorResponse` para encapsular las respuestas.
+- [x] **J.1 Definir Tipos de Respuesta**
+  - [x] J.1.1 Crear el archivo `src/lib/types/api.types.ts`.
+  - [x] J.1.2 Definir los tipos `ApiSuccessResponse<T>` y `ApiErrorResponse` para encapsular las respuestas.
     - Ejemplo: `{ success: true; data: T; }` y `{ success: false; error: { message: string; code?: string; }; }`.
-  - [ ] J.1.3 Definir un tipo `ApiResponse<T>` que sea la unión de los dos anteriores.
-- [ ] **J.2 Crear Helpers de Respuesta**
-  - [ ] J.2.1 Crear el archivo `src/lib/server/api.ts`.
-  - [ ] J.2.2 Implementar una función `jsonSuccess<T>(data: T, init?: ResponseInit)` que devuelva una `Response` con una `ApiSuccessResponse`.
-  - [ ] J.2.3 Implementar una función `jsonError(message: string, status: number, code?: string)` que devuelva una `Response` con una `ApiErrorResponse`.
-- [ ] **J.3 Documentar y Adoptar**
+  - [x] J.1.3 Definir un tipo `ApiResponse<T>` que sea la unión de los dos anteriores.
+- [x] **J.2 Crear Helpers de Respuesta**
+  - [x] J.2.1 Crear el archivo `src/lib/server/api.ts`.
+  - [x] J.2.2 Implementar una función `jsonSuccess<T>(data: T, init?: ResponseInit)` que devuelva una `Response` con una `ApiSuccessResponse`.
+  - [x] J.2.3 Implementar una función `jsonError(message: string, status: number, code?: string)` que devuelva una `Response` con una `ApiErrorResponse`.
+- [x] **J.3 Documentar y Adoptar**
   - [ ] J.3.1 Actualizar la documentación (ej. `README.md`) para indicar que todas las respuestas de la API deben usar estos helpers.
-  - [ ] J.3.2 Refactorizar un `action` existente (ej. `addToCart`) para usar los nuevos helpers como prueba de concepto.
+  - [x] J.3.2 Refactorizar un `action` existente (ej. `addToCart`) para usar los nuevos helpers como prueba de concepto.
 
 ---
 
