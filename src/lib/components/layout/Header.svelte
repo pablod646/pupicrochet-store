@@ -1,7 +1,14 @@
 <script lang="ts">
-  import type { User } from '@prisma/client';
+  import type { UserRole } from '@prisma/client';
 
-  export let user: User | null;
+  interface UserSubset {
+    id: string;
+    email: string;
+    name: string | null;
+    role: UserRole;
+  }
+
+  export let user: UserSubset | null;
   export let cartItemCount: number;
 
   let searchQuery = '';

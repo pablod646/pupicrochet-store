@@ -15,7 +15,12 @@ export const load: PageServerLoad = async ({ parent }) => {
       id: true,
       name: true,
       slug: true,
+      description: true,
       price: true,
+      dimensions: true,
+      materials: true,
+      createdAt: true,
+      updatedAt: true,
       images: {
         take: 1,
       },

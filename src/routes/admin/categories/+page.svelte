@@ -82,20 +82,24 @@
   {:else}
     <ul class="space-y-4">
       {#each data.categories as category}
-        <CategoryNode node={category} let:node>
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">{node.name}</span>
-            <div>
-              <a href="/admin/categories/{node.id}/edit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs mr-2">Editar</a>
-              <form method="POST" action="?/deleteCategory" use:enhance={handleDeleteCategory}>
-                <input type="hidden" name="categoryId" value={node.id}>
-                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs" on:click={() => confirm('¿Estás seguro de que quieres eliminar esta categoría y todas sus subcategorías y desvincular productos?')}>
-                  Eliminar
-                </button>
-              </form>
-            </div>
-          </div>
-        </CategoryNode>
+        <CategoryNode node={category} showAdminControls={true} onDelete={(id) => {
+            if (confirm('¿Estás seguro de que quieres eliminar esta categoría y todas sus subcategorías y desvincular productos?')) {
+              // Manually trigger form submission for delete
+              const formElement = document.createElement('form');
+              formElement.method = 'POST';
+              formElement.action = '?/deleteCategory';
+              const input = document.createElement('input');
+              input.type = 'hidden';
+              input.name = 'categoryId';
+              input.value = id;
+              formElement.appendChild(input);
+              document.body.appendChild(formElement);
+              formElement.submit();
+              document.body.removeChild(formElement);
+            }
+          }} onEdit={(id) => {
+            window.location.href = `/admin/categories/${id}/edit`;
+          }} />
       {/each}
     </ul>
   {/if}

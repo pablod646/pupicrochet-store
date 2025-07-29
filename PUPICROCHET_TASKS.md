@@ -130,17 +130,17 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Configurar alias para las rutas de importación comunes (`$lib`, `$components`, etc.) para mejorar la legibilidad y mantenibilidad del código.
 
-- [ ] **H.1 Configurar `tsconfig.json`**
-  - [ ] H.1.1 Abrir `tsconfig.json` y localizar la propiedad `compilerOptions.paths`.
-  - [ ] H.1.2 Añadir alias para las rutas más comunes. Como mínimo:
+- [x] **H.1 Configurar `tsconfig.json`**
+  - [x] H.1.1 Abrir `tsconfig.json` y localizar la propiedad `compilerOptions.paths`.
+  - [x] H.1.2 Añadir alias para las rutas más comunes. Como mínimo:
     - `$lib`: `src/lib` (normalmente ya está)
     - `$components/*`: `src/lib/components/*`
     - `$server/*`: `src/lib/server/*`
     - `$schemas/*`: `src/lib/schemas/*`
-- [ ] **H.2 Actualizar Código Existente (Opcional)**
-  - [ ] H.2.1 Realizar una búsqueda global para reemplazar algunas de las importaciones relativas más complejas por los nuevos alias.
-- [ ] **H.3 Verificación**
-  - [ ] H.3.1 Ejecutar `npm run check` para asegurar que TypeScript resuelve los nuevos alias correctamente.
+- [x] **H.2 Actualizar Código Existente (Opcional)**
+  - [x] H.2.1 Realizar una búsqueda global para reemplazar algunas de las importaciones relativas más complejas por los nuevos alias.
+- [x] **H.3 Verificación**
+  - [x] H.3.1 Ejecutar `npm run check` para asegurar que TypeScript resuelve los nuevos alias correctamente.
 
 ---
 

@@ -19,7 +19,7 @@
   style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'
 >
   <div class="layout-container flex h-full grow flex-col">
-    <Header {user} {cartItemCount} />
+    <Header user={user} cartItemCount={cartItemCount} />
 
     <main class="flex-1">
       <slot />

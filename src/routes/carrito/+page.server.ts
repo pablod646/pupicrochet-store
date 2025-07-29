@@ -1,4 +1,4 @@
-import { prisma } from "../../lib/server/prisma";
+import { prisma } from "$server/prisma";
 import type { PageServerLoad, Actions } from "./$types";
 import { fail } from "@sveltejs/kit";
 import { NODE_ENV } from "$env/static/private";
@@ -54,7 +54,7 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
         path: "/",
         httpOnly: true,
         sameSite: "strict",
-        secure: PUBLIC_NODE_ENV === "production",
+        secure: NODE_ENV === "production",
         maxAge: 60 * 60 * 24 * 7,
       });
     } else if (!cart && cartId) {
@@ -98,7 +98,7 @@ export const load: PageServerLoad = async ({ cookies, parent }) => {
         path: "/",
         httpOnly: true,
         sameSite: "strict",
-        secure: PUBLIC_NODE_ENV === "production",
+        secure: NODE_ENV === "production",
         maxAge: 60 * 60 * 24 * 7,
       });
     }

@@ -13,7 +13,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
-    "format": "prettier --write .",
+    "format": "prettier --write . --ignore-path .gitignore",
     "test": "npm run test:migrate && vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
@@ -62,8 +62,10 @@
     "cookie": "1.0.2"
   },
   "lint-staged": {
-    "*.{ts,svelte}": [
-      "prettier --write",
+    "*.ts": [
+      "eslint"
+    ],
+    "*.svelte": [
       "eslint"
     ]
   }

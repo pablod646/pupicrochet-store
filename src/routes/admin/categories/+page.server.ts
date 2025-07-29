@@ -51,14 +51,6 @@ export const actions = {
     }
 
     try {
-      // Disconnect products from this category
-      await prisma.product.updateMany({
-        where: { categoryId: categoryId },
-        data: {
-          categoryId: null, // Or assign to a default category if one exists
-        },
-      });
-
       // Disconnect children categories from this category (make them top-level)
       await prisma.category.updateMany({
         where: { parentId: categoryId },

@@ -59,8 +59,10 @@
   </div>
 
   <div class="mb-4">
-    <label id="category-label" class="block text-gray-700 text-sm font-bold mb-2">Categorías:</label>
-    <CategorySelector allCategories={data.categories} initialSelectedCategories={product.categories} labelledby="category-label" />
+    <label class="block text-gray-700 text-sm font-bold mb-2">
+      Categorías:
+      <CategorySelector allCategories={data.categories} initialSelectedCategories={product.categories} labelledby="category-label" />
+    </label>
   </div>
 
   <div class="mb-4">

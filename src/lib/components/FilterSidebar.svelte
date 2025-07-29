@@ -26,9 +26,7 @@
       <div class="pl-4 pt-2">
         <ul class="space-y-2">
           {#each categories as category}
-            <CategoryNode node={category} let:node>
-              <a href={`/productos?category=${node.slug}`}>{node.name} ({node._count.products})</a>
-            </CategoryNode>
+            <CategoryNode node={category} />
           {/each}
         </ul>
       </div>

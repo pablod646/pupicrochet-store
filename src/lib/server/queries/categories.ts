@@ -3,6 +3,7 @@ import type { Category } from "@prisma/client";
 
 export type CategoryWithChildren = Category & {
   children: CategoryWithChildren[];
+  _count?: { products: number };
 };
 
 export async function getCategoriesHierarchy(): Promise<
@@ -12,10 +13,15 @@ export async function getCategoriesHierarchy(): Promise<
     orderBy: {
       name: "asc",
     },
+    include: {
+      _count: {
+        select: { products: true },
+      },
+    },
   });
 
   const buildHierarchy = (
-    categories: Category[],
+    categories: (Category & { _count?: { products: number } })[],
     parentId: string | null,
   ): CategoryWithChildren[] => {
     return categories

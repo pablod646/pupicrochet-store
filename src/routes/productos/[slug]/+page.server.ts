@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ params }) => {
   return { product, relatedProducts };
 };
 
-import { addToCart } from "$lib/server/services/cart.service";
+import { CartService } from "$lib/server/services/cart.service";
 
 export const actions = {
   addToCart: async ({ request, cookies }) => {
@@ -35,6 +35,7 @@ export const actions = {
     const productId = data.get("productId") as string;
     const quantity = Number(data.get("quantity")) || 1;
 
-    return await addToCart(cookies, productId, quantity);
+    const cartService = new CartService();
+    return await cartService.addToCart(cookies, productId, quantity);
   },
 } satisfies Actions;

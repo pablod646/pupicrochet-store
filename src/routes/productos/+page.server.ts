@@ -115,6 +115,9 @@ export const load: PageServerLoad = async ({ url }) => {
     searchQuery,
     currentPage: page,
     totalPages: Math.ceil(totalProducts / PAGE_SIZE),
+    sort: url.searchParams.get("sort") || "name_asc",
+    categoryFilter: selectedCategoryId,
+    query: searchQuery,
     searchParams: url.searchParams.toString(),
   };
 };

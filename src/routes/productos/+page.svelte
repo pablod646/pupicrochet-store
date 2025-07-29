@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { PageData } from './$types';
   import ProductCard from '../lib/components/ProductCard.svelte';
-  import FilterSidebar from '../../lib/components/FilterSidebar.svelte';
-  import PaginationControls from '../../lib/components/PaginationControls.svelte';
+import FilterSidebar from '$lib/components/FilterSidebar.svelte';
+import PaginationControls from '$lib/components/PaginationControls.svelte';
 
   export let data: PageData;
 </script>
@@ -42,7 +42,7 @@
     {/if}
 
     <div class="p-4">
-        <PaginationControls currentPage={data.currentPage} totalPages={data.totalPages} />
+        <PaginationControls currentPage={data.currentPage} totalPages={data.totalPages} searchParams={data.searchParams} />
     </div>
   </div>
 </div>

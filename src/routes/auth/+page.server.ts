@@ -32,7 +32,7 @@ export const actions = {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
-      secure: PUBLIC_NODE_ENV === "production",
+      secure: NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 7,
     });
 
