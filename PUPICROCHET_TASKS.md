@@ -221,7 +221,7 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
   - [ ] M.2.1 Crear un archivo `src/lib/components/ui/Button.story.svelte` para un componente de botón básico.
   - [ ] M.2.2 Escribir "stories" para los diferentes estados del botón (primario, secundario, deshabilitado).
   - [ ] M.2.3 Crear una "story" para el componente `Header.svelte` para visualizarlo en aislamiento.
-- [ ] **M.3 Añadir Scripts a `package.json`**
+- [ ] **M.3 Añadir Scripts a4 `package.json`**
   - [ ] M.3.1 Verificar que los scripts `storybook` y `build-storybook` estén presentes.
 
 ---
