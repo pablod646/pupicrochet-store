@@ -80,8 +80,6 @@
     "cookie": "1.0.2"
   },
   "lint-staged": {
-    "*.svelte": [
-      "eslint"
-    ]
+    "*.{ts,svelte,json}": "prettier --write"
   }
 }
