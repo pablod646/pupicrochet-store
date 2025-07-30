@@ -1,41 +1,17 @@
 <script lang="ts">
-  import { enhance } from '$app/forms';
+  import { superForm } from 'sveltekit-superforms';
   import { goto } from '$app/navigation';
-  import type { ActionData } from './$types';
+  import type { PageData } from './$types';
 
-  export let form: ActionData;
+  export let data: PageData;
 
-  let message: string | null = null;
-  let messageType: 'success' | 'error' | null = null;
-
-  const handleSubmit = () => {
-    message = null; // Clear previous messages on submit
-    messageType = null;
-
-    return async ({ result }: { result: import('@sveltejs/kit').ActionResult<{ message?: string }> }) => {
+  const { form, errors, enhance } = superForm(data.form, {
+    onResult({ result }) {
       if (result.type === 'success') {
-        message = '¡Registro exitoso! Redireccionando...';
-        messageType = 'success';
-        // Manually redirect after a short delay to show the success message
-        setTimeout(() => {
-          goto('/auth');
-        }, 1500);
-      } else if (result.type === 'failure') {
-        // Server-side validation errors (e.g., email already exists, missing fields)
-        if (result.data && result.data.message) {
-          message = result.data.message;
-        } else {
-          message = 'El registro falló debido a errores de validación.';
-        }
-        messageType = 'error';
-      } else if (result.type === 'error') {
-        // Network errors or unhandled exceptions during form submission
-        message = 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.';
-        messageType = 'error';
+        goto('/auth');
       }
-      // For 'redirect' type, SvelteKit handles it automatically, so no explicit message needed here
-    };
-  };
+    },
+  });
 </script>
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -46,7 +22,7 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" method="POST" action="?/register" use:enhance={handleSubmit}>
+    <form class="space-y-6" method="POST" action="?/register" use:enhance>
       <div>
         <label for="email" class="block text-sm font-medium leading-6 text-gray-900"
           >Correo electrónico</label
@@ -60,7 +36,11 @@
             required
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             placeholder="tu@ejemplo.com"
+            bind:value={$form.email}
           />
+          {#if $errors.email}
+            <p class="mt-2 text-sm text-red-600">{$errors.email}</p>
+          {/if}
         </div>
       </div>
 
@@ -76,7 +56,11 @@
             autocomplete="name"
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             placeholder="Tu nombre"
+            bind:value={$form.name}
           />
+          {#if $errors.name}
+            <p class="mt-2 text-sm text-red-600">{$errors.name}</p>
+          {/if}
         </div>
       </div>
 
@@ -95,7 +79,34 @@
             required
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             placeholder="Contraseña"
+            bind:value={$form.password}
           />
+          {#if $errors.password}
+            <p class="mt-2 text-sm text-red-600">{$errors.password}</p>
+          {/if}
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between">
+          <label for="confirmPassword" class="block text-sm font-medium leading-6 text-gray-900"
+            >Confirmar Contraseña</label
+          >
+        </div>
+        <div class="mt-2">
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            autocomplete="new-password"
+            required
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            placeholder="Confirmar Contraseña"
+            bind:value={$form.confirmPassword}
+          />
+          {#if $errors.confirmPassword}
+            <p class="mt-2 text-sm text-red-600">{$errors.confirmPassword}</p>
+          {/if}
         </div>
       </div>
 
@@ -116,11 +127,3 @@
     </p>
   </div>
 </div>
-
-{#if message}
-  <p class="mt-4 text-center {messageType === 'success' ? 'text-green-500' : 'text-red-500'}">{message}</p>
-{/if}
-
-{#if form?.message}
-  <p class="mt-4 text-center text-red-500">{form.message}</p>
-{/if}

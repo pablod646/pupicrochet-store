@@ -10,6 +10,8 @@
 
   export let user: UserSubset | null;
   export let cartItemCount: number;
+  export let onToggleTheme: () => void;
+  export let currentTheme: string;
 
   let searchQuery = '';
 </script>
@@ -41,6 +43,9 @@
       </div>
     </form>
     <div class="flex items-center gap-2">
+      <button on:click={onToggleTheme} class="text-sm font-medium text-gray-600 hover:text-[#5d0d36]">
+        Toggle Theme ({currentTheme === 'dark' ? 'Light' : 'Dark'})
+      </button>
       <div class="relative">
           <a href="/carrito" aria-label="Cart" class="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-[#f3e8ed] text-[#1b0e15]">
             <div class="text-[#1b0e15]">

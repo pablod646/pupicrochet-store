@@ -1,37 +1,31 @@
 import { fail } from "@sveltejs/kit";
 import { prisma } from "$lib/server/prisma";
 import bcrypt from "bcrypt";
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { registerSchema } from "$lib/schemas/auth.schema";
+
+export const load = async () => {
+  const form = await superValidate(zod(registerSchema));
+  return { form };
+};
 
 export const actions = {
   register: async ({ request }) => {
+    const form = await superValidate(request, zod(registerSchema));
+
+    if (!form.valid) {
+      return fail(400, { form });
+    }
+
     try {
-      const data = await request.formData();
-      const email = data.get("email") as string;
-      const password = data.get("password") as string;
-      const name = data.get("name") as string;
-
-      if (!email || !password) {
-        return fail(400, {
-          email,
-          message: "Falta correo electrónico o contraseña",
-        });
-      }
-
-      // Basic email format validation
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        return fail(400, {
-          email,
-          message: "Formato de correo electrónico inválido",
-        });
-      }
+      const { email, password, name } = form.data;
 
       const existingUser = await prisma.user.findUnique({ where: { email } });
 
       if (existingUser) {
-        return fail(400, {
-          email,
-          message: "Ya existe un usuario con este correo electrónico",
-        });
+        form.errors.email = ["Ya existe un usuario con este correo electrónico"];
+        return fail(400, { form });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -46,9 +40,10 @@ export const actions = {
     } catch (error) {
       console.error("Registration error:", error);
       return fail(500, {
+        form,
         message: "Ocurrió un error inesperado durante el registro.",
       });
     }
-    return { success: true };
+    return { form };
   },
 };

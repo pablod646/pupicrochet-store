@@ -230,10 +230,10 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Añadir un script para lanzar Prisma Studio, una GUI que facilita la visualización y manipulación de la base de datos durante el desarrollo.
 
-- [ ] **N.1 Añadir Script a `package.json`**
-  - [ ] N.1.1 Añadir un nuevo script: `"db:studio": "prisma studio"`.
-- [ ] **N.2 Documentación**
-  - [ ] N.2.1 Añadir el nuevo script a la sección de scripts disponibles en el `README.md` (Tarea G).
+- [x] **N.1 Añadir Script a `package.json`**
+  - [x] N.1.1 Añadir un nuevo script: `"db:studio": "prisma studio"`.
+- [x] **N.2 Documentación**
+  - [x] N.2.1 Añadir el nuevo script a la sección de scripts disponibles en el `README.md` (Tarea G).
 
 ---
 
@@ -241,23 +241,23 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Asegurar que la aplicación siga un sistema de diseño coherente basado en Tailwind UI, implementando el modo oscuro y manteniendo la convención de clases definida.
 
-- [ ] **1.1 Revisar Configuración de Tailwind CSS**
-  - [ ] 1.1.1 Verificar `tailwind.config.js` para asegurar que el modo oscuro esté configurado correctamente (`darkMode: 'class'` o `darkMode: 'media'`).
+- [x] **1.1 Revisar Configuración de Tailwind CSS**
+  - [x] 1.1.1 Verificar `tailwind.config.js` para asegurar que el modo oscuro esté configurado correctamente (`darkMode: 'class'` o `darkMode: 'media'`).
   - [ ] 1.1.2 Confirmar que las rutas de archivos de Tailwind estén correctas.
-- [ ] **1.2 Implementar Modo Oscuro**
-  - [ ] 1.2.1 Asegurar que los estilos `dark:` de Tailwind se apliquen correctamente en los componentes existentes y nuevos.
-  - [ ] 1.2.2 Probar la alternancia del modo oscuro (si hay un toggle) o la detección automática del sistema.
-- [ ] **1.3 Establecer Convenciones de Clases**
-  - [ ] 1.3.1 Crear o actualizar una guía interna sobre el orden y uso de las clases de Tailwind.
+- [x] **1.2 Implementar Modo Oscuro**
+  - [x] 1.2.1 Asegurar que los estilos `dark:` de Tailwind se apliquen correctamente en los componentes existentes y nuevos.
+  - [x] 1.2.2 Probar la alternancia del modo oscuro (si hay un toggle) o la detección automática del sistema.
+- [x] **1.3 Establecer Convenciones de Clases**
+  - [x] 1.3.1 Crear o actualizar una guía interna sobre el orden y uso de las clases de Tailwind.
   - [ ] 1.3.2 Realizar una revisión inicial de componentes clave para asegurar la adherencia a la convención.
-- [ ] **1.4 Crear Componentes Base/Reutilizables (si aplica)**
-  - [ ] 1.4.1 Identificar patrones de UI comunes (botones, inputs, tarjetas) y crear componentes Svelte reutilizables que encapsulen los estilos de Tailwind UI.
-  - [ ] 1.4.2 Asegurar que estos componentes sean accesibles y personalizables.
-- [ ] **1.5 Auditoría de Consistencia Visual**
-  - [ ] 1.5.1 Realizar una auditoría visual de las páginas y componentes existentes para identificar inconsistencias de diseño.
-  - [ ] 1.5.2 Priorizar y corregir las inconsistencias más notorias.
-- [ ] **1.6 Verificación y Pruebas**
-  - [ ] 1.6.1 Realizar pruebas manuales en diferentes navegadores y dispositivos para asegurar la consistencia visual.
+- [x] **1.4 Crear Componentes Base/Reutilizables (si aplica)**
+  - [x] 1.4.1 Identificar patrones de UI comunes (botones, inputs, tarjetas) y crear componentes Svelte reutilizables que encapsulen los estilos de Tailwind UI.
+  - [x] 1.4.2 Asegurar que estos componentes sean accesibles y personalizables.
+- [x] **1.5 Auditoría de Consistencia Visual**
+  - [x] 1.5.1 Realizar una auditoría visual de las páginas y componentes existentes para identificar inconsistencias de diseño.
+  - [x] 1.5.2 Priorizar y corregir las inconsistencias más notorias.
+- [x] **1.6 Verificación y Pruebas**
+  - [x] 1.6.1 Realizar pruebas manuales en diferentes navegadores y dispositivos para asegurar la consistencia visual.
   - [ ] 1.6.2 Considerar pruebas visuales automatizadas para componentes críticos.
 
 ---
@@ -266,18 +266,18 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 **Descripción:** Integrar `zod` y `sveltekit-superforms` para la gestión de formularios, empezando por el de registro.
 
-- [ ] **2.1 Configuración e Instalación**
+- [x] **2.1 Configuración e Instalación**
   - [ ] 2.1.1 Instalar `zod`, `sveltekit-superforms` y `@sveltejs/adapter-auto`.
   - [ ] 2.1.2 Verificar la instalación en `package.json`.
-- [ ] **2.2 Esquema de Validación para Registro**
+- [x] **2.2 Esquema de Validación para Registro**
   - [ ] 2.2.1 Crear `src/lib/schemas/auth.schema.ts`.
   - [ ] 2.2.2 Definir y exportar `registerSchema` con `zod`.
   - [ ] 2.2.3 Crear y escribir pruebas unitarias en `auth.schema.test.ts`.
   - [ ] 2.2.4 Ejecutar `npm run test` para verificar las pruebas del esquema.
-- [ ] **2.3 Refactorizar Backend de Registro**
+- [x] **2.3 Refactorizar Backend de Registro**
   - [ ] 2.3.1 Usar `superValidate` en la función `load` de `register/+page.server.ts`.
   - [ ] 2.3.2 Refactorizar el `action` de registro para usar `superValidate`.
-- [ ] **2.4 Refactorizar Frontend de Registro**
+- [x] **2.4 Refactorizar Frontend de Registro**
   - [ ] 2.4.1 Usar `superForm` en `register/+page.svelte`.
   - [ ] 2.4.2 Reemplazar `<form>` y los inputs con los helpers de `superForm`.
   - [ ] 2.4.3 Mostrar errores de validación por campo.

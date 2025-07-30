@@ -54,6 +54,7 @@ Bienvenido a PupiCrochet Store, una tienda online de amigurumis y productos teji
 - `npm run lint`: Comprueba el código con ESLint y Prettier.
 - `npm run format`: Formatea el código con Prettier.
 - `npm run db:studio`: Abre Prisma Studio para ver y editar la base de datos.
+- `npm run db:studio`: Abre Prisma Studio para ver y editar la base de datos.
 
 ## Guías de Desarrollo
 
