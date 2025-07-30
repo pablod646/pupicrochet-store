@@ -72,6 +72,7 @@
       <CategorySelector
         allCategories={data.categories}
         initialSelectedCategories={data.product.categories}
+        labelledby="category-selector"
       />
     </div>
     {#each Array.from(selectedCategoryIds) as categoryId}

@@ -1,20 +1,18 @@
 import js from "@eslint/js";
 import svelte from "eslint-plugin-svelte";
+import globals from "globals";
+import ts from "typescript-eslint";
 import svelteParser from "svelte-eslint-parser";
-import typescriptParser from "@typescript-eslint/parser";
-import jsxA11y from "eslint-plugin-jsx-a11y";
 
 export default [
   js.configs.recommended,
+  ...ts.configs.recommended,
   ...svelte.configs["flat/recommended"],
-  jsxA11y.configs.recommended,
   {
-    files: ["**/*.ts", "**/*.js"],
     languageOptions: {
-      parser: typescriptParser,
-      parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
+      globals: {
+        ...globals.browser,
+        ...globals.node,
       },
     },
   },
@@ -23,10 +21,24 @@ export default [
     languageOptions: {
       parser: svelteParser,
       parserOptions: {
-        parser: typescriptParser,
-        ecmaVersion: "latest",
-        sourceType: "module",
+        parser: ts.parser,
+        extraFileExtensions: [".svelte"],
+        project: ["./tsconfig.json"],
+        tsconfigRootDir: import.meta.dirname,
       },
     },
+  },
+  {
+    files: ["**/*.ts", "**/*.mts", "**/*.cts"],
+    languageOptions: {
+      parser: ts.parser,
+      parserOptions: {
+        project: ["./tsconfig.json"],
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  {
+    ignores: ["build/", ".svelte-kit/", "dist/"],
   },
 ];

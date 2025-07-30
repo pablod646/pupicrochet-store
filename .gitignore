@@ -34,3 +34,6 @@ vite.config.ts.timestamp-*
 /prisma/test.db
 /prisma/prisma/dev.db
 /prisma/prisma/test.db
+
+*storybook.log
+storybook-static

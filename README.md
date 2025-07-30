@@ -61,9 +61,9 @@ Bienvenido a PupiCrochet Store, una tienda online de amigurumis y productos teji
 
 La accesibilidad es una prioridad en PupiCrochet Store. Al desarrollar nuevos componentes o modificar existentes, es crucial adherirse a los siguientes principios:
 
--   **HTML Semántico:** Utiliza siempre los elementos HTML apropiados para su propósito. Por ejemplo, usa `<button>` para botones, `<a href="...">` para enlaces, y elementos de encabezado (`<h1>` a `<h6>`) para la estructura del contenido. Evita el uso de `<div>` o `<span>` con manejadores de eventos (`onclick`) cuando un elemento semántico nativo pueda cumplir la misma función.
--   **Atributos ARIA:** Emplea atributos ARIA (Accessible Rich Internet Applications) solo cuando el HTML semántico no sea suficiente para transmitir el significado o la interacción de un componente a las tecnologías de asistencia. Asegúrate de que los atributos ARIA se utilicen correctamente y no dupliquen la semántica nativa.
--   **Navegación por Teclado:** Todos los elementos interactivos deben ser accesibles y operables mediante el teclado (usando `Tab`, `Enter`, `Space`, etc.). Presta atención al orden de tabulación lógico.
--   **Contenido Alternativo:** Proporciona texto alternativo (`alt`) para todas las imágenes significativas y etiquetas (`<label>`) asociadas a los campos de formulario.
+- **HTML Semántico:** Utiliza siempre los elementos HTML apropiados para su propósito. Por ejemplo, usa `<button>` para botones, `<a href="...">` para enlaces, y elementos de encabezado (`<h1>` a `<h6>`) para la estructura del contenido. Evita el uso de `<div>` o `<span>` con manejadores de eventos (`onclick`) cuando un elemento semántico nativo pueda cumplir la misma función.
+- **Atributos ARIA:** Emplea atributos ARIA (Accessible Rich Internet Applications) solo cuando el HTML semántico no sea suficiente para transmitir el significado o la interacción de un componente a las tecnologías de asistencia. Asegúrate de que los atributos ARIA se utilicen correctamente y no dupliquen la semántica nativa.
+- **Navegación por Teclado:** Todos los elementos interactivos deben ser accesibles y operables mediante el teclado (usando `Tab`, `Enter`, `Space`, etc.). Presta atención al orden de tabulación lógico.
+- **Contenido Alternativo:** Proporciona texto alternativo (`alt`) para todas las imágenes significativas y etiquetas (`<label>`) asociadas a los campos de formulario.
 
 Adherirse a estas prácticas garantiza que la aplicación sea usable por el mayor número posible de personas, incluyendo aquellas con discapacidades.

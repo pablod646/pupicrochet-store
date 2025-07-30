@@ -212,21 +212,17 @@ Este documento registra el progreso y las próximas tareas del proyecto, gestion
 
 ### M. Configurar un Entorno de Componentes con Storybook
 
----
-
-### M. Configurar un Entorno de Componentes con Storybook
-
 **Descripción:** Instalar y configurar Storybook para desarrollar, probar y documentar los componentes de la UI de forma aislada. Esto acelera el desarrollo y garantiza la consistencia visual.
 
-- [ ] **M.1 Instalación y Configuración**
-  - [ ] M.1.1 Ejecutar `npx storybook@latest init` para autoconfigurar Storybook para SvelteKit.
-  - [ ] M.1.2 Asegurar que la configuración de Storybook (`.storybook/main.ts`) cargue la configuración de Tailwind CSS.
-- [ ] **M.2 Crear Primeras "Stories"**
-  - [ ] M.2.1 Crear un archivo `src/lib/components/ui/Button.story.svelte` para un componente de botón básico.
-  - [ ] M.2.2 Escribir "stories" para los diferentes estados del botón (primario, secundario, deshabilitado).
-  - [ ] M.2.3 Crear una "story" para el componente `Header.svelte` para visualizarlo en aislamiento.
-- [ ] **M.3 Añadir Scripts a4 `package.json`**
-  - [ ] M.3.1 Verificar que los scripts `storybook` y `build-storybook` estén presentes.
+- [x] **M.1 Instalación y Configuración**
+  - [x] M.1.1 Ejecutar `npx storybook@latest init` para autoconfigurar Storybook para SvelteKit.
+  - [x] M.1.2 Asegurar que la configuración de Storybook (`.storybook/main.ts`) cargue la configuración de Tailwind CSS.
+- [x] **M.2 Crear Primeras "Stories"**
+  - [x] M.2.1 Crear un archivo `src/lib/components/ui/Button.story.svelte` para un componente de botón básico.
+  - [x] M.2.2 Escribir "stories" para los diferentes estados del botón (primario, secundario, deshabilitado).
+  - [x] M.2.3 Crear una "story" para el componente `Header.svelte` para visualizarlo en aislamiento.
+- [x] **M.3 Añadir Scripts a `package.json`**
+  - [x] M.3.1 Verificar que los scripts `storybook` y `build-storybook` estén presentes.
 
 ---
 
