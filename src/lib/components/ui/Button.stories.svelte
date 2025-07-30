@@ -2,6 +2,7 @@
   import type { Meta, StoryObj } from "@storybook/svelte";
   import Button from "./Button.svelte";
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const meta = {
     title: "UI/Button",
     component: Button,

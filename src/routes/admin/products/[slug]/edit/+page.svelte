@@ -75,7 +75,7 @@
         labelledby="category-selector"
       />
     </div>
-    {#each Array.from(selectedCategoryIds) as categoryId}
+    {#each Array.from(selectedCategoryIds) as categoryId (categoryId)}
       <input type="hidden" name="categoryIds" value={categoryId} />
     {/each}
   </div>

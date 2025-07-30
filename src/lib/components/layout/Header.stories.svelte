@@ -12,6 +12,7 @@
     role: UserRole;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const meta = {
     title: "Layout/Header",
     component: Header,

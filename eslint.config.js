@@ -39,6 +39,15 @@ export default [
     },
   },
   {
+    files: [".storybook/**/*.ts"],
+    languageOptions: {
+      parser: ts.parser,
+      parserOptions: {
+        project: false,
+      },
+    },
+  },
+  {
     ignores: ["build/", ".svelte-kit/", "dist/"],
   },
 ];
