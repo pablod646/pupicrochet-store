@@ -29,7 +29,7 @@ export default [
     },
   },
   {
-    files: ["**/*.ts", "**/*.mts", "**/*.cts"],
+    files: ["src/**/*.ts"],
     languageOptions: {
       parser: ts.parser,
       parserOptions: {
@@ -39,7 +39,7 @@ export default [
     },
   },
   {
-    files: [".storybook/**/*.ts"],
+    files: [".storybook/**/*.ts", "*.config.ts", "prisma/seed.ts", "scripts/**/*.ts"],
     languageOptions: {
       parser: ts.parser,
       parserOptions: {

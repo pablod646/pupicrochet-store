@@ -1,6 +1,10 @@
 import { prisma } from "$lib/server/prisma";
 import type { PageServerLoad } from "./$types";
-import type { Prisma } from "@prisma/client";
+import type { Prisma, Product } from "@prisma/client";
+import {
+  getCategoriesHierarchy,
+  type CategoryWithChildren,
+} from "$lib/server/queries/categories";
 
 const PAGE_SIZE = 9;
 
@@ -25,7 +29,7 @@ export const load: PageServerLoad = async ({ url }) => {
     };
   }
 
-  let products: any[];
+  let products: Product[];
   let totalProducts: number;
 
   if (searchQuery) {
@@ -50,7 +54,7 @@ export const load: PageServerLoad = async ({ url }) => {
       },
     });
 
-    const totalProductsResult = await prisma.$queryRaw<{ count: number }[]>`
+    const totalProductsResult = await prisma.$queryRaw<{ count: bigint }[]>`
 			SELECT COUNT(*) as count FROM Product
 			WHERE LOWER(name) LIKE ${"%" + lowerCaseSearchQuery + "%"}
 		`;
@@ -69,48 +73,11 @@ export const load: PageServerLoad = async ({ url }) => {
     });
   }
 
-  const allCategories = await prisma.category.findMany({
-    include: {
-      _count: {
-        select: { products: true },
-      },
-    },
-  });
-
-  // Build a map for quick lookup and to store children
-  const categoryMap = new Map<string, any>();
-  allCategories.forEach((cat) => {
-    categoryMap.set(cat.id, { ...cat, children: [] });
-  });
-
-  // Build the hierarchical structure
-  const nestedCategories: any[] = [];
-  allCategories.forEach((cat) => {
-    if (cat.parentId) {
-      const parent = categoryMap.get(cat.parentId);
-      if (parent) {
-        parent.children.push(categoryMap.get(cat.id));
-      }
-    } else {
-      nestedCategories.push(categoryMap.get(cat.id));
-    }
-  });
-
-  // Sort top-level categories and their children by name
-  function sortCategories(cats: any[]) {
-    cats.sort((a, b) => a.name.localeCompare(b.name));
-    cats.forEach((cat) => {
-      if (cat.children.length > 0) {
-        sortCategories(cat.children);
-      }
-    });
-  }
-
-  sortCategories(nestedCategories);
+  const categories: CategoryWithChildren[] = await getCategoriesHierarchy();
 
   return {
     products,
-    categories: nestedCategories,
+    categories,
     selectedCategoryId,
     searchQuery,
     currentPage: page,

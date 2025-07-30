@@ -35,7 +35,7 @@ async function main() {
   });
 
   // Creamos los productos uno por uno para poder anidar la creación de imágenes y asociar categorías
-  const product1 = await prisma.product.create({
+  await prisma.product.create({
     data: {
       name: "Amigurumi de Pulpo",
       description:
@@ -58,7 +58,7 @@ async function main() {
     },
   });
 
-  const product2 = await prisma.product.create({
+  await prisma.product.create({
     data: {
       name: "Sonajero de Elefante",
       description:
@@ -80,7 +80,7 @@ async function main() {
     },
   });
 
-  const product3 = await prisma.product.create({
+  await prisma.product.create({
     data: {
       name: "Manta de Apego Conejito",
       description:

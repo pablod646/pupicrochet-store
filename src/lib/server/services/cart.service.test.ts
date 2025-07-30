@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { CartService } from "./cart.service";
 import { prisma } from "$lib/server/prisma";
@@ -6,6 +5,9 @@ import type { Cookies } from "@sveltejs/kit";
 
 vi.mock("$lib/server/prisma", () => ({
   prisma: {
+    user: {
+      findUnique: vi.fn(),
+    },
     cart: {
       create: vi.fn(),
       findUnique: vi.fn(),
@@ -31,26 +33,19 @@ describe("CartService", () => {
       set: vi.fn(),
       delete: vi.fn(),
       serialize: vi.fn(),
-      getAll: vi.fn(), // Added missing getAll method
-    };
+    } as unknown as Cookies;
     vi.clearAllMocks();
   });
 
   it("should add an item to a new anonymous cart", async () => {
-    (mockCookies.get as any).mockReturnValue(undefined);
-    (prisma.cart.create as any).mockResolvedValue({ id: "new-cart-id" });
-    (prisma.cartItem.findUnique as any).mockResolvedValue(null);
-    (prisma.cartItem.create as any).mockResolvedValue({
-      id: "item-1",
-      productId: "product-1",
-      quantity: 1,
-    });
+    (mockCookies.get as vi.Mock).mockReturnValue(undefined);
+    (prisma.cart.create as vi.Mock).mockResolvedValue({ id: "new-cart-id" });
 
-    const result = await cartService.addToCart(mockCookies, "product-1", 1);
+    const response = await cartService.addToCart(mockCookies, "product-1", 1);
+    const result = await response.json();
 
     expect(prisma.cart.create).toHaveBeenCalledWith({
       data: {
-        userId: null,
         items: {
           create: {
             productId: "product-1",
@@ -64,22 +59,21 @@ describe("CartService", () => {
       "new-cart-id",
       expect.any(Object),
     );
-    expect(result).toEqual({ success: true });
+    expect(result).toEqual({
+      success: true,
+      data: { message: "Product added to cart" },
+    });
   });
 
   it("should add an item to an existing anonymous cart", async () => {
-    (mockCookies.get as any).mockReturnValue("existing-cart-id");
-    (prisma.cart.findUnique as any).mockResolvedValue({
+    (mockCookies.get as vi.Mock).mockReturnValue("existing-cart-id");
+    (prisma.cart.findUnique as vi.Mock).mockResolvedValue({
       id: "existing-cart-id",
     });
-    (prisma.cartItem.findUnique as any).mockResolvedValue(null);
-    (prisma.cartItem.create as any).mockResolvedValue({
-      id: "item-1",
-      productId: "product-1",
-      quantity: 1,
-    });
+    (prisma.cartItem.findUnique as vi.Mock).mockResolvedValue(null);
 
-    const result = await cartService.addToCart(mockCookies, "product-1", 1);
+    const response = await cartService.addToCart(mockCookies, "product-1", 1);
+    const result = await response.json();
 
     expect(prisma.cart.findUnique).toHaveBeenCalledWith({
       where: { id: "existing-cart-id" },
@@ -91,41 +85,38 @@ describe("CartService", () => {
         quantity: 1,
       },
     });
-    expect(result).toEqual({ success: true });
+    expect(result).toEqual({
+      success: true,
+      data: { message: "Product added to cart" },
+    });
   });
 
   it("should update an item in an existing anonymous cart", async () => {
-    (mockCookies.get as any).mockReturnValue("existing-cart-id");
-    (prisma.cart.findUnique as any).mockResolvedValue({
+    (mockCookies.get as vi.Mock).mockReturnValue("existing-cart-id");
+    (prisma.cart.findUnique as vi.Mock).mockResolvedValue({
       id: "existing-cart-id",
     });
-    (prisma.cartItem.findUnique as any).mockResolvedValue({
+    (prisma.cartItem.findUnique as vi.Mock).mockResolvedValue({
       id: "item-1",
       productId: "product-1",
       quantity: 1,
     });
-    (prisma.cartItem.update as any).mockResolvedValue({
-      id: "item-1",
-      productId: "product-1",
-      quantity: 2,
-    });
 
-    const result = await cartService.addToCart(mockCookies, "product-1", 1);
+    const response = await cartService.addToCart(mockCookies, "product-1", 1);
+    const result = await response.json();
 
     expect(prisma.cartItem.update).toHaveBeenCalledWith({
       where: { id: "item-1" },
       data: { quantity: 2 },
     });
-    expect(result).toEqual({ success: true });
+    expect(result).toEqual({
+      success: true,
+      data: { message: "Product added to cart" },
+    });
   });
 
   it("should remove an item from the cart", async () => {
-    (mockCookies.get as any).mockReturnValue("existing-cart-id");
-    (prisma.cartItem.delete as any).mockResolvedValue({
-      id: "item-1",
-      productId: "product-1",
-      quantity: 1,
-    });
+    (mockCookies.get as vi.Mock).mockReturnValue("existing-cart-id");
 
     await cartService.removeItem(mockCookies, "item-1");
 
@@ -135,27 +126,21 @@ describe("CartService", () => {
   });
 
   it("should clear the cart", async () => {
-    (mockCookies.get as any).mockReturnValue("existing-cart-id");
-    (prisma.cart.update as any).mockResolvedValue({
-      id: "existing-cart-id",
-      items: [],
-    });
+    (mockCookies.get as vi.Mock).mockReturnValue("existing-cart-id");
 
     await cartService.clearCart(mockCookies);
 
     expect(prisma.cart.update).toHaveBeenCalledWith({
       where: { id: "existing-cart-id" },
       data: {
-        items: {
-          deleteMany: {},
-        },
+        items: { deleteMany: {} },
       },
     });
   });
 
   it("should get the cart and its items", async () => {
-    (mockCookies.get as any).mockReturnValue("existing-cart-id");
-    (prisma.cart.findUnique as any).mockResolvedValue({
+    (mockCookies.get as vi.Mock).mockReturnValue("existing-cart-id");
+    (prisma.cart.findUnique as vi.Mock).mockResolvedValue({
       id: "existing-cart-id",
       items: [
         { id: "item-1", productId: "product-1", quantity: 1 },
@@ -185,8 +170,8 @@ describe("CartService", () => {
   });
 
   it("should return null if cart does not exist", async () => {
-    (mockCookies.get as any).mockReturnValue("non-existent-cart-id");
-    (prisma.cart.findUnique as any).mockResolvedValue(null);
+    (mockCookies.get as vi.Mock).mockReturnValue("non-existent-cart-id");
+    (prisma.cart.findUnique as vi.Mock).mockResolvedValue(null);
 
     const result = await cartService.getCart(mockCookies);
 
@@ -194,8 +179,8 @@ describe("CartService", () => {
   });
 
   it("should get the cart item count", async () => {
-    (mockCookies.get as any).mockReturnValue("existing-cart-id");
-    (prisma.cart.findUnique as any).mockResolvedValue({
+    (mockCookies.get as vi.Mock).mockReturnValue("existing-cart-id");
+    (prisma.cart.findUnique as vi.Mock).mockResolvedValue({
       id: "existing-cart-id",
       items: [
         { id: "item-1", productId: "product-1", quantity: 1 },
@@ -209,8 +194,8 @@ describe("CartService", () => {
   });
 
   it("should return 0 if cart does not exist for item count", async () => {
-    (mockCookies.get as any).mockReturnValue("non-existent-cart-id");
-    (prisma.cart.findUnique as any).mockResolvedValue(null);
+    (mockCookies.get as vi.Mock).mockReturnValue("non-existent-cart-id");
+    (prisma.cart.findUnique as vi.Mock).mockResolvedValue(null);
 
     const result = await cartService.getCartItemCount(mockCookies);
 

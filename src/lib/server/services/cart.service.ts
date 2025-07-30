@@ -72,7 +72,16 @@ export class CartService {
     } else {
       // If no user is logged in, use or create an anonymous cart
       if (!cartId) {
-        cart = await prisma.cart.create({ data: {} });
+        cart = await prisma.cart.create({
+          data: {
+            items: {
+              create: {
+                productId,
+                quantity,
+              },
+            },
+          },
+        });
         cartId = cart.id;
         cookies.set("cartId", cartId, {
           path: "/",
@@ -81,11 +90,21 @@ export class CartService {
           secure: NODE_ENV === "production",
           maxAge: 60 * 60 * 24 * 7,
         });
+        return jsonSuccess({ message: "Product added to cart" });
       } else {
         cart = await prisma.cart.findUnique({ where: { id: cartId } });
         if (!cart) {
           // If cartId exists but cart doesn't (e.g., deleted), create a new one
-          cart = await prisma.cart.create({ data: {} });
+          cart = await prisma.cart.create({
+            data: {
+              items: {
+                create: {
+                  productId,
+                  quantity,
+                },
+              },
+            },
+          });
           cartId = cart.id;
           cookies.set("cartId", cartId, {
             path: "/",
@@ -94,6 +113,7 @@ export class CartService {
             secure: NODE_ENV === "production",
             maxAge: 60 * 60 * 24 * 7,
           });
+          return jsonSuccess({ message: "Product added to cart" });
         }
       }
     }

@@ -5,7 +5,7 @@ import { NODE_ENV } from "$env/static/private";
 
 export const load: PageServerLoad = async ({ cookies, parent }) => {
   const { user } = await parent();
-  let cartId = cookies.get("cartId");
+  const cartId = cookies.get("cartId");
   let cart = null;
 
   if (user) {

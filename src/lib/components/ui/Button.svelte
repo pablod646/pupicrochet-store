@@ -21,6 +21,6 @@
   }
 </script>
 
-<button class={`${baseClass} ${className}`} on:click {...$restProps}>
+<button class={`${baseClass} ${className}`} on:click {...$$restProps}>
   <slot />
 </button>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Category } from '@prisma/client';
+  import type { Category } from "@prisma/client";
 
   type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
@@ -8,11 +8,11 @@
 </script>
 
 <option value={category.id}>
-  {'&nbsp;'.repeat(indent * 4)}{category.name}
+  {"&nbsp;".repeat(indent * 4)}{category.name}
 </option>
 
 {#if category.children && category.children.length > 0}
-  {#each category.children as child}
+  {#each category.children as child (child.id)}
     <svelte:self category={child} indent={indent + 1} />
   {/each}
 {/if}

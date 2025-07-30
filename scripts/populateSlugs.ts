@@ -13,7 +13,7 @@ async function main() {
   console.log(`Found ${products.length} products with null slugs.`);
 
   for (const product of products) {
-    let baseSlug = generateSlug(product.name);
+    const baseSlug = generateSlug(product.name);
     let slug = baseSlug;
     let counter = 1;
 
