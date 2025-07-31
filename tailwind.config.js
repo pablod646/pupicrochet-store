@@ -1,6 +1,8 @@
 import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 
+import containerQueries from '@tailwindcss/container-queries';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{html,js,svelte,ts}"],
@@ -8,5 +10,5 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [forms, typography],
+  plugins: [forms, typography, containerQueries],
 };

@@ -2,20 +2,42 @@
   import type { Meta, StoryObj } from "@storybook/svelte";
   import Button from "./Button.svelte";
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const meta = {
     title: "UI/Button",
     component: Button,
-    argTypes: {},
+    argTypes: {
+      variant: {
+        control: { type: "select" },
+        options: ["primary", "secondary", "tertiary"],
+      },
+    },
   } satisfies Meta<Button>;
 
+  export default meta;
   type Story = StoryObj<typeof meta>;
 
   export const Primary: Story = {
-    args: { variant: "primary" },
+    args: {
+      variant: "primary",
+      children: "Button",
+    },
   };
 
   export const Secondary: Story = {
-    args: { variant: "secondary" },
+    args: {
+      variant: "secondary",
+      children: "Button",
+    },
+  };
+
+  export const Tertiary: Story = {
+    args: {
+      variant: "tertiary",
+      children: "Button",
+    },
   };
 </script>
+
+<Button {...Primary.args}>
+  <slot>{Primary.args.children}</slot>
+</Button>

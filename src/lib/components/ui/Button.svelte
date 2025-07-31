@@ -2,21 +2,23 @@
   import type { HTMLButtonAttributes } from "svelte/elements";
 
   interface $Props extends HTMLButtonAttributes {
-    variant?: "primary" | "secondary";
-    class?: string; // Allow passing additional classes
+    variant?: "primary" | "secondary" | "tertiary";
+    class?: string;
   }
 
   export let variant: $Props["variant"] = "primary";
-  export let className: $Props["class"] = ""; // Rename to avoid conflict with 'class'
+  export let className: $Props["class"] = "";
 
   let baseClass = "";
   $: {
     if (variant === "primary") {
       baseClass =
-        "bg-blue-600 text-white focus:outline-none focus:shadow-outline hover:bg-blue-700 font-bold py-2 px-4 rounded";
+        "rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600";
     } else if (variant === "secondary") {
       baseClass =
-        "bg-gray-300 text-gray-800 focus:outline-none focus:shadow-outline hover:bg-gray-400 font-bold py-2 px-4 rounded";
+        "rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50";
+    } else if (variant === "tertiary") {
+      baseClass = "text-sm font-semibold leading-6 text-gray-900";
     }
   }
 </script>

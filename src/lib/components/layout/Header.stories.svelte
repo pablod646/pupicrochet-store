@@ -12,13 +12,18 @@
     role: UserRole;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const meta = {
     title: "Layout/Header",
     component: Header,
-    argTypes: {},
+    argTypes: {
+      user: { control: "object" },
+      cartItemCount: { control: "number" },
+      onToggleTheme: { action: "toggleTheme" },
+      currentTheme: { control: "select", options: ["light", "dark"] },
+    },
   } satisfies Meta<Header>;
 
+  export default meta;
   type Story = StoryObj<typeof meta>;
 
   export const LoggedInUserWithCartItems: Story = {
@@ -30,6 +35,7 @@
         role: "USER",
       } as UserSubset,
       cartItemCount: 3,
+      currentTheme: "light",
     },
   };
 
@@ -37,6 +43,7 @@
     args: {
       user: null,
       cartItemCount: 0,
+      currentTheme: "light",
     },
   };
 
@@ -49,6 +56,22 @@
         role: "ADMIN",
       } as UserSubset,
       cartItemCount: 0,
+      currentTheme: "light",
+    },
+  };
+
+  export const DarkMode: Story = {
+    args: {
+      user: {
+        id: "1",
+        email: "test@example.com",
+        name: "Test User",
+        role: "USER",
+      } as UserSubset,
+      cartItemCount: 2,
+      currentTheme: "dark",
     },
   };
 </script>
+
+<Header {...LoggedInUserWithCartItems.args} />

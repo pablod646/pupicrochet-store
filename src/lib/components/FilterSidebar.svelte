@@ -10,44 +10,38 @@
   export let categories: CategoryWithProductCount[];
 
   let showCategories = true;
+  let showPriceRange = true;
 </script>
 
-<div class="layout-content-container flex flex-col w-80">
-  <h2
-    class="text-[#1b0e15] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
-  >
-    Filtros
-  </h2>
+<div class="w-80 bg-white shadow-md rounded-lg p-4">
+  <h2 class="text-2xl font-bold text-gray-900 mb-4">Filtros</h2>
 
   <!-- Category Filter -->
-  <div class="flex flex-col p-3">
+  <div class="border-b border-gray-200 pb-4 mb-4">
     <button
       on:click={() => (showCategories = !showCategories)}
-      class="flex items-center justify-between w-full px-1 py-2"
+      class="flex items-center justify-between w-full py-2 text-gray-700 hover:text-gray-900 focus:outline-none"
     >
-      <p class="text-[#1b0e15] text-base font-medium leading-normal">
-        Categoría
-      </p>
-      <div
-        class="text-[#1b0e15] transition-transform duration-200"
+      <p class="text-lg font-semibold">Categoría</p>
+      <svg
+        class="w-5 h-5 transform transition-transform duration-200"
         class:rotate-180={!showCategories}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20px"
-          height="20px"
-          fill="currentColor"
-          viewBox="0 0 256 256"
-        >
-          <path
-            d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"
-          ></path>
-        </svg>
-      </div>
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        ></path>
+      </svg>
     </button>
     {#if showCategories}
-      <div class="pl-4 pt-2">
-        <ul class="space-y-2">
+      <div class="mt-2">
+        <ul class="space-y-1">
           {#each categories as category (category.id)}
             <CategoryNode node={category} />
           {/each}
@@ -57,29 +51,51 @@
   </div>
 
   <!-- Price Range Filter -->
-  <div
-    class="relative flex w-full flex-col items-start justify-between gap-3 p-4"
-  >
-    <p class="text-[#1b0e15] text-base font-medium leading-normal w-full">
-      Rango de Precio
-    </p>
-    <div class="flex h-[38px] w-full pt-1.5">
-      <div class="flex h-1 w-full rounded-sm bg-[#e6d1dc] items-center">
-        <div class="w-[20%] h-1 bg-transparent"></div>
-        <div class="relative h-1 flex-1 bg-[#5d0d36]">
-          <div
-            class="absolute -left-2 -top-1.5 size-4 rounded-full bg-[#5d0d36] cursor-pointer"
-          ></div>
-          <div
-            class="absolute -right-2 -top-1.5 size-4 rounded-full bg-[#5d0d36] cursor-pointer"
-          ></div>
+  <div class="pb-4 mb-4">
+    <button
+      on:click={() => (showPriceRange = !showPriceRange)}
+      class="flex items-center justify-between w-full py-2 text-gray-700 hover:text-gray-900 focus:outline-none"
+    >
+      <p class="text-lg font-semibold">Rango de Precio</p>
+      <svg
+        class="w-5 h-5 transform transition-transform duration-200"
+        class:rotate-180={!showPriceRange}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        ></path>
+      </svg>
+    </button>
+    {#if showPriceRange}
+      <div class="mt-4">
+        <div class="relative pt-1">
+          <input
+            type="range"
+            min="0"
+            max="1000"
+            value="0"
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+          />
+          <input
+            type="range"
+            min="0"
+            max="1000"
+            value="1000"
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+          />
         </div>
-        <div class="w-[15%] h-1 bg-transparent"></div>
+        <div class="flex justify-between text-sm text-gray-600 mt-2">
+          <span>$0</span>
+          <span>$1000</span>
+        </div>
       </div>
-    </div>
-    <div class="flex justify-between w-full text-sm text-[#1b0e15] -mt-2">
-      <span>$0</span>
-      <span>$1000</span>
-    </div>
+    {/if}
   </div>
 </div>
