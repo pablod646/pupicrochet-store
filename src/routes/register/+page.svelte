@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { superForm } from 'sveltekit-superforms';
-  import { goto } from '$app/navigation';
-  import type { PageData } from './$types';
+  import { superForm } from "sveltekit-superforms";
+  import { goto } from "$app/navigation";
+  import type { PageData } from "./$types";
 
   export let data: PageData;
 
   const { form, errors, enhance } = superForm(data.form, {
     onResult({ result }) {
-      if (result.type === 'success') {
-        goto('/auth');
+      if (result.type === "success") {
+        goto("/auth");
       }
     },
   });
@@ -16,15 +16,25 @@
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+    <h2
+      class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+    >
       Crea una nueva cuenta
     </h2>
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" method="POST" action="?/register" use:enhance>
+    <form
+      class="space-y-6"
+      method="POST"
+      action="?/register"
+      use:enhance
+      novalidate
+    >
       <div>
-        <label for="email" class="block text-sm font-medium leading-6 text-gray-900"
+        <label
+          for="email"
+          class="block text-sm font-medium leading-6 text-gray-900"
           >Correo electrónico</label
         >
         <div class="mt-2">
@@ -39,13 +49,17 @@
             bind:value={$form.email}
           />
           {#if $errors.email}
-            <p class="mt-2 text-sm text-red-600">{$errors.email}</p>
+            <p class="mt-2 text-sm text-red-600" data-testid="email-error">
+              {$errors.email}
+            </p>
           {/if}
         </div>
       </div>
 
       <div>
-        <label for="name" class="block text-sm font-medium leading-6 text-gray-900"
+        <label
+          for="name"
+          class="block text-sm font-medium leading-6 text-gray-900"
           >Nombre (Opcional)</label
         >
         <div class="mt-2">
@@ -66,7 +80,9 @@
 
       <div>
         <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900"
+          <label
+            for="password"
+            class="block text-sm font-medium leading-6 text-gray-900"
             >Contraseña</label
           >
         </div>
@@ -82,14 +98,18 @@
             bind:value={$form.password}
           />
           {#if $errors.password}
-            <p class="mt-2 text-sm text-red-600">{$errors.password}</p>
+            <p class="mt-2 text-sm text-red-600" data-testid="password-error">
+              {$errors.password}
+            </p>
           {/if}
         </div>
       </div>
 
       <div>
         <div class="flex items-center justify-between">
-          <label for="confirmPassword" class="block text-sm font-medium leading-6 text-gray-900"
+          <label
+            for="confirmPassword"
+            class="block text-sm font-medium leading-6 text-gray-900"
             >Confirmar Contraseña</label
           >
         </div>
@@ -121,7 +141,9 @@
 
     <p class="mt-10 text-center text-sm text-gray-500">
       ¿Ya tienes una cuenta?
-      <a href="/auth" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+      <a
+        href="/auth"
+        class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
         >Inicia sesión aquí</a
       >
     </p>

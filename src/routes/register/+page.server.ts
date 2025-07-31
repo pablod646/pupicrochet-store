@@ -1,8 +1,8 @@
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { prisma } from "$lib/server/prisma";
 import bcrypt from "bcrypt";
-import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { superValidate } from "sveltekit-superforms";
+import { zod } from "sveltekit-superforms/adapters";
 import { registerSchema } from "$lib/schemas/auth.schema";
 
 export const load = async () => {
@@ -24,7 +24,9 @@ export const actions = {
       const existingUser = await prisma.user.findUnique({ where: { email } });
 
       if (existingUser) {
-        form.errors.email = ["Ya existe un usuario con este correo electrónico"];
+        form.errors.email = [
+          "Ya existe un usuario con este correo electrónico",
+        ];
         return fail(400, { form });
       }
 
@@ -44,6 +46,6 @@ export const actions = {
         message: "Ocurrió un error inesperado durante el registro.",
       });
     }
-    return { form };
+    throw redirect(303, "/auth");
   },
 };
